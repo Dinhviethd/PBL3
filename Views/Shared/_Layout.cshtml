@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PBL3</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PBL3.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div id="_header"></div>
+    <div class="icon_container">
+        <div class="icon">
+            <div class="icon_left">  
+            <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/7/72/Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_B%C3%A1ch_khoa%2C_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_%C4%90%C3%A0_N%E1%BA%B5ng.svg/2048px-Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_B%C3%A1ch_khoa%2C_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_%C4%90%C3%A0_N%E1%BA%B5ng.svg.png" alt="DUT's Logo'" />
+            <span>SmartParking</span>
+            </div>
+            <ul>
+                <li><a href="#_header">Home</a></li>
+                <li><a href="#About">About</a></li>
+                <li><a href="#Testimonials">Guide</a></li>
+                <li><a href="#Work">Work</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#Features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <a href="#contact" class="button">Sign Up</a>
+            </ul>
+            <i class="fa-solid fa-bars" id="menu_button"></i>
+        </div>
+        <div class="main">
+            <div class="overlay"></div>
+            <div class="container">
+                <div class="script">
+                    <h4 style="color: white;">Website Quản Lý Bãi Đỗ Xe ĐHBK ĐN</h4>
+                    <p style="padding: 30px 0;">
+                        Chào mừng đã đến với trang web quản lý bãi đỗ xe của trường Đại Học Bách Khoa Đà Nẵng. Chúng tôi cung cấp dịch vụ quản lý bãi đỗ xe thông minh, giúp bạn dễ dàng tìm kiếm và đặt chỗ đỗ xe một cách nhanh chóng và tiện lợi.
+                    </p>
+                </div>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+</body>
+</html>
