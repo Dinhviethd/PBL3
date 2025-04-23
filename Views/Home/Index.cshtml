@@ -1,1 +1,57 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Trang chủ";
+}
+<style>
+    .main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 750px;
+        background-image: url(/img/school.jpg);
+        font-size: 20px;
+        color: white;
+        background-position-y: 35%;
+        background-size: cover;
+        position: relative;
+    }
+
+    .overlay {
+        position: absolute;
+        width: 100%;
+        background-color: black;
+        height: 100%;
+        opacity: 35%;
+        z-index: 1;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 100px;
+        z-index: 2;
+    }
+
+    .script {
+        display: block;
+        margin-top: 60px;
+    }
+
+        .script h4 {
+            font-size: 45px;
+            font-weight: bolder;
+            color: white;
+        }
+</style>
+<div class="main">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="script">
+            <h4 style="color: white;">Website Quản Lý Bãi Đỗ Xe ĐHBK ĐN</h4>
+            <p style="padding: 30px 0;">
+                Chào mừng đã đến với trang web quản lý bãi đỗ xe của trường Đại Học Bách Khoa Đà Nẵng.
+                Chúng tôi cung cấp dịch vụ quản lý bãi đỗ xe thông minh, giúp bạn dễ dàng tìm kiếm
+                và đặt chỗ đỗ xe một cách nhanh chóng và tiện lợi.
+            </p>
+        </div>
+    </div>
+</div>

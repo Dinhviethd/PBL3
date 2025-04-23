@@ -1,0 +1,133 @@
+:root {
+    --blue: rgb(5, 5, 87);
+    --red: rgb(219, 49, 49);
+    --green: #16b95a;
+    --aquamarine: rgba(127, 255, 212, 0.164);
+    --light_blue: rgb(2, 214, 214);
+    --yellow: rgb(255, 189, 7);
+}
+
+* {
+    box-sizing: border-box;
+    font-family: sans-serif;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--blue);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    position: relative;
+}
+
+p {
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Header Styles */
+.icon ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon i {
+    border: solid 1px var(--red);
+    padding: 10px;
+    border-radius: 10px;
+    color: var(--red);
+    cursor: pointer;
+    display: none;
+    height: 40%;
+    margin-top: 30px;
+}
+
+.icon li {
+    display: inline-block;
+}
+
+.icon_container li {
+    list-style-type: none;
+    padding: 10px;
+    font-size: 17px;
+    color: var(--blue);
+    cursor: pointer;
+}
+
+.icon_container ul {
+    margin-left: 20px;
+}
+
+.icon_container {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: white;
+}
+
+.button {
+    display: block;
+    border: 1px solid var(--red);
+    background-color: var(--red);
+    border-radius: 60px;
+    padding: 15px 20px;
+    transition: all 0.3s linear;
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+    width: 150px;
+    text-align: center;
+}
+
+    .button:hover {
+        color: var(--red);
+        background-color: white;
+    }
+
+.icon li a {
+    color: var(--blue);
+}
+
+.icon a:hover {
+    color: var(--red);
+}
+
+.icon {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    height: 90px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+    .icon span {
+        font-size: 30px;
+        color: rgb(27, 27, 233);
+        font-weight: bolder;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+.icon_left {
+    display: flex;
+}
+
+    .icon_left img {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        top: 20px;
+        left: 90px;
+    }
