@@ -1,50 +1,48 @@
-﻿.main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 750px;
-    background-image: url(/img/school.jpg);
-    font-size: 20px;
-    color: white;
-    background-position: center;
-    background-size: cover;
-    position: relative;
+﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
 }
 
-.icon_left {
-    display: flex;
+a {
+  color: #0077cc;
 }
 
-    .icon_left img {
-        width: 50px;
-        height: 50px;
-        position: absolute;
-        top: 20px;
-        left: 90px;
-    }
-
-.overlay {
-    position: absolute;
-    width: 100%;
-    background-color: black;
-    height: 100%;
-    opacity: 35%;
-    z-index: 1;
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
 }
 
-.container {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 100px;
-    z-index: 2;
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
 }
 
-.script {
-    display: block;
-    margin-top: 60px;
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
 }
 
-    .script h4 {
-        font-size: 45px;
-        font-weight: bolder;
-    }
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}
