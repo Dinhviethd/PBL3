@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "aepfnerypiQU19LboZho8zGIluModjdu6TLXneHdtOU=",
+  "Hash": "bf+N3rWhtjqZVS0i9CciQUQ+tHEOaM36XlCchFgSnFk=",
   "Source": "PBL3",
   "BasePath": "_content/PBL3",
   "Mode": "Default",
@@ -31,8 +31,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "w0qg198wfx",
-      "Integrity": "QDNnclBqEDCMKB+GZx1Ghao8jemRPzU1mYDPcu1rzwg=",
+      "Fingerprint": "k7kifm8kt1",
+      "Integrity": "MMKxN2Gws3WxMyr8TcubSxKnd+ppprxLd6I42PrvpgQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\obj\\Debug\\net8.0\\scopedcss\\bundle\\PBL3.styles.css"
@@ -52,8 +52,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ProjectBundle",
-      "Fingerprint": "w0qg198wfx",
-      "Integrity": "QDNnclBqEDCMKB+GZx1Ghao8jemRPzU1mYDPcu1rzwg=",
+      "Fingerprint": "k7kifm8kt1",
+      "Integrity": "MMKxN2Gws3WxMyr8TcubSxKnd+ppprxLd6I42PrvpgQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\PBL3.bundle.scp.css"
@@ -73,8 +73,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "5ipweew5fc",
-      "Integrity": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+      "Fingerprint": "8p3q12wf2d",
+      "Integrity": "PD5P4BSsgohAORTsHuos4VVHCeBUDgMoTCuNHnCyrgY=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -1342,7 +1342,7 @@
   ],
   "Endpoints": [
     {
-      "Route": "css/site.5ipweew5fc.css",
+      "Route": "css/site.8p3q12wf2d.css",
       "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -1352,7 +1352,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "0"
+          "Value": "2184"
         },
         {
           "Name": "Content-Type",
@@ -1360,11 +1360,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=\""
+          "Value": "\"PD5P4BSsgohAORTsHuos4VVHCeBUDgMoTCuNHnCyrgY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 07 Apr 2025 15:30:10 GMT"
+          "Value": "Tue, 29 Apr 2025 14:57:36 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1374,7 +1374,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "5ipweew5fc"
+          "Value": "8p3q12wf2d"
         },
         {
           "Name": "label",
@@ -1382,7 +1382,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="
+          "Value": "sha256-PD5P4BSsgohAORTsHuos4VVHCeBUDgMoTCuNHnCyrgY="
         }
       ]
     },
@@ -1397,7 +1397,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "0"
+          "Value": "2184"
         },
         {
           "Name": "Content-Type",
@@ -1405,11 +1405,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=\""
+          "Value": "\"PD5P4BSsgohAORTsHuos4VVHCeBUDgMoTCuNHnCyrgY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 07 Apr 2025 15:30:10 GMT"
+          "Value": "Tue, 29 Apr 2025 14:57:36 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1419,7 +1419,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="
+          "Value": "sha256-PD5P4BSsgohAORTsHuos4VVHCeBUDgMoTCuNHnCyrgY="
         }
       ]
     },
@@ -6354,7 +6354,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3384"
+          "Value": "1027"
         },
         {
           "Name": "Content-Type",
@@ -6362,11 +6362,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"QDNnclBqEDCMKB+GZx1Ghao8jemRPzU1mYDPcu1rzwg=\""
+          "Value": "\"MMKxN2Gws3WxMyr8TcubSxKnd+ppprxLd6I42PrvpgQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 08 Apr 2025 03:17:31 GMT"
+          "Value": "Tue, 29 Apr 2025 14:51:31 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6376,7 +6376,97 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-QDNnclBqEDCMKB+GZx1Ghao8jemRPzU1mYDPcu1rzwg="
+          "Value": "sha256-MMKxN2Gws3WxMyr8TcubSxKnd+ppprxLd6I42PrvpgQ="
+        }
+      ]
+    },
+    {
+      "Route": "PBL3.k7kifm8kt1.bundle.scp.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\PBL3.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1027"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"MMKxN2Gws3WxMyr8TcubSxKnd+ppprxLd6I42PrvpgQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 29 Apr 2025 14:51:31 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "k7kifm8kt1"
+        },
+        {
+          "Name": "label",
+          "Value": "PBL3.bundle.scp.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-MMKxN2Gws3WxMyr8TcubSxKnd+ppprxLd6I42PrvpgQ="
+        }
+      ]
+    },
+    {
+      "Route": "PBL3.k7kifm8kt1.styles.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\obj\\Debug\\net8.0\\scopedcss\\bundle\\PBL3.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1027"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"MMKxN2Gws3WxMyr8TcubSxKnd+ppprxLd6I42PrvpgQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 29 Apr 2025 14:51:31 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "k7kifm8kt1"
+        },
+        {
+          "Name": "label",
+          "Value": "PBL3.styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-MMKxN2Gws3WxMyr8TcubSxKnd+ppprxLd6I42PrvpgQ="
         }
       ]
     },
@@ -6391,7 +6481,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3384"
+          "Value": "1027"
         },
         {
           "Name": "Content-Type",
@@ -6399,11 +6489,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"QDNnclBqEDCMKB+GZx1Ghao8jemRPzU1mYDPcu1rzwg=\""
+          "Value": "\"MMKxN2Gws3WxMyr8TcubSxKnd+ppprxLd6I42PrvpgQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 08 Apr 2025 03:17:31 GMT"
+          "Value": "Tue, 29 Apr 2025 14:51:31 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6413,97 +6503,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-QDNnclBqEDCMKB+GZx1Ghao8jemRPzU1mYDPcu1rzwg="
-        }
-      ]
-    },
-    {
-      "Route": "PBL3.w0qg198wfx.bundle.scp.css",
-      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\PBL3.bundle.scp.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "3384"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"QDNnclBqEDCMKB+GZx1Ghao8jemRPzU1mYDPcu1rzwg=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 08 Apr 2025 03:17:31 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "w0qg198wfx"
-        },
-        {
-          "Name": "label",
-          "Value": "PBL3.bundle.scp.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-QDNnclBqEDCMKB+GZx1Ghao8jemRPzU1mYDPcu1rzwg="
-        }
-      ]
-    },
-    {
-      "Route": "PBL3.w0qg198wfx.styles.css",
-      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\obj\\Debug\\net8.0\\scopedcss\\bundle\\PBL3.styles.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "3384"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"QDNnclBqEDCMKB+GZx1Ghao8jemRPzU1mYDPcu1rzwg=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 08 Apr 2025 03:17:31 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "w0qg198wfx"
-        },
-        {
-          "Name": "label",
-          "Value": "PBL3.styles.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-QDNnclBqEDCMKB+GZx1Ghao8jemRPzU1mYDPcu1rzwg="
+          "Value": "sha256-MMKxN2Gws3WxMyr8TcubSxKnd+ppprxLd6I42PrvpgQ="
         }
       ]
     }

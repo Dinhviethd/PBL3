@@ -1,4 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using PBL3.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<PBL3Context>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PBL3Context") ?? throw new InvalidOperationException("Connection string 'PBL3Context' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

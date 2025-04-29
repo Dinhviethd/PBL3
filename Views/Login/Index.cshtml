@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    }
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    .loginPanel {
+        padding: 20px;
+        width: 305px;
+        border-radius: 10px;
+        box-shadow: 3px 3px 7px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #titleWelcome {
+        text-align: center;
+        padding: 0 0 15px 0;
+        font-weight: bold;
+        font-size: 30px;
+    }
+    .linkResetPassword {
+        margin: 10px 0 10px 20px;
+        display: inline-block;
+    }
+    .cont {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        overflow: clip;
+    }
+    #ID, #password {
+        background-color: #f8f9fa;
+        border: none;
+        height: 40px;
+        width: 200px;
+        border-radius: 20px;
+        background-color: #f0f1f2;
+        padding-left: 20px;
+        margin-top: 5px;
+        box-shadow: 0px 0px 7px 0;
+    }
+
+        #ID:focus, #password:focus {
+            border: none;
+            outline: none;
+            border: 1px solid black;
+        }
+
+    .butt {
+        padding: 10px;
+        margin: auto;
+        width: 100px;
+        border-radius: 5px;
+        border: none;
+        align-items: center;
+        background-color: #DFDFDF;
+        outline: hidden 2px solid royalblue;
+        outline-offset: 2px;
+    }
+
+    .blue {
+        background-color: royalblue;
+        color: white;
+    }
+
+    .butt:hover {
+        outline: 2px solid royalblue;
+        outline-offset: 2px;
+    }
+
+    .disp {
+        display: block;
+        /*    border: 1px solid black;*/
+    }
+
+    .d01, .d02 {
+        margin-bottom: 10px;
+    }
+</style>
+<div class="cont">
+    <div class="loginPanel">
+        <p id="titleWelcome">Login</p>
+        <form>
+            <div class="disp d01">
+                <label for="ID">ID của bạn:</label><br />
+                <input type="text" id="ID" name="ID" maxlength="10" pattern="[0-9]{10}" required><br />
+            </div>
+            <div class="disp d02">
+                <label for="password">Mật khẩu:</label><br />
+                <input type="password" id="password" name="password" maxlength="20" required><br />
+            </div>
+            <br />
+            <button class="butt blue">Đăng nhập</button>
+            <div class="linkResetPassword">
+                <a href="@Url.Action("ResetPassword", "Home")">Quên mật khẩu?</a>
+            </div>
+        </form>
+    </div>
+</div>

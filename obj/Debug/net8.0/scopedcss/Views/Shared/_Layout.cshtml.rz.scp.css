@@ -1,114 +1,4 @@
-*[b-2a4y46kdk6] {
-    box-sizing: border-box;
-    font-family: sans-serif;
-    margin: 0;
-}
-
-h1[b-2a4y46kdk6], h2[b-2a4y46kdk6], h3[b-2a4y46kdk6], h4[b-2a4y46kdk6], h5[b-2a4y46kdk6], h6[b-2a4y46kdk6] {
-    color: rgb(5, 5, 87);
-}
-
-html[b-2a4y46kdk6] {
-    scroll-behavior: smooth;
-}
-
 body[b-2a4y46kdk6] {
-    position: relative;
-}
-
-p[b-2a4y46kdk6] {
-    line-height: 1.6;
-}
-
-a[b-2a4y46kdk6] {
-    text-decoration: none;
-}
-/* header */
-.icon ul[b-2a4y46kdk6] {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.icon i[b-2a4y46kdk6] {
-    border: solid 1px rgb(219, 49, 49);
-    padding: 10px;
-    border-radius: 10px;
-    color: rgb(219, 49, 49);
-    cursor: pointer;
-    display: none;
-    height: 40%;
-    margin-top: 30px;
-}
-
-.icon li[b-2a4y46kdk6] {
-    display: inline-block;
-}
-
-.icon_container li[b-2a4y46kdk6] {
-    list-style-type: none;
-    padding: 10px;
-    font-size: 17px;
-    color: rgb(5, 5, 87);
-    cursor: pointer;
-}
-
-.icon_container ul[b-2a4y46kdk6] {
-    margin-left: 20px;
-}
-
-.icon_container[b-2a4y46kdk6] {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background-color: white;
-}
-.button[b-2a4y46kdk6] {
-    display: block;
-    border: 1px solid rgb(219, 49, 49);
-    background-color: rgb(219, 49, 49);
-    border-radius: 60px;
-    padding: 15px 20px;
-    transition: all 0.3s linear;
-    font-size: 20px;
-    cursor: pointer;
-    color: white;
-    width: 150px;
-    text-align: center;
-}
-
-.button:hover[b-2a4y46kdk6] {
-    color: rgb(219, 49, 49);
-    background-color: white;
-}
-
-.icon li a[b-2a4y46kdk6] {
-    color: rgb(5, 5, 87);
-}
-
-.icon a:hover[b-2a4y46kdk6] {
-    color: rgb(219, 49, 49);
-}
-
-.icon[b-2a4y46kdk6] {
-    display: flex;
-    justify-content: space-between;
-    background-color: white;
-    height: 90px;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-    .icon span[b-2a4y46kdk6] {
-        font-size: 30px;
-        color: rgb(27, 27, 233);
-        font-weight: bolder;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-.main[b-2a4y46kdk6] {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -116,20 +6,23 @@ a[b-2a4y46kdk6] {
     background-image: url(/img/school.jpg);
     font-size: 20px;
     color: white;
-    background-position-y: 35%;
+    background-position: center;
     background-size: cover;
     position: relative;
 }
+
 .icon_left[b-2a4y46kdk6] {
     display: flex;
 }
-.icon_left img[b-2a4y46kdk6]{
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    top: 20px;
-    left: 90px;   
-}
+
+    .icon_left img[b-2a4y46kdk6] {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        top: 20px;
+        left: 90px;
+    }
+
 .overlay[b-2a4y46kdk6] {
     position: absolute;
     width: 100%;
@@ -150,15 +43,8 @@ a[b-2a4y46kdk6] {
     display: block;
     margin-top: 60px;
 }
+
     .script h4[b-2a4y46kdk6] {
         font-size: 45px;
         font-weight: bolder;
     }
-:root[b-2a4y46kdk6] {
-    --blue: rgb(5, 5, 87);
-    --red: rgb(219, 49, 49);
-    --green: #16b95a;
-    --aquamarine: rgba(127, 255, 212, 0.164);
-    --light_blue: rgb(2, 214, 214);
-    --yellow: rgb(255, 189, 7);
-}
