@@ -1,12 +1,30 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PBL3.Data;
+using PBL3.Models;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<PBL3Context>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PBL3Context") ?? throw new InvalidOperationException("Connection string 'PBL3Context' not found.")));
+builder.Services.AddDbContext<AppDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string 'PBL3Context' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//Giam yeu cau mat khau
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 1;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+})
+.AddEntityFrameworkStores<AppDBContext>()
+.AddDefaultTokenProviders();
 
 var app = builder.Build();
 
@@ -24,6 +42,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",

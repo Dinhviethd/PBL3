@@ -13,35 +13,24 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TenHS)
+                @Html.DisplayNameFor(model => model.HoTen) <!-- Đổi TenHS -> HoTen -->
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SDT)
-            </th>
-            <th></th>
+            <!-- Giữ nguyên các cột khác -->
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenHS)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SDT)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID_HS">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID_HS">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID_HS">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoTen) 
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID_SV">Edit</a> | 
+                    <a asp-action="Details" asp-route-id="@item.ID_SV">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID_SV">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

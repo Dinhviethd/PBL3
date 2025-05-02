@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using Microsoft.AspNetCore.Identity;
 namespace PBL3.Models
 {
-    public class Student
+    public class Student:IdentityUser
     {
-        [Key] public int ID_HS { get; set; }
+        [Key]
+        public int ID_SV { get; set; }  
 
-        [Required(ErrorMessage = "Tên học sinh là bắt buộc")]
-        public string TenHS { get; set; }
+        [Required(ErrorMessage = "Họ tên SV là bắt buộc")]
+        public string HoTen { get; set; } 
 
         [Required(ErrorMessage = "Email là bắt buộc")]
         [EmailAddress(ErrorMessage = "Email không hợp lệ")]
@@ -15,7 +16,11 @@ namespace PBL3.Models
 
         [Required(ErrorMessage = "Số điện thoại là bắt buộc")]
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
-        [StringLength(15, ErrorMessage = "Số điện thoại không được vượt quá 15 ký tự")]
         public string SDT { get; set; }
+
+        [Required(ErrorMessage = "Lớp là bắt buộc")]
+        public string Lop { get; set; }  
+
+        public bool DKyVe { get; set; } = false;  // đăng ký vé (mặc định false)
     }
 }

@@ -5,12 +5,32 @@
       "PackagePath": "staticwebassets\\PBL3.k7kifm8kt1.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\Index.css",
+      "PackagePath": "staticwebassets\\css\\Admin\\Index.css"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\QLNV.css",
+      "PackagePath": "staticwebassets\\css\\Admin\\QLNV.css"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\QLSV.css",
+      "PackagePath": "staticwebassets\\css\\Admin\\QLSV.css"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\account.css",
+      "PackagePath": "staticwebassets\\css\\account.css"
+    },
+    {
       "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
       "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\img\\school.jpg",
       "PackagePath": "staticwebassets\\img\\school.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\js\\Admin\\QLSV.js",
+      "PackagePath": "staticwebassets\\js\\Admin\\QLSV.js"
     },
     {
       "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\js\\site.js",

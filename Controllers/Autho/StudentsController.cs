@@ -12,9 +12,9 @@ namespace PBL3.Controllers.Autho
 {
     public class StudentsController : Controller
     {
-        private readonly PBL3Context _context;
+        private readonly AppDBContext _context;
 
-        public StudentsController(PBL3Context context)
+        public StudentsController(AppDBContext context)
         {
             _context = context;
         }
@@ -34,7 +34,7 @@ namespace PBL3.Controllers.Autho
             }
 
             var student = await _context.Student
-                .FirstOrDefaultAsync(m => m.ID_HS == id);
+                .FirstOrDefaultAsync(m => m.ID_SV == id);
             if (student == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace PBL3.Controllers.Autho
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID_HS,TenHS,Email,SDT")] Student student)
+        public async Task<IActionResult> Create([Bind("ID_SV,HoTen,Email,SDT,Lop,DKyVe")] Student student)
         {
             if (ModelState.IsValid)
             {
@@ -86,9 +86,9 @@ namespace PBL3.Controllers.Autho
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID_HS,TenHS,Email,SDT")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("ID_SV,HoTen,Email,SDT,Lop,DKyVe")] Student student)
         {
-            if (id != student.ID_HS)
+            if (id != student.ID_SV)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace PBL3.Controllers.Autho
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.ID_HS))
+                    if (!StudentExists(student.ID_SV))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace PBL3.Controllers.Autho
             }
 
             var student = await _context.Student
-                .FirstOrDefaultAsync(m => m.ID_HS == id);
+                .FirstOrDefaultAsync(m => m.ID_SV == id);
             if (student == null)
             {
                 return NotFound();
@@ -151,7 +151,7 @@ namespace PBL3.Controllers.Autho
 
         private bool StudentExists(int id)
         {
-            return _context.Student.Any(e => e.ID_HS == id);
+            return _context.Student.Any(e => e.ID_SV == id);
         }
     }
 }

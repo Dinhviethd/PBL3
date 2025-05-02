@@ -16,11 +16,6 @@
 h1, h2, h3, h4, h5, h6 {
     color: var(--blue);
 }
-
-body {
-    position: relative;
-}
-
 p {
     line-height: 1.6;
 }
@@ -75,17 +70,17 @@ a {
     border: 1px solid var(--red);
     background-color: var(--red);
     border-radius: 60px;
-    padding: 15px 20px;
+    padding: 15px 10px;
     transition: all 0.3s linear;
     font-size: 20px;
     cursor: pointer;
-    color: white;
+    color: white !important;
     width: 150px;
     text-align: center;
 }
 
     .button:hover {
-        color: var(--red);
+        color: var(--red) !important;
         background-color: white;
     }
 

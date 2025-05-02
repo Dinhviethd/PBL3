@@ -13,9 +13,19 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="TenHS" class="control-label"></label>
-                <input asp-for="TenHS" class="form-control" />
-                <span asp-validation-for="TenHS" class="text-danger"></span>
+                <label asp-for="HoTen" class="control-label"></label> 
+                <input asp-for="HoTen" class="form-control" />
+                <span asp-validation-for="HoTen" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lop" class="control-label"></label>
+                <input asp-for="Lop" class="form-control" />
+                <span asp-validation-for="Lop" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="DKyVe" /> @Html.DisplayNameFor(model => model.DKyVe)
+                </label>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>

@@ -2,10 +2,8 @@
 
 namespace PBL3.Controllers.Autho
 {
-    [Route("[controller]")]
-    public class LoginController : Controller
+    public class StaffController : Controller
     {
-        [Route("")]
         public IActionResult Index()
         {
             return View();

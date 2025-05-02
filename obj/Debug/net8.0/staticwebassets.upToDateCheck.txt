@@ -1,5 +1,10 @@
+wwwroot\css\account.css
+wwwroot\css\Admin\Index.css
+wwwroot\css\Admin\QLNV.css
+wwwroot\css\Admin\QLSV.css
 wwwroot\css\site.css
 wwwroot\img\school.jpg
+wwwroot\js\Admin\QLSV.js
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map

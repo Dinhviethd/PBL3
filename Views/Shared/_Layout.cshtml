@@ -6,7 +6,6 @@
     <title>@ViewData["Title"] - PBL3</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PBL3.styles.css" asp-append-version="true" />
 </head>
 <body>
     <div id="_header"></div>
@@ -17,20 +16,20 @@
                 <span>SmartParking</span>
             </div>
             <ul>
-                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                <li><a href="/Home/">Home</a></li>
                 <li><a href="#About">About</a></li>
                 <li><a href="#Testimonials">Guide</a></li>
                 <li><a href="#Work">Work</a></li>
                 <li><a href="#team">Team</a></li>
                 <li><a href="#Features">Features</a></li>
                 <li><a href="#pricing">Pricing</a></li>
-                <a asp-controller="Login" asp-action="Index" class="button">Sign in</a>
+                <partial name="_LoginPartial"  />
             </ul>
             <i class="fa-solid fa-bars" id="menu_button"></i>
         </div>
     </div>
 
-    <div class="container">
+    <div>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
