@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Service\" />
     <Folder Include="wwwroot\css\Student\" />
   </ItemGroup>
 
