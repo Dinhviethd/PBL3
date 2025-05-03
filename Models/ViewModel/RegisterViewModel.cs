@@ -25,5 +25,10 @@ namespace PBL3.Models.ViewModel
         [Display(Name = "Role")]
         public string Role { get; set; }
 
+        [Required(ErrorMessage = "Số điện thoại là bắt buộc")]
+        [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
+        [Display(Name = "SĐT")]
+        public string SDT { get; set; }
+
     }
 }

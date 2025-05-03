@@ -18,5 +18,12 @@ namespace PBL3.Data
         public DbSet<PBL3.Models.Student> Student { get; set; } = default!;
         public DbSet<PBL3.Models.Staff> Staff { get; set; } = default!;
         public DbSet<PBL3.Models.Ticket> Tickets { get; set; } = default!;
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Student>().ToTable("Students");
+            builder.Entity<Staff>().ToTable("Staffs");
+        }
     }
 }

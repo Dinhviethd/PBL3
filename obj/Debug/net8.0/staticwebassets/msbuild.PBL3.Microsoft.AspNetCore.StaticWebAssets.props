@@ -66,8 +66,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>wvotl2jsgw</Fingerprint>
-      <Integrity>xC/OkJuqwziQ5HoeyWyjo+cfDCoORI12m0LncOJ655U=</Integrity>
+      <Fingerprint>irfg2nuol9</Fingerprint>
+      <Integrity>zpFWYUj/Hxo8Nc9BZY4fAjpuVCii1Qn2fK1hDd4c5o8=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Admin\QLSV.css'))</OriginalItemSpec>

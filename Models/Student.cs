@@ -2,21 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 namespace PBL3.Models
 {
-    public class Student:IdentityUser
+    public class Student:AppUser
     {
-        [Key]
-        public int ID_SV { get; set; }  
-
-        [Required(ErrorMessage = "Họ tên SV là bắt buộc")]
-        public string HoTen { get; set; } 
-
-        [Required(ErrorMessage = "Email là bắt buộc")]
-        [EmailAddress(ErrorMessage = "Email không hợp lệ")]
-        public string Email { get; set; }
-
-        [Required(ErrorMessage = "Số điện thoại là bắt buộc")]
-        [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
-        public string SDT { get; set; }
+        [Required(ErrorMessage ="MSSV là bắt buộc")]
+        public string MSSV { get; set; }
 
         [Required(ErrorMessage = "Lớp là bắt buộc")]
         public string Lop { get; set; }  
