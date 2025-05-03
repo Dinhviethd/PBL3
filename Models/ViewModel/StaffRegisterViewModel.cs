@@ -6,7 +6,6 @@ namespace PBL3.Models.ViewModel
     {
         [Required(ErrorMessage = "Địa chỉ là bắt buộc cho nhân viên")]
         [Display(Name = "Địa chỉ")]
-
         public string DiaChi { get; set; }
     }
 }

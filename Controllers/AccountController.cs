@@ -188,7 +188,7 @@ namespace PBL3.Controllers
         }
 
         private async Task<RegisterStudentViewModel> GetStudentViewModel(RegisterStudentViewModel model = null, int page = 1,
-    string searchName = "", string searchClass = "", string searchMSSV = "", string searchPhone = "")
+                     string searchName = "", string searchClass = "", string searchMSSV = "", string searchPhone = "")
         {
             int pageSize = 10;
 
@@ -231,7 +231,8 @@ namespace PBL3.Controllers
             var model = await GetStudentViewModel(null, page, searchName, searchClass, searchMSSV, searchPhone);
             return View(model);
         }
-       
+
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditStudent(int id)
@@ -304,6 +305,11 @@ namespace PBL3.Controllers
 
             return RedirectToAction("QLSV");
         }
-
+        //temp
+        public async Task<IActionResult> QLNV(int page = 1, string searchName = "")
+        {
+            
+            return View();
+        }
     }
     }
