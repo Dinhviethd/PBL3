@@ -1,0 +1,38 @@
+@model PBL3.Models.Staff
+
+@{
+    ViewData["Title"] = "Chi Tiết Nhân Viên";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Chi Tiết Nhân Viên</h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Họ Tên</dt>
+                        <dd class="col-sm-9">@Model.HoTen</dd>
+
+                        <dt class="col-sm-3">Email</dt>
+                        <dd class="col-sm-9">@Model.Email</dd>
+
+                        <dt class="col-sm-3">Số Điện Thoại</dt>
+                        <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+                        <dt class="col-sm-3">Địa Chỉ</dt>
+                        <dd class="col-sm-9">@Model.DiaChi</dd>
+                    </dl>
+
+                    <div class="mt-4">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Sửa</a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Xóa</a>
+                        <a asp-action="Index" class="btn btn-secondary">Quay Lại</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
