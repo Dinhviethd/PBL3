@@ -164,16 +164,14 @@ namespace PBL3.Controllers
 
                 var student = new Student
                 {
-                    Id = user.Id, 
-                    HoTen = model.HoTen,
-                    Email = model.Email,
+                    UserId = user.Id, // Lưu ID của người dùng vào Student
                     MSSV = model.MSSV,
                     Lop = model.Lop,
                     DKyVe = false,
-                    PhoneNumber = model.SDT 
+                    
                 };
 
-                _context.Student.Add(student);
+                _context.Students.Add(student);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction("QLSV");
@@ -188,14 +186,14 @@ namespace PBL3.Controllers
         }
 
         private async Task<RegisterStudentViewModel> GetStudentViewModel(RegisterStudentViewModel model = null, int page = 1,
-    string searchName = "", string searchClass = "", string searchMSSV = "", string searchPhone = "")
+                     string searchName = "", string searchClass = "", string searchMSSV = "", string searchPhone = "")
         {
             int pageSize = 10;
 
-            var query = _context.Student.AsQueryable();
+            var query = _context.Students.AsQueryable();
 
             if (!string.IsNullOrEmpty(searchName))
-                query = query.Where(s => s.HoTen.Contains(searchName));
+                query = query.Where(s => s.User.Id.Contains(searchName));
 
             if (!string.IsNullOrEmpty(searchClass))
                 query = query.Where(s => s.Lop.Contains(searchClass));
@@ -203,8 +201,6 @@ namespace PBL3.Controllers
             if (!string.IsNullOrEmpty(searchMSSV))
                 query = query.Where(s => s.MSSV.Contains(searchMSSV));
 
-            if (!string.IsNullOrEmpty(searchPhone))
-                query = query.Where(s => s.PhoneNumber.Contains(searchPhone));
 
             var totalItems = await query.CountAsync();
             var students = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
@@ -231,12 +227,13 @@ namespace PBL3.Controllers
             var model = await GetStudentViewModel(null, page, searchName, searchClass, searchMSSV, searchPhone);
             return View(model);
         }
-       
+
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditStudent(int id)
         {
-            var student = await _context.Student.FindAsync(id);
+            var student = await _context.Students.FindAsync(id);
             if (student == null)
             {
                 return NotFound();
@@ -244,8 +241,7 @@ namespace PBL3.Controllers
 
             var model = new RegisterStudentViewModel
             {
-                HoTen = student.HoTen,
-                Email = student.Email,
+               // UserId = student.Id,
                 MSSV = student.MSSV,
                 Lop = student.Lop,
                 Role = "Student"
@@ -264,18 +260,16 @@ namespace PBL3.Controllers
                 return View(model);
             }
 
-            var student = await _context.Student.FindAsync(id);
+            var student = await _context.Students.FindAsync(id);
             if (student == null)
             {
                 return NotFound();
             }
 
-            student.HoTen = model.HoTen;
-            student.Email = model.Email;
             student.MSSV = model.MSSV;
             student.Lop = model.Lop;
 
-            _context.Student.Update(student);
+            _context.Students.Update(student);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("QLSV");
@@ -286,24 +280,29 @@ namespace PBL3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteStudent(int id)
         {
-            var student = await _context.Student.FindAsync(id);
+            var student = await _context.Students.FindAsync(id);
             if (student == null)
             {
                 return NotFound();
             }
 
             // Xóa user tương ứng nếu cần
-            var user = await _userManager.FindByEmailAsync(student.Email);
+            var user = await _userManager.FindByEmailAsync(student.User.Id);
             if (user != null)
             {
                 await _userManager.DeleteAsync(user);
             }
 
-            _context.Student.Remove(student);
+            _context.Students.Remove(student);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("QLSV");
         }
-
+        //temp
+        public async Task<IActionResult> QLNV(int page = 1, string searchName = "")
+        {
+            
+            return View();
+        }
     }
     }

@@ -1,0 +1,161 @@
+﻿@model PBL3.Models.Staff
+
+@{
+    ViewData["Title"] = "Quản Lý Nhân Viên";
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="~/css/admin/QLSV.css" asp-append-version="true" />
+</head>
+<body>
+    <main class="main-content">
+        <!-- Form tạo nhân viên -->
+        <section class="form-section">
+            <h2 class="section-title">Tạo tài khoản nhân viên</h2>
+            <form id="userForm" class="user-form">
+                <div class="form-grid">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="HoTen">Họ và tên</label>
+                            <input type="text" id="HoTen" name="HoTen" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Email">Email</label>
+                            <input type="email" id="Email" name="Email" required>
+                        </div>
+                    </div>
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="SDT">Số điện thoại</label>
+                            <input type="tel" id="SDT" name="SDT" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="DiaChi">Địa chỉ</label>
+                            <input type="text" id="DiaChi" name="DiaChi" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Tạo tài khoản</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Tìm kiếm nhân viên -->
+        <section class="search-section">
+            <h2 class="section-title">Tìm kiếm nhân viên</h2>
+            <form method="get" class="search-form">
+                <input type="text" name="searchName" placeholder="Tên" class="search-input">
+                <input type="text" name="searchPhone" placeholder="Số điện thoại" class="search-input">
+                <input type="text" name="searchAddress" placeholder="Địa chỉ" class="search-input">
+                <div class="search-actions">
+                    <button type="submit" class="btn-primary search-btn">
+                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/19e0d15c42d628e2727522e0a4e7e32021b5dcb4?placeholderIfAbsent=true&apiKey=a94898cdbac34dc4b261ff4175f2b5c2" alt="Search Icon" class="search-icon">
+                        <span>Tìm kiếm</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Kết quả tìm kiếm -->
+        <section class="results-section">
+            <div class="results-header">
+                <h2 class="section-title">Kết quả tìm kiếm</h2>
+                <div class="display-options">
+                    <label>Hiển thị:</label>
+                    <select class="display-select">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                        <option>Tất cả</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Họ và tên</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nguyễn Văn A</td>
+                            <td>nva@company.com</td>
+                            <td>0912345678</td>
+                            <td>123 Đường ABC, Quận 1, TP.HCM</td>
+                            <td>
+                                <a href="#" class="btn-edit">Sửa</a>
+                                <a href="#" class="btn-delete">Xóa</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Trần Thị B</td>
+                            <td>ttb@company.com</td>
+                            <td>0987654321</td>
+                            <td>456 Đường XYZ, Quận 2, TP.HCM</td>
+                            <td>
+                                <a href="#" class="btn-edit">Sửa</a>
+                                <a href="#" class="btn-delete">Xóa</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Lê Văn C</td>
+                            <td>lvc@company.com</td>
+                            <td>0978123456</td>
+                            <td>789 Đường DEF, Quận 3, TP.HCM</td>
+                            <td>
+                                <a href="#" class="btn-edit">Sửa</a>
+                                <a href="#" class="btn-delete">Xóa</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination-section">
+                <div class="results-count">
+                    Hiển thị 1 - 3 trong tổng số 3 kết quả
+                </div>
+                <div class="pagination">
+                    <a href="#" class="page-btn active">1</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Xử lý form tạo nhân viên
+        document.getElementById('userForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Lấy giá trị từ form
+            const hoTen = document.getElementById('HoTen').value;
+            const email = document.getElementById('Email').value;
+            const sdt = document.getElementById('SDT').value;
+            const diaChi = document.getElementById('DiaChi').value;
+
+            // Hiển thị thông báo (có thể thay bằng AJAX gửi đến server)
+            alert(`Đã thêm nhân viên:\nHọ tên: ${hoTen}\nEmail: ${email}\nSĐT: ${sdt}\nĐịa chỉ: ${diaChi}`);
+
+            // Reset form
+            this.reset();
+        });
+
+        // Xử lý tìm kiếm (mẫu)
+        document.querySelector('.search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Chức năng tìm kiếm sẽ được thực hiện ở đây');
+        });
+    </script>
+</body>
+</html>

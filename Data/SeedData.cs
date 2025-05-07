@@ -68,13 +68,11 @@ namespace PBL3.Data
 
                         var staff = new Staff
                         {
-                            Id = staffUser.Id, 
-                            HoTen = "Nhân viên",
-                            Email = staffEmail,
+                            Id = Guid.NewGuid().ToString(), // Tạo ID ngẫu nhiên cho Staff
+                            UserId = staffUser.Id, // Lưu ID của người dùng vào Staff
                             DiaChi = "123 Đường ABC",
-                            PhoneNumber = staffUser.PhoneNumber 
                         };
-                        context.Staff.Add(staff);
+                        context.Staffs.Add(staff);
                         await context.SaveChangesAsync();
                     }
 
@@ -97,15 +95,12 @@ namespace PBL3.Data
 
                         var student = new Student
                         {
-                            Id = studentUser.Id, 
-                            HoTen = "Sinh viên",
-                            Email = studentEmail,
+                            UserId = studentUser.Id, // Lưu ID của người dùng vào Student
                             MSSV = "SV001",
                             Lop = "20TCLC_DT1",
                             DKyVe = false,
-                            PhoneNumber = studentUser.PhoneNumber 
                         };
-                        context.Student.Add(student);
+                        context.Students.Add(student);
                         await context.SaveChangesAsync();
                     }
                 }

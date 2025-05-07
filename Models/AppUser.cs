@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 namespace PBL3.Models
 {
     public class AppUser : IdentityUser
     {
-        public string HoTen { get; set; }
-        public string Role { get; set; }
+        [Required(ErrorMessage = "Họ tên là bắt buộc")]
+        public string HoTen { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Role là bắt buộc")]
+        public string Role { get; set; } = string.Empty;
 
     }
 }
