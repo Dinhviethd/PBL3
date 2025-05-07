@@ -120,11 +120,11 @@
                                     @foreach (var student in Model.Students)
                                     {
                                         <tr>
-                                            <td>@student.HoTen</td>
+                                            <td>@student.User.HoTen</td>
                                             <td>@student.MSSV</td>
                                             <td>@student.Lop</td>
-                                            <td>@student.Email</td>
-                                            <td>@student.PhoneNumber</td>
+                                            <td>@student.User.Email</td>
+                                            <td>@student.User.PhoneNumber</td>
                                             <td>@student.DKyVe</td>
                                             <td>
                                                 <a asp-action="EditStudent" asp-route-id="@student.MSSV" class="btn-edit">Sửa</a>
