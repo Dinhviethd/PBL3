@@ -1,0 +1,396 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PBL3</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PBL3.styles.css" asp-append-version="true" />
+    <style>
+        html, body {
+            overflow-y: hidden;
+        }
+        .center-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            width: 100%;
+            margin-top: 32px;
+            height: 80vh;
+        }
+        .QLX-panel-content {
+            border-radius: 16px;
+            font-family: Calibri, sans-serif;
+            position: relative;
+        }
+        .QLX-panel-content label {
+            color: black;
+        }
+        .QLX-panel-content input[readonly] {
+            background-color: #e9ecef;
+        }
+        .QLX-panel-content input[type="text"] {
+            height: 40px;
+            font-size: 20px;
+            padding-left: 10px;
+        }
+        #search {
+            border-radius: 8px;
+            padding-left: 16px;
+        }
+        #searchBy {
+            border-radius: 8px;
+        }
+        .QLX-panel-content button,
+        .QLX-panel-content .btn {
+            border-radius: 8px !important;
+        }
+        .flex-app-container {
+            display: flex;
+            flex-direction: row;
+            width: 100vw;
+            height: 100vh;
+            align-items: flex-start;
+            transition: all 0.4s cubic-bezier(.77,0,.18,1);
+        }
+        .vehicle-info-panel {
+            width: 0;
+            min-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(.77,0,.18,1);
+            position: relative;
+        }
+        .flex-app-container.show-vehicle-info .vehicle-info-panel {
+            width: 370px;
+            min-width: 350px;
+            opacity: 1;
+            overflow: visible;
+            margin-right: -75px;
+        }
+        .QLX-panel-content .close-btn {
+            position: absolute;
+            top: -20px;
+            right: 10px;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 10;
+        }
+        .main-content {
+            flex: 1 1 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            transition: all 0.4s cubic-bezier(.77,0,.18,1);
+            justify-content: center;
+            height: 80vh;
+            overflow-x: hidden;
+        }
+        .QLX-panel, .iframe-container {
+            width: 100%;
+            max-width: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="_header"></div>
+    <div class="icon_container">
+        <div class="icon">
+            <div class="icon_left">  
+            <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/7/72/Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_B%C3%A1ch_khoa%2C_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_%C4%90%C3%A0_N%E1%BA%B5ng.svg/2048px-Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8dc_B%C3%A1ch_khoa%2C_%C4%90%E1%BA%A1i_h%E1%BB%8c_%C4%90%C3%A0_N%E1%BA%B5ng.svg.png" alt="DUT's Logo'" />
+            <span>SmartParking</span>
+            </div>
+            <ul>
+                <li><a href="#_header">Home</a></li>
+                <li><a href="#About">About</a></li>
+                <li><a href="#Testimonials">Guide</a></li>
+                <li><a href="#Work">Work</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#Features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <a href="#contact" class="button">Sign Up</a>
+            </ul>
+            <i class="fa-solid fa-bars" id="menu_button"></i>
+        </div>
+    </div>
+    <div class="main">
+        <div class="content">
+            <div class="flex-app-container" id="flexAppContainer">
+                <div class="vehicle-info-panel" id="vehicle-info-panel">
+                    <div class="QLX-panel">
+                        <div class="QLX-panel-content">
+                            <button class="close-btn" onclick="hideVehicleInfoPanel()">&times;</button>
+                            <h1> THÔNG TIN XE </h1>
+                            <div class="cen-container">
+                                <div class="cen">
+                                    <label for="OGX">Ô giữ xe:</label><br>
+                                    <input type="text" id="OGX" name="OGX" pattern="[0-9]*" >
+                                    <span class="error-message" id="error-OGX" style="color: red; font-size: 14px; display: none;"></span>
+                                </div>
+                                <div class="cen">
+                                    <label for="BXX">Biển số xe:</label><br>
+                                    <input type="text" id="BXX" name="BXX">
+                                    <span class="error-message" id="error-BXX" style="color: red; font-size: 14px; display: none;"></span>
+                                </div>
+                                <div class="cen">
+                                    <label for="IDCX">ID chủ xe:</label><br>
+                                    <input type="text" id="IDCX" name="IDCX">
+                                    <span class="error-message" id="error-IDCX" style="color: red; font-size: 14px; display: none;"></span>
+                                </div>
+                                <div class="cen">
+                                    <label for="NameCX">Họ và tên chủ xe:</label><br>
+                                    <input type="text" id="NameCX" name="NameCX">
+                                    <span class="error-message" id="error-NameCX" style="color: red; font-size: 14px; display: none;"></span>
+                                </div>
+                                <div class="cen">
+                                    <label for="NgayHH">Ngày hết hạn:</label><br>
+                                    <input type="text" id="NgayHH" name="NgayHH">
+                                    <span class="error-message" id="error-NgayHH" style="color: red; font-size: 14px; display: none;"></span>
+                                </div>
+                                <div class="cen">
+                                    <label for="NgayRa">Ngày ra:</label><br>
+                                    <input type="text" id="NgayRa" name="NgayRa">
+                                    <span class="error-message" id="error-NgayRa" style="color: red; font-size: 14px; display: none;"></span>
+                                    <br />
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-success btn-cm" id="btnCapNhat">Cập nhật</button>
+                                <button type="button" class="btn btn-primary btn-cm" id="btnThem" style="display: none;">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-content">
+                    <div class="QLX-panel" style="margin-bottom: 0; width: 80%;">
+                        <div class="QLX-panel-content">
+                            <h1>TÌM KIẾM</h1>
+                            <div style="display: flex; align-items: center; gap: 10px; width: 70%;">
+                                <input type="text" id="search" name="search" placeholder="Nhập thông tin bạn muốn tìm kiếm..." style="width: 60%; height: 40px; font-size: 20px;">
+                                <select id="searchBy" name="searchBy" style="width: 20%; height: 40px; font-size: 20px;">
+                                    <option value="id">ID</option>
+                                    <option value="bienSo">Biển số xe</option>
+                                    <option value="ten">Tên</option>
+                                    <option value="ngayHetHan">Ngày hết hạn</option>
+                                    <option value="ngayRa">Ngày ra</option>
+                                </select>
+                                <button class="btn btn-primary" style="width: 150px;" id="mainSearchBtn">Tìm kiếm</button>
+                                <button class="btn btn-primary" style="width: 150px;" onclick="showAddVehiclePanel()">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="iframe-container" style="height: 90vh; width: 80%; overflow: auto;">
+                        <iframe style="width: 100%; height: 100%; border: none; display: block; border-radius: 10px; overflow: hidden;"
+                            src="/vehicleTable.html" title="Table" class="custom-frame"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/js/site.js"></script>
+    <script>
+        function showVehicleInfoPanel() {
+            document.getElementById('flexAppContainer').classList.add('show-vehicle-info');
+        }
+
+        function showAddVehiclePanel() {
+            document.getElementById('flexAppContainer').classList.add('show-vehicle-info');
+            // Clear all input fields
+            document.getElementById('OGX').value = '';
+            document.getElementById('BXX').value = '';
+            document.getElementById('IDCX').value = '';
+            document.getElementById('NameCX').value = '';
+            document.getElementById('NgayHH').value = '';
+            document.getElementById('NgayRa').value = '';
+            document.getElementById('OGX').removeAttribute('readonly');  // Make OGX editable for new records
+            document.getElementById('OGX').style.backgroundColor = '';  // Reset background color
+            // Show Thêm button, hide Cập nhật button
+            document.getElementById('btnThem').style.display = 'inline-block';
+            document.getElementById('btnCapNhat').style.display = 'none';
+        }
+
+        function hideVehicleInfoPanel() {
+            document.getElementById('flexAppContainer').classList.remove('show-vehicle-info');
+        }
+
+        let currentVehicleId = null;
+
+        window.editVehicleFromIframe = function(row, cellIdx, vehicleId) {
+            currentVehicleId = vehicleId;
+            document.getElementById('BXX').value = row.bienSo || '';
+            document.getElementById('IDCX').value = row.idChu || '';
+            document.getElementById('NameCX').value = row.tenChu || '';
+            document.getElementById('NgayHH').value = row.hetHan || '';
+            document.getElementById('NgayRa').value = row.ngayRa || '';
+            document.getElementById('OGX').value = (cellIdx + 1).toString();
+            document.getElementById('OGX').setAttribute('readonly', true);  // Make OGX read-only
+            document.getElementById('OGX').style.backgroundColor = '#e9ecef';  // Add darker background
+            // Show Cập nhật button, hide Thêm button
+            document.getElementById('btnCapNhat').style.display = 'inline-block';
+            document.getElementById('btnThem').style.display = 'none';
+            showVehicleInfoPanel();
+        }
+
+        // Add click handler for Cập nhật button
+        document.getElementById('btnCapNhat').onclick = function() {
+            validateAndSubmit('update');
+        };
+
+        // Add validation for 'Thêm' button
+        document.getElementById('btnThem').onclick = function() {
+            validateAndSubmit('add');
+        };
+
+        function validateAndSubmit(action) {
+            // Clear all previous error messages
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.textContent = '';
+                el.style.display = 'none';
+            });
+
+            let hasError = false;
+            const ogx = document.getElementById('OGX').value.trim();
+            const bxx = document.getElementById('BXX').value.trim();
+            const idcx = document.getElementById('IDCX').value.trim();
+            const namecx = document.getElementById('NameCX').value.trim();
+            const ngayhh = document.getElementById('NgayHH').value.trim();
+            const ngayra = document.getElementById('NgayRa').value.trim();
+
+            // Validate empty fields
+            if (!ogx) {
+                showError('OGX', 'Giá trị không được để trống!');
+                hasError = true;
+            }
+            if (!bxx) {
+                showError('BXX', 'Giá trị không được để trống!');
+                hasError = true;
+            }
+            if (!idcx) {
+                showError('IDCX', 'Giá trị không được để trống!');
+                hasError = true;
+            }
+            if (!namecx) {
+                showError('NameCX', 'Giá trị không được để trống!');
+                hasError = true;
+            }
+            if (!ngayhh) {
+                showError('NgayHH', 'Giá trị không được để trống!');
+                hasError = true;
+            }
+            if (!ngayra) {
+                showError('NgayRa', 'Giá trị không được để trống!');
+                hasError = true;
+            }
+
+            // Validate Ô giữ xe (1-10)
+            if (ogx && (!/^\d+$/.test(ogx) || Number(ogx) < 1 || Number(ogx) > 10)) {
+                showError('OGX', 'Giá trị không hợp lệ!');
+                hasError = true;
+            }
+
+            // Validate ID chủ xe (numbers only)
+            if (idcx && !/^\d+$/.test(idcx)) {
+                showError('IDCX', 'Giá trị không hợp lệ!');
+                hasError = true;
+            }
+
+            // Validate Họ và tên chủ xe (letters only)
+            if (namecx && !/^[a-zA-ZÀ-ỹ\s]+$/.test(namecx)) {
+                showError('NameCX', 'Giá trị không hợp lệ!');
+                hasError = true;
+            }
+
+            // Validate dates
+            if (ngayra && ngayhh) {
+                const dateRa = new Date(ngayra.split('/').reverse().join('-'));
+                const dateHetHan = new Date(ngayhh.split('/').reverse().join('-'));
+                if (dateRa >= dateHetHan) {
+                    showError('NgayRa', 'Ngày ra không hợp lệ');
+                    hasError = true;
+                }
+            }
+
+            if (hasError) return;
+
+            // Only include id for update
+            const vehicle = {
+                ogiuXe: Number(ogx),
+                bienSo: bxx,
+                idChu: idcx,
+                tenChu: namecx,
+                hetHan: ngayhh,
+                ngayRa: ngayra
+            };
+            if (action === 'update') {
+                vehicle.id = currentVehicleId;
+            }
+
+            const url = action === 'update' 
+                ? `/api/vehicleinfo/update/${currentVehicleId}`
+                : '/api/vehicleinfo/add';
+            const method = action === 'update' ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(vehicle)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`Lỗi khi ${action === 'update' ? 'cập nhật' : 'thêm'} dữ liệu!`);
+                return response.json();
+            })
+            .then(data => {
+                // Update the table in the iframe
+                const iframe = document.querySelector('.custom-frame');
+                if (iframe) {
+                    if (action === 'add' && iframe.contentWindow.loadVehicleData) {
+                        iframe.contentWindow.loadVehicleData();
+                    } else if (action === 'update' && iframe.contentWindow.updateVehicleData) {
+                        iframe.contentWindow.updateVehicleData(data);
+                    }
+                }
+                hideVehicleInfoPanel();
+                currentVehicleId = null;
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+        }
+
+        function showError(fieldId, message) {
+            const errorSpan = document.getElementById(`error-${fieldId}`);
+            if (errorSpan) {
+                errorSpan.textContent = message;
+                errorSpan.style.display = 'block';
+            }
+        }
+    </script>
+    <script>
+    // Add postMessage to iframe for search
+    document.getElementById('mainSearchBtn').onclick = function() {
+        const searchValue = document.getElementById('search').value;
+        const iframe = document.querySelector('.custom-frame');
+        if (iframe) {
+            iframe.contentWindow.postMessage({
+                type: 'SEARCH',
+                query: searchValue
+            }, '*');
+        }
+    };
+    </script>
+</body>
+</html>
+
