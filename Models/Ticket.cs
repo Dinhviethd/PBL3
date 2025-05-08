@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PBL3.Models
 {
@@ -20,6 +21,17 @@ namespace PBL3.Models
 
         [Required(ErrorMessage = "Ngày hết hạn là bắt buộc")]
         public DateTime NgayHetHan { get; set; }
-        public Student Student { get; set; }  
+
+        [Display(Name = "Giá vé")]
+        public decimal Price { get; set; }
+
+
+        [ForeignKey("Student")]
+        public string StudentId { get; set; }
+        public virtual Student Student { get; set; }
+
+        [ForeignKey("ParkingSlot")]
+        public int? ParkingSlotId { get; set; }
+        public virtual ParkingSlot ParkingSlot { get; set; }
     }
 }

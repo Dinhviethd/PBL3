@@ -9,7 +9,5 @@ namespace PBL3.Models
 
         [Required(ErrorMessage = "Lớp là bắt buộc")]
         public string Lop { get; set; }  
-
-        public bool DKyVe { get; set; } = false;  // đăng ký vé (mặc định false)
     }
 }
