@@ -1,7 +1,6 @@
 ﻿@model PBL3.Models.ViewModel.RegisterViewModel
-
 @{
-    ViewData["Title"] = "Đăng Ký Tài Khoản";
+    ViewData["Title"] = "Create Account";
 }
 
 <!DOCTYPE html>
@@ -9,121 +8,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng Ký Tài Khoản</title>
+    <title>Create Account</title>
     <link rel="stylesheet" href="~/css/admin/register.css" asp-append-version="true" />
 </head>
 <body>
     <div class="container">
         <form asp-action="Register" method="post" class="create-account-form">
-            <h1 class="form-title">Đăng Ký Tài Khoản</h1>
+            <h1 class="form-title">Create Account</h1>
 
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Role selection -->
             <div class="user-type-toggle">
-                <input type="radio" name="Role" id="student" value="Student" checked>
-                <label for="student" class="toggle-button">Sinh viên</label>
+                <input type="radio" asp-for="Role" id="student" value="Student" checked>
+                <label for="student" class="toggle-button">Student</label>
 
-                <input type="radio" name="Role" id="staff" value="Staff">
-                <label for="staff" class="toggle-button">Nhân viên</label>
+                <input type="radio" asp-for="Role" id="staff" value="Staff">
+                <label for="staff" class="toggle-button">Staff</label>
             </div>
 
+            <!-- Common fields -->
             <div class="form-group">
-                <label for="HoTen">Họ và tên</label>
-                <input type="text" 
-                       id="HoTen" 
-                       name="HoTen" 
-                       asp-for="HoTen"
-                       placeholder="Nhập họ và tên" 
-                       required>
+                <label asp-for="HoTen"></label>
+                <input asp-for="HoTen" class="form-control" placeholder="Full name" />
                 <span asp-validation-for="HoTen" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Email">Email</label>
-                <input type="email"
-                       id="Email"
-                       name="Email"
-                       asp-for="Email"
-                       placeholder="Nhập email"
-                       title="Vui lòng nhập địa chỉ email hợp lệ">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" placeholder="Email" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="SDT">Số điện thoại</label>
-                <input type="tel"
-                       id="SDT"
-                       name="SDT"
-                       asp-for="SDT"
-                       placeholder="Nhập số điện thoại"
-                       required
-                       pattern="[0-9]{10}"
-                       title="Vui lòng nhập số điện thoại 10 chữ số">
+                <label asp-for="SDT"></label>
+                <input asp-for="SDT" class="form-control" placeholder="Phone number" />
                 <span asp-validation-for="SDT" class="text-danger"></span>
             </div>
 
-            <!-- Student specific fields -->
-            <div id="student-fields">
+            <!-- Student-specific fields -->
+            <div class="form-group" id="student-fields">
                 <div class="form-group">
-                    <label for="MSSV">Mã số sinh viên</label>
-                    <input type="text"
-                           id="MSSV"
-                           name="MSSV"
-                           placeholder="Nhập mã số sinh viên"
-                           required>
+                    <label for="MSSV">Student ID</label>
+                    <input type="text" id="MSSV" name="MSSV" class="form-control"
+                           placeholder="MSSV" required="@(Model?.Role == "Student")" />
+                    <span class="text-danger" data-valmsg-for="MSSV" data-valmsg-replace="true"></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="Lop">Lớp</label>
-                    <input type="text"
-                           id="Lop"
-                           name="Lop"
-                           placeholder="Nhập lớp"
-                           required>
+                    <label for="Lop">Class</label>
+                    <input type="text" id="Lop" name="Lop" class="form-control"
+                           placeholder="Class" required="@(Model?.Role == "Student")" />
+                    <span class="text-danger" data-valmsg-for="Lop" data-valmsg-replace="true"></span>
                 </div>
             </div>
 
-            <!-- Staff specific fields -->
-            <div id="staff-fields" style="display: none;">
+            <!-- Staff-specific fields -->
+            <div class="form-group" id="staff-fields" style="display: none;">
                 <div class="form-group">
-                    <label for="DiaChi">Địa chỉ</label>
-                    <input type="text"
-                           id="DiaChi"
-                           name="DiaChi"
-                           placeholder="Nhập địa chỉ"
-                           required>
+                    <label for="DiaChi">Address</label>
+                    <input type="text" id="DiaChi" name="DiaChi" class="form-control"
+                           placeholder="Address" required="@(Model?.Role == "Staff")" />
+                    <span class="text-danger" data-valmsg-for="DiaChi" data-valmsg-replace="true"></span>
                 </div>
             </div>
-            
+
+            <!-- Password fields -->
             <div class="form-group">
-                <label for="Password">Mật khẩu</label>
-                <input type="password"
-                       id="Password"
-                       name="Password"
-                       asp-for="Password"
-                       placeholder="Nhập mật khẩu"
-                       required
-                       minlength="8"
-                       title="Mật khẩu phải có ít nhất 8 ký tự">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" placeholder="Password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="ConfirmPassword">Xác nhận mật khẩu</label>
-                <input type="password"
-                       id="ConfirmPassword"
-                       name="ConfirmPassword"
-                       asp-for="ConfirmPassword"
-                       placeholder="Xác nhận mật khẩu"
-                       required>
+                <label asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm password" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
 
-            <button type="submit" class="submit-button">Đăng ký</button>
+            <button type="submit" class="submit-button">Create Account</button>
         </form>
     </div>
 
-    <script src="~/js/admin/register.js" asp-append-version="true"></script>
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const studentRadio = document.getElementById('student');
+            const staffRadio = document.getElementById('staff');
+            const studentFields = document.getElementById('student-fields');
+            const staffFields = document.getElementById('staff-fields');
+
+            function toggleFields() {
+                if (staffRadio.checked) {
+                    studentFields.style.display = 'none';
+                    staffFields.style.display = 'block';
+
+                    // Clear student fields when switching to staff
+                    document.getElementById('MSSV').required = false;
+                    document.getElementById('Lop').required = false;
+                    document.getElementById('DiaChi').required = true;
+                } else {
+                    studentFields.style.display = 'block';
+                    staffFields.style.display = 'none';
+
+                    // Clear staff fields when switching to student
+                    document.getElementById('DiaChi').required = false;
+                    document.getElementById('MSSV').required = true;
+                    document.getElementById('Lop').required = true;
+                }
+            }
+
+            studentRadio.addEventListener('change', toggleFields);
+            staffRadio.addEventListener('change', toggleFields);
+
+            // Initial check
+            toggleFields();
+        });
+    </script>
 </body>
 </html>

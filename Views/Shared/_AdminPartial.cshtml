@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity;
+﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
@@ -7,21 +7,24 @@
     var user = await UserManager.GetUserAsync(User);
     if (user != null && await UserManager.IsInRoleAsync(user, "Admin"))
     {
-        <div id="_header"></div>
-        <div class="icon_container">
-            <div class="icon">
-                <div class="icon_left">
-                    <a asp-controller="Home" asp-action="Index"><img src="https://upload.wikimedia.org/wikipedia/vi/thumb/7/72/Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_B%C3%A1ch_khoa%2C_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_%C4%90%C3%A0_N%E1%BA%B5ng.svg/2048px-Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_B%C3%A1ch_khoa%2C_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_%C4%90%C3%A0_N%E1%BA%B5ng.svg.png" alt="DUT's Logo" /></a>
-                    <span>SmartParking</span>
+        <div class="admin-header">
+            <div class="icon_container">
+                <div class="icon">
+                    <div class="icon_left">
+                        <a asp-controller="Home" asp-action="Index">
+                            <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/7/72/Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_B%C3%A1ch_khoa%2C_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_%C4%90%C3%A0_N%E1%BA%B5ng.svg/2048px-Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_B%C3%A1ch_khoa%2C_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_%C4%90%C3%A0_N%E1%BA%B5ng.svg.png" alt="DUT's Logo" />
+                        </a>
+                        <span>SmartParking</span>
+                    </div>
+                    <ul class="admin-nav">
+                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a asp-controller="Admin" asp-action="QLNV">Quản lý NV</a></li>
+                        <li><a asp-controller="Admin" asp-action="QLSV">Quản lý SV</a></li>
+                        <li><a asp-controller="Admin" asp-action="Register">Tạo người dùng</a></li>
+                        <partial name="_LoginPartial" />
+                    </ul>
+                    <i class="fa-solid fa-bars" id="menu_button"></i>
                 </div>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a asp-controller="Admin" asp-action="QLNV">QLNV</a></li>
-                    <li><a asp-controller="Admin" asp-action="QLSV">QLSV</a></li>
-                    <li><a asp-controller="Admin" asp-action="Register">Tạo Người Dùng</a></li>
-                    <partial name="_LoginPartial" />
-                </ul>
-                <i class="fa-solid fa-bars" id="menu_button"></i>
             </div>
         </div>
     }
