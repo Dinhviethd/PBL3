@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace PBL3.Controllers.Autho
+namespace PBL3.Controllers
 {
-    public class StaffController : Controller
+    public class TicketController : Controller
     {
         public IActionResult Index()
         {

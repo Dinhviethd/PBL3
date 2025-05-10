@@ -13,6 +13,6 @@ namespace PBL3.Models
         public int CurrentCount { get; set; } = 0;
         [Display(Name = "Sức chứa tối đa")]
         public int MaxCapacity { get; set; } = 10;
-        public virtual ICollection<Ticket> ParkedVehicles { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

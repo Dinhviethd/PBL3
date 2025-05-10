@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pYcAxePSE0/c2mNYT+BfAHlLXapqqxlG+13PVx31c9A=",
+  "Hash": "9LVr0wer4/vhfnpX7mqgIpYUkc+wO52CC+fqtsvIht8=",
   "Source": "PBL3",
   "BasePath": "_content/PBL3",
   "Mode": "Default",
@@ -101,27 +101,6 @@
       "OriginalItemSpec": "wwwroot\\css\\Admin\\Index.css"
     },
     {
-      "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\QLNV.css",
-      "SourceId": "PBL3",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\",
-      "BasePath": "_content/PBL3",
-      "RelativePath": "css/Admin/QLNV#[.{fingerprint}]?.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "dyjx89twm7",
-      "Integrity": "u4DszuiY1WLPnENub5+KbAlwyJCcCHdKlyaXaKLaRqk=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\Admin\\QLNV.css"
-    },
-    {
       "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\QLSV.css",
       "SourceId": "PBL3",
       "SourceType": "Discovered",
@@ -141,6 +120,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\Admin\\QLSV.css"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\register.css",
+      "SourceId": "PBL3",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\",
+      "BasePath": "_content/PBL3",
+      "RelativePath": "css/Admin/register#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "lczdeidmmg",
+      "Integrity": "NZoTvT4OGLY1IBvPKU1JZy0mNLFrjqEIk32k6VfDwXw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\Admin\\register.css"
     },
     {
       "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\site.css",
@@ -204,6 +204,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\Admin\\QLSV.js"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\js\\Admin\\register.js",
+      "SourceId": "PBL3",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\",
+      "BasePath": "_content/PBL3",
+      "RelativePath": "js/Admin/register#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "a97flmej8a",
+      "Integrity": "fr/QAjztAY4b84lNTtoXDpXSt0SivUXSYsfot8WLlAA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\Admin\\register.js"
     },
     {
       "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\js\\site.js",
@@ -1611,88 +1632,6 @@
       ]
     },
     {
-      "Route": "css/Admin/QLNV.css",
-      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\QLNV.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "14"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"u4DszuiY1WLPnENub5+KbAlwyJCcCHdKlyaXaKLaRqk=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 01 May 2025 03:17:10 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-u4DszuiY1WLPnENub5+KbAlwyJCcCHdKlyaXaKLaRqk="
-        }
-      ]
-    },
-    {
-      "Route": "css/Admin/QLNV.dyjx89twm7.css",
-      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\QLNV.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "14"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"u4DszuiY1WLPnENub5+KbAlwyJCcCHdKlyaXaKLaRqk=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 01 May 2025 03:17:10 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "dyjx89twm7"
-        },
-        {
-          "Name": "label",
-          "Value": "css/Admin/QLNV.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-u4DszuiY1WLPnENub5+KbAlwyJCcCHdKlyaXaKLaRqk="
-        }
-      ]
-    },
-    {
       "Route": "css/Admin/QLSV.css",
       "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\QLSV.css",
       "Selectors": [],
@@ -1771,6 +1710,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-zpFWYUj/Hxo8Nc9BZY4fAjpuVCii1Qn2fK1hDd4c5o8="
+        }
+      ]
+    },
+    {
+      "Route": "css/Admin/register.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\register.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2693"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"NZoTvT4OGLY1IBvPKU1JZy0mNLFrjqEIk32k6VfDwXw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 10 May 2025 02:17:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-NZoTvT4OGLY1IBvPKU1JZy0mNLFrjqEIk32k6VfDwXw="
+        }
+      ]
+    },
+    {
+      "Route": "css/Admin/register.lczdeidmmg.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\register.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2693"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"NZoTvT4OGLY1IBvPKU1JZy0mNLFrjqEIk32k6VfDwXw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 10 May 2025 02:17:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "lczdeidmmg"
+        },
+        {
+          "Name": "label",
+          "Value": "css/Admin/register.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-NZoTvT4OGLY1IBvPKU1JZy0mNLFrjqEIk32k6VfDwXw="
         }
       ]
     },
@@ -2017,6 +2038,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-J1hshAAxxJgW/C0FceETw0nY/7SvvSi4qnFx8WojpMw="
+        }
+      ]
+    },
+    {
+      "Route": "js/Admin/register.a97flmej8a.js",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\js\\Admin\\register.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1248"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fr/QAjztAY4b84lNTtoXDpXSt0SivUXSYsfot8WLlAA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 10 May 2025 03:27:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "a97flmej8a"
+        },
+        {
+          "Name": "label",
+          "Value": "js/Admin/register.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fr/QAjztAY4b84lNTtoXDpXSt0SivUXSYsfot8WLlAA="
+        }
+      ]
+    },
+    {
+      "Route": "js/Admin/register.js",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\js\\Admin\\register.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1248"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fr/QAjztAY4b84lNTtoXDpXSt0SivUXSYsfot8WLlAA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 10 May 2025 03:27:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-fr/QAjztAY4b84lNTtoXDpXSt0SivUXSYsfot8WLlAA="
         }
       ]
     },
@@ -6881,7 +6984,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 03 May 2025 01:54:05 GMT"
+          "Value": "Sat, 10 May 2025 15:50:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6918,7 +7021,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 03 May 2025 01:54:05 GMT"
+          "Value": "Sat, 10 May 2025 15:50:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6963,7 +7066,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 03 May 2025 01:54:05 GMT"
+          "Value": "Sat, 10 May 2025 15:50:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -7008,7 +7111,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 03 May 2025 01:54:05 GMT"
+          "Value": "Sat, 10 May 2025 15:50:08 GMT"
         },
         {
           "Name": "Cache-Control",

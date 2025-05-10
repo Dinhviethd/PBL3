@@ -9,12 +9,12 @@
       "PackagePath": "staticwebassets\\css\\Admin\\Index.css"
     },
     {
-      "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\QLNV.css",
-      "PackagePath": "staticwebassets\\css\\Admin\\QLNV.css"
-    },
-    {
       "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\QLSV.css",
       "PackagePath": "staticwebassets\\css\\Admin\\QLSV.css"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Admin\\register.css",
+      "PackagePath": "staticwebassets\\css\\Admin\\register.css"
     },
     {
       "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\account.css",
@@ -31,6 +31,10 @@
     {
       "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\js\\Admin\\QLSV.js",
       "PackagePath": "staticwebassets\\js\\Admin\\QLSV.js"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\js\\Admin\\register.js",
+      "PackagePath": "staticwebassets\\js\\Admin\\register.js"
     },
     {
       "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\js\\site.js",

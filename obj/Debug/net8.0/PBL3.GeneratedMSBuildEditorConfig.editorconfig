@@ -36,12 +36,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/source/repos/PBL3/PBL3/Views/Account/QLSV.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxRTFNWLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/Admin/source/repos/PBL3/PBL3/Views/Account/VerifyEmail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxWZXJpZnlFbWFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/repos/PBL3/PBL3/Views/Admin/ConfirmDeleteStudent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ29uZmlybURlbGV0ZVN0dWRlbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Admin/source/repos/PBL3/PBL3/Views/Admin/Index.cshtml]
@@ -50,6 +50,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Admin/source/repos/PBL3/PBL3/Views/Admin/QLNV.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUUxOVi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/repos/PBL3/PBL3/Views/Admin/QLSV.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUUxTVi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/repos/PBL3/PBL3/Views/Admin/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Admin/source/repos/PBL3/PBL3/Views/Home/Index.cshtml]
@@ -62,6 +70,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Admin/source/repos/PBL3/PBL3/Views/Shared/_AccountLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BY2NvdW50TGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/repos/PBL3/PBL3/Views/Shared/_AdminPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Admin/source/repos/PBL3/PBL3/Views/Shared/_LoginPartial.cshtml]

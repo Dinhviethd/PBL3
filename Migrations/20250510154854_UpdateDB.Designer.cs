@@ -12,7 +12,7 @@ using PBL3.Data;
 namespace PBL3.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250503015407_UpdateDB")]
+    [Migration("20250510154854_UpdateDB")]
     partial class UpdateDB
     {
         /// <inheritdoc />
@@ -170,6 +170,11 @@ namespace PBL3.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -204,10 +209,6 @@ namespace PBL3.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -230,7 +231,33 @@ namespace PBL3.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator().HasValue("AppUser");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("PBL3.Models.ParkingSlot", b =>
+                {
+                    b.Property<int>("ParkingSlotId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ParkingSlotId"));
+
+                    b.Property<int>("CurrentCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxCapacity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SlotName")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("ParkingSlotId");
+
+                    b.ToTable("ParkingSlots");
                 });
 
             modelBuilder.Entity("PBL3.Models.Ticket", b =>
@@ -252,7 +279,15 @@ namespace PBL3.Migrations
                     b.Property<DateTime>("NgayHetHan")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ParkingSlotId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("StudentId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ViTriGui")
@@ -260,29 +295,16 @@ namespace PBL3.Migrations
 
                     b.HasKey("ID_Ticket");
 
+                    b.HasIndex("ParkingSlotId");
+
                     b.HasIndex("StudentId");
 
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("PBL3.Models.Staff", b =>
-                {
-                    b.HasBaseType("PBL3.Models.AppUser");
-
-                    b.Property<string>("DiaChi")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.ToTable("Staffs", (string)null);
-                });
-
             modelBuilder.Entity("PBL3.Models.Student", b =>
                 {
                     b.HasBaseType("PBL3.Models.AppUser");
-
-                    b.Property<bool>("DKyVe")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Lop")
                         .IsRequired()
@@ -292,7 +314,7 @@ namespace PBL3.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Students", (string)null);
+                    b.HasDiscriminator().HasValue("Student");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -348,29 +370,25 @@ namespace PBL3.Migrations
 
             modelBuilder.Entity("PBL3.Models.Ticket", b =>
                 {
+                    b.HasOne("PBL3.Models.ParkingSlot", "ParkingSlot")
+                        .WithMany("Tickets")
+                        .HasForeignKey("ParkingSlotId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PBL3.Models.Student", "Student")
                         .WithMany()
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ParkingSlot");
 
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("PBL3.Models.Staff", b =>
+            modelBuilder.Entity("PBL3.Models.ParkingSlot", b =>
                 {
-                    b.HasOne("PBL3.Models.AppUser", null)
-                        .WithOne()
-                        .HasForeignKey("PBL3.Models.Staff", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("PBL3.Models.Student", b =>
-                {
-                    b.HasOne("PBL3.Models.AppUser", null)
-                        .WithOne()
-                        .HasForeignKey("PBL3.Models.Student", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }

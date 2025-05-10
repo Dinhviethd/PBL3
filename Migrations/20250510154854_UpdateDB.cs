@@ -31,7 +31,9 @@ namespace PBL3.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HoTen = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    MSSV = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Lop = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -50,6 +52,21 @@ namespace PBL3.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ParkingSlots",
+                columns: table => new
+                {
+                    ParkingSlotId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SlotName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    CurrentCount = table.Column<int>(type: "int", nullable: false),
+                    MaxCapacity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ParkingSlots", x => x.ParkingSlotId);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,44 +176,6 @@ namespace PBL3.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Staffs",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DiaChi = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Staffs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Staffs_AspNetUsers_Id",
-                        column: x => x.Id,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Students",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MSSV = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Lop = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DKyVe = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Students", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Students_AspNetUsers_Id",
-                        column: x => x.Id,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Tickets",
                 columns: table => new
                 {
@@ -206,16 +185,25 @@ namespace PBL3.Migrations
                     ViTriGui = table.Column<int>(type: "int", nullable: false),
                     NgayDangKy = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NgayHetHan = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StudentId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    StudentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ParkingSlotId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.ID_Ticket);
                     table.ForeignKey(
-                        name: "FK_Tickets_Students_StudentId",
+                        name: "FK_Tickets_AspNetUsers_StudentId",
                         column: x => x.StudentId,
-                        principalTable: "Students",
-                        principalColumn: "Id");
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Tickets_ParkingSlots_ParkingSlotId",
+                        column: x => x.ParkingSlotId,
+                        principalTable: "ParkingSlots",
+                        principalColumn: "ParkingSlotId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -258,6 +246,11 @@ namespace PBL3.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tickets_ParkingSlotId",
+                table: "Tickets",
+                column: "ParkingSlotId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_StudentId",
                 table: "Tickets",
                 column: "StudentId");
@@ -282,19 +275,16 @@ namespace PBL3.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Staffs");
-
-            migrationBuilder.DropTable(
                 name: "Tickets");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "ParkingSlots");
         }
     }
 }
