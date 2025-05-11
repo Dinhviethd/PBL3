@@ -12,8 +12,8 @@ using PBL3.Data;
 namespace PBL3.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250511093558_UpdateDataBase")]
-    partial class UpdateDataBase
+    [Migration("20250511122830_Update2")]
+    partial class Update2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
