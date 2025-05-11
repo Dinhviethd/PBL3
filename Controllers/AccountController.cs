@@ -199,12 +199,8 @@ namespace PBL3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Profile(ProfileViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return NotFound();
@@ -212,6 +208,14 @@ namespace PBL3.Controllers
 
             var roles = await _userManager.GetRolesAsync(user);
             var role = roles.FirstOrDefault();
+            model.Role = role;
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+
 
             if (role == "Student")
             {
@@ -242,7 +246,7 @@ namespace PBL3.Controllers
                         HoTen = student.HoTen,
                         Email = student.Email,
                         SDT = student.PhoneNumber,
-                        Role = "Student", // Đảm bảo role luôn là Student
+                        Role = role, // Đảm bảo role luôn là Student
                         MSSV = student.MSSV,
                         Lop = student.Lop,
                         // Thông tin Ticket (nếu có)
@@ -283,7 +287,7 @@ namespace PBL3.Controllers
                         HoTen = staff.HoTen,
                         Email = staff.Email,
                         SDT = staff.PhoneNumber,
-                        Role = "Staff", // Đảm bảo role luôn là Staff
+                        Role = role, // Đảm bảo role luôn là Staff
                         DiaChi = staff.DiaChi
                     };
 
