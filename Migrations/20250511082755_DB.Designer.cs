@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PBL3.Data;
 
@@ -11,9 +12,11 @@ using PBL3.Data;
 namespace PBL3.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250511082755_DB")]
+    partial class DB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,6 +170,11 @@ namespace PBL3.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -211,11 +219,6 @@ namespace PBL3.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("UserType")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -228,7 +231,7 @@ namespace PBL3.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.HasDiscriminator<string>("UserType").HasValue("AppUser");
+                    b.HasDiscriminator().HasValue("AppUser");
 
                     b.UseTphMappingStrategy();
                 });
@@ -294,18 +297,6 @@ namespace PBL3.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("Tickets");
-                });
-
-            modelBuilder.Entity("PBL3.Models.Staff", b =>
-                {
-                    b.HasBaseType("PBL3.Models.AppUser");
-
-                    b.Property<string>("DiaChi")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasDiscriminator().HasValue("Staff");
                 });
 
             modelBuilder.Entity("PBL3.Models.Student", b =>
@@ -382,7 +373,7 @@ namespace PBL3.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("PBL3.Models.Student", "Student")
-                        .WithMany("Tickets")
+                        .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -393,11 +384,6 @@ namespace PBL3.Migrations
                 });
 
             modelBuilder.Entity("PBL3.Models.ParkingSlot", b =>
-                {
-                    b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("PBL3.Models.Student", b =>
                 {
                     b.Navigation("Tickets");
                 });

@@ -1,6 +1,10 @@
 {
   "Version": 1,
+<<<<<<< HEAD
   "Hash": "QGcyp3DX+F27RnyDPnVK2qY3IBZXTorwjfyOgrxcrDY=",
+=======
+  "Hash": "dt2R1HXS8HMvrx4leWSqm6xMmJ6TEvINH+gwIGmPbjY=",
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
   "Source": "PBL3",
   "BasePath": "_content/PBL3",
   "Mode": "Default",
@@ -178,14 +182,44 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
+<<<<<<< HEAD
       "Fingerprint": "0p66ej19c5",
       "Integrity": "nE77D1nF/BT+evfJt231qJL8P3kcxuU4TJ0ySAnjS8Q=",
+=======
+      "Fingerprint": "hjjtx0g254",
+      "Integrity": "LUlVda9NXDUOctTnWlSXuYYJGXVfyxS1bMZ1r6kw9aQ=",
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\Profile.css"
     },
     {
+<<<<<<< HEAD
       "Identity": "D:\\PBL3\\wwwroot\\css\\site.css",
+=======
+      "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\QLNX.css",
+      "SourceId": "PBL3",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\",
+      "BasePath": "_content/PBL3",
+      "RelativePath": "css/QLNX#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "sl5fch7aez",
+      "Integrity": "4NVqsFbcRraykfjbIZheLsaAOyEtgDSVhWK1jwpFo7U=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\QLNX.css"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\site.css",
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
       "SourceId": "PBL3",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\PBL3\\wwwroot\\",
@@ -1859,8 +1893,13 @@
       ]
     },
     {
+<<<<<<< HEAD
       "Route": "css/PackPrice.css",
       "AssetFile": "D:\\PBL3\\wwwroot\\css\\PackPrice.css",
+=======
+      "Route": "css/Profile.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Profile.css",
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1869,7 +1908,11 @@
         },
         {
           "Name": "Content-Length",
+<<<<<<< HEAD
           "Value": "2759"
+=======
+          "Value": "2364"
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
         },
         {
           "Name": "Content-Type",
@@ -1877,11 +1920,19 @@
         },
         {
           "Name": "ETag",
+<<<<<<< HEAD
           "Value": "\"ALsyMzmiqusRcheVP1cYHsnH88Tpc/zgIKJwnfQdf3w=\""
         },
         {
           "Name": "Last-Modified",
           "Value": "Sun, 11 May 2025 08:16:51 GMT"
+=======
+          "Value": "\"LUlVda9NXDUOctTnWlSXuYYJGXVfyxS1bMZ1r6kw9aQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 11 May 2025 07:30:10 GMT"
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
         },
         {
           "Name": "Cache-Control",
@@ -1891,13 +1942,22 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
+<<<<<<< HEAD
           "Value": "sha256-ALsyMzmiqusRcheVP1cYHsnH88Tpc/zgIKJwnfQdf3w="
+=======
+          "Value": "sha256-LUlVda9NXDUOctTnWlSXuYYJGXVfyxS1bMZ1r6kw9aQ="
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
         }
       ]
     },
     {
+<<<<<<< HEAD
       "Route": "css/PackPrice.wgubkusfr9.css",
       "AssetFile": "D:\\PBL3\\wwwroot\\css\\PackPrice.css",
+=======
+      "Route": "css/Profile.hjjtx0g254.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Profile.css",
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1906,7 +1966,11 @@
         },
         {
           "Name": "Content-Length",
+<<<<<<< HEAD
           "Value": "2759"
+=======
+          "Value": "2364"
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
         },
         {
           "Name": "Content-Type",
@@ -1914,11 +1978,19 @@
         },
         {
           "Name": "ETag",
+<<<<<<< HEAD
           "Value": "\"ALsyMzmiqusRcheVP1cYHsnH88Tpc/zgIKJwnfQdf3w=\""
         },
         {
           "Name": "Last-Modified",
           "Value": "Sun, 11 May 2025 08:16:51 GMT"
+=======
+          "Value": "\"LUlVda9NXDUOctTnWlSXuYYJGXVfyxS1bMZ1r6kw9aQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 11 May 2025 07:30:10 GMT"
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
         },
         {
           "Name": "Cache-Control",
@@ -1928,6 +2000,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
+<<<<<<< HEAD
           "Value": "wgubkusfr9"
         },
         {
@@ -1974,6 +2047,9 @@
         {
           "Name": "fingerprint",
           "Value": "0p66ej19c5"
+=======
+          "Value": "hjjtx0g254"
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
         },
         {
           "Name": "label",
@@ -1981,13 +2057,22 @@
         },
         {
           "Name": "integrity",
+<<<<<<< HEAD
           "Value": "sha256-nE77D1nF/BT+evfJt231qJL8P3kcxuU4TJ0ySAnjS8Q="
+=======
+          "Value": "sha256-LUlVda9NXDUOctTnWlSXuYYJGXVfyxS1bMZ1r6kw9aQ="
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
         }
       ]
     },
     {
+<<<<<<< HEAD
       "Route": "css/Profile.css",
       "AssetFile": "D:\\PBL3\\wwwroot\\css\\Profile.css",
+=======
+      "Route": "css/QLNX.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\QLNX.css",
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1996,7 +2081,11 @@
         },
         {
           "Name": "Content-Length",
+<<<<<<< HEAD
           "Value": "2501"
+=======
+          "Value": "11709"
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
         },
         {
           "Name": "Content-Type",
@@ -2004,11 +2093,19 @@
         },
         {
           "Name": "ETag",
+<<<<<<< HEAD
           "Value": "\"nE77D1nF/BT+evfJt231qJL8P3kcxuU4TJ0ySAnjS8Q=\""
         },
         {
           "Name": "Last-Modified",
           "Value": "Sun, 11 May 2025 08:10:16 GMT"
+=======
+          "Value": "\"4NVqsFbcRraykfjbIZheLsaAOyEtgDSVhWK1jwpFo7U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 11 May 2025 05:59:59 GMT"
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
         },
         {
           "Name": "Cache-Control",
@@ -2018,7 +2115,56 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
+<<<<<<< HEAD
           "Value": "sha256-nE77D1nF/BT+evfJt231qJL8P3kcxuU4TJ0ySAnjS8Q="
+=======
+          "Value": "sha256-4NVqsFbcRraykfjbIZheLsaAOyEtgDSVhWK1jwpFo7U="
+        }
+      ]
+    },
+    {
+      "Route": "css/QLNX.sl5fch7aez.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\QLNX.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11709"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4NVqsFbcRraykfjbIZheLsaAOyEtgDSVhWK1jwpFo7U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 11 May 2025 05:59:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "sl5fch7aez"
+        },
+        {
+          "Name": "label",
+          "Value": "css/QLNX.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4NVqsFbcRraykfjbIZheLsaAOyEtgDSVhWK1jwpFo7U="
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
         }
       ]
     },

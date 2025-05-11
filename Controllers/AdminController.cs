@@ -134,7 +134,8 @@ namespace PBL3.Controllers
                         HoTen = studentModel.HoTen,
                         PhoneNumber = studentModel.SDT,
                         MSSV = studentModel.MSSV,
-                        Lop = studentModel.Lop
+                        Lop = studentModel.Lop,
+                        Tickets = new List<Ticket>()
                     };
                 }
                 else // Staff

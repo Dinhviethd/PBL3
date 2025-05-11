@@ -4,6 +4,7 @@ wwwroot\css\Admin\QLSV.css
 wwwroot\css\Admin\register.css
 wwwroot\css\PackPrice.css
 wwwroot\css\Profile.css
+wwwroot\css\QLNX.css
 wwwroot\css\site.css
 wwwroot\img\avt.jpg
 wwwroot\img\school.jpg

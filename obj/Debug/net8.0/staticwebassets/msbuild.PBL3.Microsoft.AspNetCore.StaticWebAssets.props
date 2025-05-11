@@ -102,11 +102,34 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
+<<<<<<< HEAD
       <Fingerprint>0p66ej19c5</Fingerprint>
       <Integrity>nE77D1nF/BT+evfJt231qJL8P3kcxuU4TJ0ySAnjS8Q=</Integrity>
+=======
+      <Fingerprint>hjjtx0g254</Fingerprint>
+      <Integrity>LUlVda9NXDUOctTnWlSXuYYJGXVfyxS1bMZ1r6kw9aQ=</Integrity>
+>>>>>>> fc129923851a42cad74e7d2673c6c4de2eb4d2c7
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Profile.css'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\QLNX.css'))">
+      <SourceType>Package</SourceType>
+      <SourceId>PBL3</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PBL3</BasePath>
+      <RelativePath>css/QLNX.css</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>sl5fch7aez</Fingerprint>
+      <Integrity>4NVqsFbcRraykfjbIZheLsaAOyEtgDSVhWK1jwpFo7U=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\QLNX.css'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))">
       <SourceType>Package</SourceType>

@@ -9,5 +9,8 @@ namespace PBL3.Models
 
         [Required(ErrorMessage = "Lớp là bắt buộc")]
         public string Lop { get; set; }  
+
+        // Navigation property cho quan hệ one-to-many với Ticket
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }
