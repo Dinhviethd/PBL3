@@ -1,0 +1,40 @@
+@model PBL3.Models.Staff
+
+@{
+    ViewData["Title"] = "Xác nhận xóa nhân viên";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+
+    <div class="alert alert-warning">
+        <h4>@ViewBag.Message</h4>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-4">Họ và tên:</dt>
+                <dd class="col-sm-8">@Model.HoTen</dd>
+
+                <dt class="col-sm-4">Email:</dt>
+                <dd class="col-sm-8">@Model.Email</dd>
+
+                <dt class="col-sm-4">Số điện thoại:</dt>
+                <dd class="col-sm-8">@Model.PhoneNumber</dd>
+
+                <dt class="col-sm-4">Địa chỉ:</dt>
+                <dd class="col-sm-8">@Model.DiaChi</dd>
+            </dl>
+
+            <form asp-action="DeleteStaff" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+                    <a asp-action="QLNV" class="btn btn-secondary">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
