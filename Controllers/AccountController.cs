@@ -137,23 +137,17 @@ namespace PBL3.Controllers
                 return NotFound();
             }
 
-            // Lấy role của user
+            // Get user's role
             var roles = await _userManager.GetRolesAsync(user);
             var role = roles.FirstOrDefault();
 
             if (role == "Student")
             {
-                // Lấy thông tin Student và Ticket liên quan
-                var student = await _context.Users.OfType<Student>()
-                    .Include(s => s.Tickets) // Include Tickets để lấy thông tin vé
-                    .FirstOrDefaultAsync(s => s.Id == user.Id);
+                var student = await _context.Users.OfType<Student>().FirstOrDefaultAsync(s => s.Id == user.Id);
                 if (student == null)
                 {
                     return NotFound();
                 }
-
-                // Lấy Ticket mới nhất của Student (nếu có)
-                var latestTicket = student.Tickets?.OrderByDescending(t => t.NgayDangKy).FirstOrDefault();
 
                 var model = new ProfileViewModel
                 {
@@ -162,13 +156,7 @@ namespace PBL3.Controllers
                     SDT = student.PhoneNumber,
                     Role = role,
                     MSSV = student.MSSV,
-                    Lop = student.Lop,
-                    // Thông tin Ticket (nếu có)
-                    BienSoXe = latestTicket?.BienSoXe ?? "Không hợp lệ",
-                    ViTriGui = latestTicket?.ParkingSlot?.SlotName ?? "Không hợp lệ",
-                    NgayDangKy = latestTicket?.NgayDangKy ?? DateTime.MinValue,
-                    NgayHetHan = latestTicket?.NgayHetHan ?? DateTime.MinValue,
-                    Price = latestTicket?.Price ?? 0
+                    Lop = student.Lop
                 };
                 return View(model);
             }
@@ -215,16 +203,12 @@ namespace PBL3.Controllers
 
             if (role == "Student")
             {
-                var student = await _context.Users.OfType<Student>()
-                    .Include(s => s.Tickets)
-                        .ThenInclude(t => t.ParkingSlot) // Include cả ParkingSlot để lấy thông tin vị trí
-                    .FirstOrDefaultAsync(s => s.Id == user.Id);
+                var student = await _context.Users.OfType<Student>().FirstOrDefaultAsync(s => s.Id == user.Id);
                 if (student == null)
                 {
                     return NotFound();
                 }
 
-                // Chỉ cập nhật các thông tin cơ bản, không cập nhật thông tin Ticket
                 student.HoTen = model.HoTen;
                 student.PhoneNumber = model.SDT;
                 student.MSSV = model.MSSV;
@@ -233,28 +217,8 @@ namespace PBL3.Controllers
                 var result = await _userManager.UpdateAsync(student);
                 if (result.Succeeded)
                 {
-                    // Lấy Ticket mới nhất của Student (nếu có)
-                    var latestTicket = student.Tickets?.OrderByDescending(t => t.NgayDangKy).FirstOrDefault();
-
-                    // Cập nhật lại toàn bộ model với thông tin mới
-                    var updatedModel = new ProfileViewModel
-                    {
-                        HoTen = student.HoTen,
-                        Email = student.Email,
-                        SDT = student.PhoneNumber,
-                        Role = "Student", // Đảm bảo role luôn là Student
-                        MSSV = student.MSSV,
-                        Lop = student.Lop,
-                        // Thông tin Ticket (nếu có)
-                        BienSoXe = latestTicket?.BienSoXe ?? "Không hợp lệ",
-                        ViTriGui = latestTicket?.ParkingSlot?.SlotName ?? "Không hợp lệ",
-                        NgayDangKy = latestTicket?.NgayDangKy ?? DateTime.MinValue,
-                        NgayHetHan = latestTicket?.NgayHetHan ?? DateTime.MinValue,
-                        Price = latestTicket?.Price ?? 0
-                    };
-
-                    TempData["Success"] = "Cập nhật thông tin thành công.";
-                    return View(updatedModel);
+                    TempData["Success"] = "Profile updated successfully.";
+                    return RedirectToAction(nameof(Profile));
                 }
 
                 foreach (var error in result.Errors)
@@ -277,18 +241,8 @@ namespace PBL3.Controllers
                 var result = await _userManager.UpdateAsync(staff);
                 if (result.Succeeded)
                 {
-                    // Cập nhật lại toàn bộ model với thông tin mới
-                    var updatedModel = new ProfileViewModel
-                    {
-                        HoTen = staff.HoTen,
-                        Email = staff.Email,
-                        SDT = staff.PhoneNumber,
-                        Role = "Staff", // Đảm bảo role luôn là Staff
-                        DiaChi = staff.DiaChi
-                    };
-
-                    TempData["Success"] = "Cập nhật thông tin thành công.";
-                    return View(updatedModel);
+                    TempData["Success"] = "Profile updated successfully.";
+                    return RedirectToAction(nameof(Profile));
                 }
 
                 foreach (var error in result.Errors)

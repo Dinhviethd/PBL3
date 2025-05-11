@@ -1,31 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<AppUser> SignInManager
-@inject UserManager<AppUser> UserManager
-
-@if (SignInManager.IsSignedIn(User))
-{
-    var user = await UserManager.GetUserAsync(User);
-    if (user != null && await UserManager.IsInRoleAsync(user, "Student"))
-    {
-        <div class="admin-header">
-            <div class="icon_container">
-                <div class="icon">
-                    <div class="icon_left">
-                        <a asp-controller="Home" asp-action="Index">
-                            <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/7/72/Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_B%C3%A1ch_khoa%2C_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_%C4%90%C3%A0_N%E1%BA%B5ng.svg/2048px-Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_B%C3%A1ch_khoa%2C_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_%C4%90%C3%A0_N%E1%BA%B5ng.svg.png" alt="DUT's Logo" />
-                        </a>
-                        <span>SmartParking</span>
-                    </div>
-                    <ul class="admin-nav">
-                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a asp-controller="Account" asp-action="profile">Trang Cá Nhân</a></li>
-                        <li><a asp-controller="VehicleInfo" asp-action="QLSV">Đăng Ký Gói Giữ Xe</a></li>
-                        <li><a asp-controller="Admin" asp-action="Register">Tạo người dùng</a></li>
-                        <partial name="_LoginPartial" />
-                    </ul>
-                    <i class="fa-solid fa-bars" id="menu_button"></i>
-                </div>
-            </div>
-        </div>
-    }
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
 }

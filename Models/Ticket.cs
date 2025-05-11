@@ -29,6 +29,6 @@ namespace PBL3.Models
 
         [ForeignKey("ParkingSlot")]
         public int? ParkingSlotId { get; set; }
-        public virtual ParkingSlot ParkingSlot { get; set; } //Chỉ chứa trong 1 ParkingSlot
+        public virtual ParkingSlot ParkingSlot { get; set; }
     }
 }

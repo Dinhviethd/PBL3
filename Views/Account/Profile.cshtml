@@ -1,7 +1,7 @@
 @model PBL3.Models.ViewModel.ProfileViewModel
 @{
-    ViewData["Title"] = "Profile";
-    var isStudent = Model.Role == "Student";
+    ViewData["Title"] = "Trang Cá Nhân";
+    var isStudent = (Model.Role == "Student");
 }
 
 <!DOCTYPE html>
@@ -14,112 +14,103 @@
 
 </head>
 <body>
-    <div class="profile-container">
-            <div class="profile-panel-left">
-                <div class="profile-avatar">
-                <img src="~/images/default-avatar.png" alt="Profile Picture" />
-                </div>
-                <div class="profile-info">
-                <h2>@Model.HoTen</h2>
-                <p>@Model.Email</p>
+    <div class="profile-panel">
+        <div class="profile-panel-left">
+            <div class="profile-avatar">
+                <img src="~/img/avt.jpg" alt="Profile Picture" style="border-radius: 50%; width: 150px; height: 150px; border: 3px solid #f5f5f5; margin-bottom: 20px; display: block;" />
+            </div>
+            <div class="profile-info">
+                <h3>@Model.HoTen</h3>
                 <p>@Model.Role</p>
+                <button class="profile-btn active">Thông Tin Cá Nhân</button>
+                <button class="profile-btn">Đổi Mật Khẩu</button>
+                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="profile-btn">Đăng Xuất</button>
+                </form>
             </div>
         </div>
-
-            <div class="profile-panel-right">
-            @if (TempData["Success"] != null)
-            {
-                <div class="alert alert-success">
-                    @TempData["Success"]
-                </div>
-            }
-
-                <div class="profile-form" id="personal-info-form">
-                    <h1>Thông tin cá nhân</h1>
+        <div class="profile-panel-right">
+            <div class="profile-form" id="personal-info-form">
+                <h1>Thông tin cá nhân</h1>
                 <form asp-action="Profile" method="post">
                     @Html.AntiForgeryToken()
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <div class="form-row">
-                            <div class="form-group third-width">
+                    <div class="form-row">
+                        <div class="form-group third-width">
                             <label asp-for="HoTen"></label>
                             <input asp-for="HoTen" class="form-control" />
                             <span asp-validation-for="HoTen" class="text-danger"></span>
-                            </div>
-                            <div class="form-group third-width">
+                        </div>
+                        <div class="form-group third-width">
                             <label asp-for="Email"></label>
                             <input asp-for="Email" class="form-control" readonly />
                             <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
-                            <div class="form-group third-width">
+                        </div>
+                        <div class="form-group third-width">
                             <label asp-for="SDT"></label>
                             <input asp-for="SDT" class="form-control" />
                             <span asp-validation-for="SDT" class="text-danger"></span>
                         </div>
                     </div>
 
-                        @if (isStudent)
-                        {
-                            <div class="form-row">
-                                <div class="form-group half-width">
+                    @if (isStudent)
+                    {
+                        <div class="form-row">
+                            <div class="form-group half-width">
                                 <label asp-for="MSSV"></label>
                                 <input asp-for="MSSV" class="form-control" />
                                 <span asp-validation-for="MSSV" class="text-danger"></span>
-                                </div>
-                                <div class="form-group half-width">
+                            </div>
+                            <div class="form-group half-width">
                                 <label asp-for="Lop"></label>
                                 <input asp-for="Lop" class="form-control" />
                                 <span asp-validation-for="Lop" class="text-danger"></span>
                             </div>
                         </div>
-
-                        <h2>Thông tin vé giữ xe</h2>
-                            <div class="form-row">
-                            <div class="form-group half-width">
-                                <label asp-for="BienSoXe"></label>
-                                <input asp-for="BienSoXe" class="form-control" readonly />
-                                </div>
-                            <div class="form-group half-width">
-                                <label asp-for="ViTriGui"></label>
-                                <input asp-for="ViTriGui" class="form-control" readonly />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group half-width">
-                                <label asp-for="NgayDangKy"></label>
-                                <input asp-for="NgayDangKy" class="form-control" readonly />
-                            </div>
-                            <div class="form-group half-width">
-                                <label asp-for="NgayHetHan"></label>
-                                <input asp-for="NgayHetHan" class="form-control" readonly />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group half-width">
-                                <label asp-for="Price"></label>
-                                <input asp-for="Price" class="form-control" readonly />
-                            </div>
-                        </div>
                     }
-                    else if (Model.Role == "Staff")
+                    else
                     {
-                        <div class="form-group">
-                            <label asp-for="DiaChi"></label>
-                            <input asp-for="DiaChi" class="form-control" />
-                            <span asp-validation-for="DiaChi" class="text-danger"></span>
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label asp-for="DiaChi"></label>
+                                <input asp-for="DiaChi" class="form-control" />
+                                <span asp-validation-for="DiaChi" class="text-danger"></span>
+                            </div>
                         </div>
                     }
 
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <button type="submit" class="submit-button">Cập Nhật Thông Tin</button>
                         </div>
-                    </form>
+                    </div>
+                </form>
             </div>
+            <div class="profile-form" id="change-password-form" style="display:none;"></div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const personalBtn = document.querySelector('.profile-btn.active');
+            const changePwdBtn = document.querySelectorAll('.profile-btn')[1];
+            const personalForm = document.getElementById('personal-info-form');
+            const changePwdForm = document.getElementById('change-password-form');
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+            personalBtn.addEventListener('click', function() {
+                personalForm.style.display = '';
+                changePwdForm.style.display = 'none';
+                personalBtn.classList.add('active');
+                changePwdBtn.classList.remove('active');
+            });
+            changePwdBtn.addEventListener('click', function() {
+                personalForm.style.display = 'none';
+                changePwdForm.style.display = '';
+                personalBtn.classList.remove('active');
+                changePwdBtn.classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>
