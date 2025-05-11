@@ -13,9 +13,6 @@ namespace PBL3.Models
         [StringLength(20, ErrorMessage = "Biển số xe tối đa 20 ký tự")]
         public string BienSoXe { get; set; }  
 
-        [Required(ErrorMessage = "Vị trí gửi là bắt buộc")]
-        public int ViTriGui { get; set; } 
-
         [Required(ErrorMessage = "Ngày đăng ký là bắt buộc")]
         public DateTime NgayDangKy { get; set; }
 

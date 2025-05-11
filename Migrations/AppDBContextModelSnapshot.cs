@@ -287,9 +287,6 @@ namespace PBL3.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("ViTriGui")
-                        .HasColumnType("int");
-
                     b.HasKey("ID_Ticket");
 
                     b.HasIndex("ParkingSlotId");

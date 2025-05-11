@@ -12,7 +12,7 @@ using PBL3.Data;
 namespace PBL3.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250510154854_UpdateDB")]
+    [Migration("20250511044351_UpdateDB")]
     partial class UpdateDB
     {
         /// <inheritdoc />
@@ -289,9 +289,6 @@ namespace PBL3.Migrations
                     b.Property<string>("StudentId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ViTriGui")
-                        .HasColumnType("int");
 
                     b.HasKey("ID_Ticket");
 

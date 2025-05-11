@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using PBL3.Models;
+using PBL3.Data;
 
 namespace PBL3.Data
 {
@@ -18,6 +19,8 @@ namespace PBL3.Data
                 var services = scope.ServiceProvider;
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var context = services.GetRequiredService<AppDBContext>();
+
                 // Tạo các role
                 string[] roleNames = { "Admin", "Staff", "Student" };
                 foreach (var roleName in roleNames)
@@ -90,8 +93,61 @@ namespace PBL3.Data
                         await userManager.AddToRoleAsync(studentUser, "Student");
                     }
                 }
+
+                // Tạo 5 sinh viên và vé tương ứng
+                for (int i = 1; i <= 5; i++)
+                {
+                    var newStudentEmail = $"student{i}@school.com";
+                    var newStudentUser = await userManager.FindByEmailAsync(newStudentEmail);
+                    if (newStudentUser == null)
+                    {
+                        newStudentUser = new Student
+                        {
+                            UserName = newStudentEmail,
+                            Email = newStudentEmail,
+                            HoTen = $"Sinh viên {i}",
+                            EmailConfirmed = true,
+                            PhoneNumber = $"012345678{i}",
+                            MSSV = $"SV00{i}",
+                            Lop = $"20TCLC_DT{i}"
+                        };
+                        var result = await userManager.CreateAsync(newStudentUser, $"Student{i}@123");
+                        if (result.Succeeded)
+                        {
+                            await userManager.AddToRoleAsync(newStudentUser, "Student");
+
+                            // Tạo vé cho sinh viên này
+                            var ticket = new Ticket
+                            {
+                                BienSoXe = $"29A-123.{i}",
+                                NgayDangKy = DateTime.Now.AddDays(-i),
+                                NgayHetHan = DateTime.Now.AddMonths(6).AddDays(-i),
+                                Price = 100000 * i,
+                                StudentId = newStudentUser.Id,
+                                ParkingSlotId = null
+                            };
+                            context.Tickets.Add(ticket);
+                        }
+                    }
+                }
+
+                // Tạo 10 ParkingSlot
+                if (!context.ParkingSlots.Any())
+                {
+                    for (int i = 1; i <= 10; i++)
+                    {
+                        var parkingSlot = new ParkingSlot
+                        {
+                            SlotName = $"A{i:00}",
+                            CurrentCount = 0,
+                            MaxCapacity = 10
+                        };
+                        context.ParkingSlots.Add(parkingSlot);
+                    }
+                }
+
+                await context.SaveChangesAsync();
             }
         }
-
     }
 }

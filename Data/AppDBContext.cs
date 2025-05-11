@@ -21,6 +21,7 @@ namespace PBL3.Data
         {
             base.OnModelCreating(builder);
 
+
             // Cấu hình cho Ticket
             builder.Entity<Ticket>()
                 .HasOne(t => t.Student)

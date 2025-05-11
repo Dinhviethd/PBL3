@@ -182,7 +182,6 @@ namespace PBL3.Migrations
                     ID_Ticket = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BienSoXe = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    ViTriGui = table.Column<int>(type: "int", nullable: false),
                     NgayDangKy = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NgayHetHan = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
