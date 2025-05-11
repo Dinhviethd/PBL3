@@ -1,68 +1,103 @@
-﻿@model PBL3.Models.ViewModel.StaffRegisterViewModel
-
+﻿@model PBL3.Models.ViewModel.RegisterStaffViewModel
 @{
-    ViewData["Title"] = "Quản Lý Nhân Viên";
+    ViewData["Title"] = "Quản lý nhân viên";
 }
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="~/css/admin/QLSV.css" asp-append-version="true" />
-</head>
-<body>
-    <div class="dashboard">
-        <div class="dashboard-container">
-            <div class="dashboard-content">
-                <main class="main-content">
-                    <!-- Search Section -->
-                    <section class="search-section">
-                        <h2 class="section-title">Tìm kiếm nhân viên</h2>
-                        <form method="get" class="search-form">
-                            <select name="searchType" class="form-control">
-                                <option value="Name" selected>Họ và tên</option>
-                                <option value="Email">Email</option>
-                                <option value="Phone">Số điện thoại</option>
-                                <option value="Address">Địa chỉ</option>
-                            </select>
-                            <input type="text" name="searchValue" class="form-control" placeholder="Nhập từ khóa tìm kiếm..." value="@ViewBag.SearchValue" />
-                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-                        </form>
-                    </section>
 
-                    <div class="table-container">
-                        <table class="results-table">
-                            <thead>
-                                <tr>
-                                    <th>Họ và tên</th>
-                                    <th>Email</th>
-                                    <th>Số điện thoại</th>
-                                    <th>Địa chỉ</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var staff in Model.Staffs)
-                                {
-                                    <tr>
-                                        <td>@staff.HoTen</td>
-                                        <td>@staff.Email</td>
-                                        <td>@staff.PhoneNumber</td>
-                                        <td>@staff.DiaChi</td>
-                                        <td>
-                                            <a asp-action="EditStaff" asp-route-id="@staff.Id" class="btn-edit">Sửa</a>
-                                            <a asp-action="ConfirmDeleteStaff" asp-route-id="@staff.Id" class="btn-delete">Xóa</a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+<div class="container-fluid">
+    <h2 class="text-center mb-4">Quản lý nhân viên</h2>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <a asp-action="CreateStaff" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Thêm nhân viên mới
+            </a>
+        </div>
+        <div class="col-md-6">
+            <form asp-action="QLNV" method="get" class="form-inline justify-content-end">
+                <div class="input-group">
+                    <select name="searchType" class="form-control">
+                        <option value="Email" selected="@(ViewBag.SearchType == "Email")">Email</option>
+                        <option value="Name" selected="@(ViewBag.SearchType == "Name")">Họ tên</option>
+                        <option value="Phone" selected="@(ViewBag.SearchType == "Phone")">Số điện thoại</option>
+                        <option value="Address" selected="@(ViewBag.SearchType == "Address")">Địa chỉ</option>
+                    </select>
+                    <input type="text" name="searchValue" value="@ViewBag.SearchValue" class="form-control" placeholder="Tìm kiếm...">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                        </button>
                     </div>
-                </main>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
-</body>
-</html>
 
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var staff in Model.Staffs)
+                {
+                    <tr>
+                        <td>@staff.HoTen</td>
+                        <td>@staff.Email</td>
+                        <td>@staff.PhoneNumber</td>
+                        <td>@staff.DiaChi</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a asp-action="EditStaff" asp-route-id="@staff.Id" class="btn btn-info btn-sm">
+                                    <i class="fas fa-edit"></i> Sửa
+                                </a>
+                                <a asp-action="ConfirmDeleteStaff" asp-route-id="@staff.Id" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (Model.PageInfo.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= Model.PageInfo.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.PageInfo.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-action="QLNV" asp-route-page="@i" asp-route-searchType="@ViewBag.SearchType" asp-route-searchValue="@ViewBag.SearchValue">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

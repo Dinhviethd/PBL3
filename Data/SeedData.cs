@@ -52,25 +52,25 @@ namespace PBL3.Data
                 }
 
                 // Tạo tài khoản Staff mặc định
-                var staffEmail = "staff@school.com";
-                var staffUser = await userManager.FindByEmailAsync(staffEmail);
-                if (staffUser == null)
-                {
-                    staffUser = new Staff
-                    {
-                        UserName = staffEmail,
-                        Email = staffEmail,
-                        HoTen = "Nhân viên",
-                        EmailConfirmed = true,
-                        PhoneNumber = "0987654321",
-                        DiaChi = "123 Đường ABC"
-                    };
-                    var result = await userManager.CreateAsync(staffUser, "Staff@123");
-                    if (result.Succeeded)
-                    {
-                        await userManager.AddToRoleAsync(staffUser, "Staff");
-                    }
-                }
+                //var staffEmail = "staff@school.com";
+                //var staffUser = await userManager.FindByEmailAsync(staffEmail);
+                //if (staffUser == null)
+                //{
+                //    staffUser = new Staff
+                //    {
+                //        UserName = staffEmail,
+                //        Email = staffEmail,
+                //        HoTen = "Nhân viên",
+                //        EmailConfirmed = true,
+                //        PhoneNumber = "0987654321",
+                //        DiaChi = "123 Đường ABC"
+                //    };
+                //    var result = await userManager.CreateAsync(staffUser, "Staff@123");
+                //    if (result.Succeeded)
+                //    {
+                //        await userManager.AddToRoleAsync(staffUser, "Staff");
+                //    }
+                //}
 
                 // Tạo tài khoản Student mặc định
                 var studentEmail = "student@school.com";
