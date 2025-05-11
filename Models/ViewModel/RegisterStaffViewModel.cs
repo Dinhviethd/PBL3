@@ -2,7 +2,7 @@
 
 namespace PBL3.Models.ViewModel
 {
-    public class StaffRegisterViewModel : RegisterViewModel
+    public class RegisterStaffViewModel : RegisterViewModel
     {
         [Required(ErrorMessage = "Địa chỉ là bắt buộc cho nhân viên")]
         [Display(Name = "Địa chỉ")]
