@@ -351,59 +351,59 @@ namespace PBL3.Controllers
             return View(model);
         }
 
-        // GET: Sửa thông tin nhân viên
-        public async Task<IActionResult> EditStaff(string id)
-        {
-            var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
-            if (staff == null)
-            {
-                return NotFound();
-            }
+        //// GET: Sửa thông tin nhân viên
+        //public async Task<IActionResult> EditStaff(string id)
+        //{
+        //    var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
+        //    if (staff == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var model = new RegisterStaffViewModel
-            {
-                HoTen = staff.HoTen,
-                Email = staff.Email,
-                SDT = staff.PhoneNumber,
-                DiaChi = staff.DiaChi,
-                Role = "Staff"
-            };
+        //    var model = new RegisterStaffViewModel
+        //    {
+        //        HoTen = staff.HoTen,
+        //        Email = staff.Email,
+        //        SDT = staff.PhoneNumber,
+        //        DiaChi = staff.DiaChi,
+        //        Role = "Staff"
+        //    };
 
-            ViewBag.StaffId = id;
-            return View(model);
-        }
+        //    ViewBag.StaffId = id;
+        //    return View(model);
+        //}
 
-        // POST: Sửa thông tin nhân viên
-        [HttpPost]
-        public async Task<IActionResult> EditStaff(string id, RegisterStaffViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
-                if (staff == null)
-                {
-                    return NotFound();
-                }
+        //// POST: Sửa thông tin nhân viên
+        //[HttpPost]
+        //public async Task<IActionResult> EditStaff(string id, RegisterStaffViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
+        //        if (staff == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-                // Cập nhật thông tin staff
-                staff.HoTen = model.HoTen;
-                staff.Email = model.Email;
-                staff.PhoneNumber = model.SDT;
-                staff.DiaChi = model.DiaChi;
+        //        // Cập nhật thông tin staff
+        //        staff.HoTen = model.HoTen;
+        //        staff.Email = model.Email;
+        //        staff.PhoneNumber = model.SDT;
+        //        staff.DiaChi = model.DiaChi;
 
-                var result = await _userManager.UpdateAsync(staff);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("QLNV");
-                }
+        //        var result = await _userManager.UpdateAsync(staff);
+        //        if (result.Succeeded)
+        //        {
+        //            return RedirectToAction("QLNV");
+        //        }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
-            return View(model);
-        }
+        //        foreach (var error in result.Errors)
+        //        {
+        //            ModelState.AddModelError(string.Empty, error.Description);
+        //        }
+        //    }
+        //    return View(model);
+        //}
 
         // GET: Xác nhận xóa nhân viên
         public async Task<IActionResult> ConfirmDeleteStaff(string id)

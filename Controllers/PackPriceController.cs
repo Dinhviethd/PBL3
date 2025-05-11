@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
 namespace PBL3.Controllers
 {
     public class PackPriceController : Controller
@@ -8,5 +7,6 @@ namespace PBL3.Controllers
         {
             return View();
         }
+      
     }
 }
