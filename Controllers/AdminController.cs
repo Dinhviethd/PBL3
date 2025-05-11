@@ -134,12 +134,13 @@ namespace PBL3.Controllers
                         HoTen = studentModel.HoTen,
                         PhoneNumber = studentModel.SDT,
                         MSSV = studentModel.MSSV,
-                        Lop = studentModel.Lop
+                        Lop = studentModel.Lop,
+                        Tickets = new List<Ticket>()
                     };
                 }
                 else // Staff
                 {
-                    var staffModel = new RegisterStaffViewModel
+                    var staffModel = new StaffRegisterViewModel
                     {
                         HoTen = model.HoTen,
                         Email = model.Email,
@@ -336,7 +337,7 @@ namespace PBL3.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            var model = new RegisterStaffViewModel
+            var model = new StaffRegisterViewModel
             {
                 Staffs = staffs,
                 PageInfo = new PageInfo
@@ -349,93 +350,6 @@ namespace PBL3.Controllers
             };
 
             return View(model);
-        }
-
-        //// GET: Sửa thông tin nhân viên
-        //public async Task<IActionResult> EditStaff(string id)
-        //{
-        //    var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
-        //    if (staff == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var model = new RegisterStaffViewModel
-        //    {
-        //        HoTen = staff.HoTen,
-        //        Email = staff.Email,
-        //        SDT = staff.PhoneNumber,
-        //        DiaChi = staff.DiaChi,
-        //        Role = "Staff"
-        //    };
-
-        //    ViewBag.StaffId = id;
-        //    return View(model);
-        //}
-
-        //// POST: Sửa thông tin nhân viên
-        //[HttpPost]
-        //public async Task<IActionResult> EditStaff(string id, RegisterStaffViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
-        //        if (staff == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        // Cập nhật thông tin staff
-        //        staff.HoTen = model.HoTen;
-        //        staff.Email = model.Email;
-        //        staff.PhoneNumber = model.SDT;
-        //        staff.DiaChi = model.DiaChi;
-
-        //        var result = await _userManager.UpdateAsync(staff);
-        //        if (result.Succeeded)
-        //        {
-        //            return RedirectToAction("QLNV");
-        //        }
-
-        //        foreach (var error in result.Errors)
-        //        {
-        //            ModelState.AddModelError(string.Empty, error.Description);
-        //        }
-        //    }
-        //    return View(model);
-        //}
-
-        // GET: Xác nhận xóa nhân viên
-        public async Task<IActionResult> ConfirmDeleteStaff(string id)
-        {
-            var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
-            if (staff == null)
-            {
-                return NotFound();
-            }
-
-            ViewBag.Message = "Bạn chắc chắn muốn xóa nhân viên này?";
-            return View(staff);
-        }
-
-        // POST: Xóa nhân viên
-        [HttpPost]
-        public async Task<IActionResult> DeleteStaff(string id)
-        {
-            var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
-            if (staff != null)
-            {
-                var result = await _userManager.DeleteAsync(staff);
-                if (result.Succeeded)
-                {
-                    TempData["Success"] = "Đã xóa nhân viên thành công.";
-                }
-                else
-                {
-                    TempData["Error"] = "Có lỗi xảy ra khi xóa nhân viên.";
-                }
-            }
-            return RedirectToAction("QLNV");
         }
 
     }

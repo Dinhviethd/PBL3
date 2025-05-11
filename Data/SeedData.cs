@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using PBL3.Models;
 using PBL3.Data;
+using System.Collections.Generic;
 
 namespace PBL3.Data
 {
@@ -52,25 +53,25 @@ namespace PBL3.Data
                 }
 
                 // Tạo tài khoản Staff mặc định
-                //var staffEmail = "staff@school.com";
-                //var staffUser = await userManager.FindByEmailAsync(staffEmail);
-                //if (staffUser == null)
-                //{
-                //    staffUser = new Staff
-                //    {
-                //        UserName = staffEmail,
-                //        Email = staffEmail,
-                //        HoTen = "Nhân viên",
-                //        EmailConfirmed = true,
-                //        PhoneNumber = "0987654321",
-                //        DiaChi = "123 Đường ABC"
-                //    };
-                //    var result = await userManager.CreateAsync(staffUser, "Staff@123");
-                //    if (result.Succeeded)
-                //    {
-                //        await userManager.AddToRoleAsync(staffUser, "Staff");
-                //    }
-                //}
+                var staffEmail = "staff@school.com";
+                var staffUser = await userManager.FindByEmailAsync(staffEmail);
+                if (staffUser == null)
+                {
+                    staffUser = new Staff
+                    {
+                        UserName = staffEmail,
+                        Email = staffEmail,
+                        HoTen = "Nhân viên",
+                        EmailConfirmed = true,
+                        PhoneNumber = "0987654321",
+                        DiaChi = "123 Đường ABC"
+                    };
+                    var result = await userManager.CreateAsync(staffUser, "Staff@123");
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(staffUser, "Staff");
+                    }
+                }
 
                 // Tạo tài khoản Student mặc định
                 var studentEmail = "student@school.com";
@@ -85,7 +86,8 @@ namespace PBL3.Data
                         EmailConfirmed = true,
                         PhoneNumber = "0123456789",
                         MSSV = "SV001",
-                        Lop = "20TCLC_DT1"
+                        Lop = "20TCLC_DT1",
+                        Tickets = new List<Ticket>()
                     };
                     var result = await userManager.CreateAsync(studentUser, "Student@123");
                     if (result.Succeeded)
@@ -109,7 +111,8 @@ namespace PBL3.Data
                             EmailConfirmed = true,
                             PhoneNumber = $"012345678{i}",
                             MSSV = $"SV00{i}",
-                            Lop = $"20TCLC_DT{i}"
+                            Lop = $"20TCLC_DT{i}",
+                            Tickets = new List<Ticket>()
                         };
                         var result = await userManager.CreateAsync(newStudentUser, $"Student{i}@123");
                         if (result.Succeeded)

@@ -21,30 +21,29 @@ namespace PBL3.Data
         {
             base.OnModelCreating(builder);
 
-
-            // Cấu hình cho Ticket
-            builder.Entity<Ticket>()
-                .HasOne(t => t.Student)
-                .WithMany()
+            builder.Entity<AppUser>()
+                    .HasDiscriminator<string>("UserType")
+                    .HasValue<AppUser>("AppUser")
+                    .HasValue<Staff>("Staff")
+                    .HasValue<Student>("Student");
+            // Cấu hình cho Student và Ticket
+            builder.Entity<Student>()
+                .HasMany(s => s.Tickets) //Student có thể có nhiều hoặc không có Ticket
+                .WithOne(t => t.Student)    //Mỗi Ticket chỉ thuộc về 1 Student
                 .HasForeignKey(t => t.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Ticket>()
-                .HasOne(t => t.ParkingSlot)
-                .WithMany(p => p.Tickets)
+            // Cấu hình cho ParkingSlot và Ticket
+            builder.Entity<ParkingSlot>()
+                .HasMany(p => p.Tickets) //ParkingSlot có thể có nhiều hoặc không có Ticket
+                .WithOne(t => t.ParkingSlot)   
                 .HasForeignKey(t => t.ParkingSlotId)
+                .IsRequired(false)  // Cho phép Ticket không có ParkingSlot
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Ticket>()
                 .Property(t => t.Price)
                 .HasPrecision(18, 2);
-
-            // Cấu hình cho ParkingSlot
-            builder.Entity<ParkingSlot>()
-                .HasMany(p => p.Tickets)
-                .WithOne(t => t.ParkingSlot)
-                .HasForeignKey(t => t.ParkingSlotId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
