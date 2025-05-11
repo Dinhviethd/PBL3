@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "zkm5mgApLWSFq0RjAV2ld+nBtwYxTW+noiqKTel4Svo=",
+  "Hash": "dt2R1HXS8HMvrx4leWSqm6xMmJ6TEvINH+gwIGmPbjY=",
   "Source": "PBL3",
   "BasePath": "_content/PBL3",
   "Mode": "Default",
@@ -157,11 +157,32 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "1u4i8gelda",
-      "Integrity": "+VCn6USHOm0/4cKBQGCC1WXFK+hKDIrHaYKA/Rb0w7w=",
+      "Fingerprint": "hjjtx0g254",
+      "Integrity": "LUlVda9NXDUOctTnWlSXuYYJGXVfyxS1bMZ1r6kw9aQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\Profile.css"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\QLNX.css",
+      "SourceId": "PBL3",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\",
+      "BasePath": "_content/PBL3",
+      "RelativePath": "css/QLNX#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "sl5fch7aez",
+      "Integrity": "4NVqsFbcRraykfjbIZheLsaAOyEtgDSVhWK1jwpFo7U=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\QLNX.css"
     },
     {
       "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\site.css",
@@ -1838,51 +1859,6 @@
       ]
     },
     {
-      "Route": "css/Profile.1u4i8gelda.css",
-      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Profile.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "2364"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"+VCn6USHOm0/4cKBQGCC1WXFK+hKDIrHaYKA/Rb0w7w=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sun, 11 May 2025 02:22:04 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "1u4i8gelda"
-        },
-        {
-          "Name": "label",
-          "Value": "css/Profile.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-+VCn6USHOm0/4cKBQGCC1WXFK+hKDIrHaYKA/Rb0w7w="
-        }
-      ]
-    },
-    {
       "Route": "css/Profile.css",
       "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Profile.css",
       "Selectors": [],
@@ -1901,11 +1877,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"+VCn6USHOm0/4cKBQGCC1WXFK+hKDIrHaYKA/Rb0w7w=\""
+          "Value": "\"LUlVda9NXDUOctTnWlSXuYYJGXVfyxS1bMZ1r6kw9aQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 11 May 2025 02:22:04 GMT"
+          "Value": "Sun, 11 May 2025 07:30:10 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1915,7 +1891,134 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-+VCn6USHOm0/4cKBQGCC1WXFK+hKDIrHaYKA/Rb0w7w="
+          "Value": "sha256-LUlVda9NXDUOctTnWlSXuYYJGXVfyxS1bMZ1r6kw9aQ="
+        }
+      ]
+    },
+    {
+      "Route": "css/Profile.hjjtx0g254.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Profile.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2364"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"LUlVda9NXDUOctTnWlSXuYYJGXVfyxS1bMZ1r6kw9aQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 11 May 2025 07:30:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "hjjtx0g254"
+        },
+        {
+          "Name": "label",
+          "Value": "css/Profile.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-LUlVda9NXDUOctTnWlSXuYYJGXVfyxS1bMZ1r6kw9aQ="
+        }
+      ]
+    },
+    {
+      "Route": "css/QLNX.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\QLNX.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11709"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4NVqsFbcRraykfjbIZheLsaAOyEtgDSVhWK1jwpFo7U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 11 May 2025 05:59:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-4NVqsFbcRraykfjbIZheLsaAOyEtgDSVhWK1jwpFo7U="
+        }
+      ]
+    },
+    {
+      "Route": "css/QLNX.sl5fch7aez.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\QLNX.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11709"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4NVqsFbcRraykfjbIZheLsaAOyEtgDSVhWK1jwpFo7U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 11 May 2025 05:59:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "sl5fch7aez"
+        },
+        {
+          "Name": "label",
+          "Value": "css/QLNX.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4NVqsFbcRraykfjbIZheLsaAOyEtgDSVhWK1jwpFo7U="
         }
       ]
     },

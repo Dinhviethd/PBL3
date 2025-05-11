@@ -1,0 +1,582 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PBL3</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/QLNX.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="main">
+        <div class="content">
+            <div class="flex-app-container" id="flexAppContainer">
+                <div class="vehicle-info-panel" id="vehicle-info-panel">
+                    <div class="QLX-panel">
+                        <div class="QLX-panel-content">
+                            <button class="close-btn" onclick="hideVehicleInfoPanel()">&times;</button>
+                            <h1> THÔNG TIN XE </h1>
+                            <div class="cen-container">
+                                <div class="cen">
+                                    <label for="OGX">Ô giữ xe:</label><br>
+                                    <input type="text" id="OGX" name="OGX" pattern="[0-9]*">
+                                    <span class="error-message" id="error-OGX" style="color: red; font-size: 14px; display: none;"></span>
+                                </div>
+                                <div class="cen">
+                                    <label for="BXX">Biển số xe:</label><br>
+                                    <input type="text" id="BXX" name="BXX">
+                                    <span class="error-message" id="error-BXX" style="color: red; font-size: 14px; display: none;"></span>
+                                </div>
+                                <div class="cen">
+                                    <label for="IDCX">ID chủ xe:</label><br>
+                                    <input type="text" id="IDCX" name="IDCX">
+                                    <span class="error-message" id="error-IDCX" style="color: red; font-size: 14px; display: none;"></span>
+                                </div>
+                                <div class="cen">
+                                    <label for="NameCX">Họ và tên chủ xe:</label><br>
+                                    <input type="text" id="NameCX" name="NameCX">
+                                    <span class="error-message" id="error-NameCX" style="color: red; font-size: 14px; display: none;"></span>
+                                </div>
+                                <div class="cen">
+                                    <label for="NgayHH">Ngày hết hạn:</label><br>
+                                    <input type="text" id="NgayHH" name="NgayHH">
+                                    <span class="error-message" id="error-NgayHH" style="color: red; font-size: 14px; display: none;"></span>
+                                </div>
+                                <div class="cen">
+                                    <label for="NgayRa">Ngày ra:</label><br>
+                                    <input type="text" id="NgayRa" name="NgayRa">
+                                    <span class="error-message" id="error-NgayRa" style="color: red; font-size: 14px; display: none;"></span>
+                                    <br />
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-success btn-cm" id="btnCapNhat">Cập nhật</button>
+                                <button type="button" class="btn btn-primary btn-cm" id="btnThem" style="display: none;">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-content">
+                    <div class="QLX-panel" style="margin-bottom: 0; width: 80%;">
+                        <div class="QLX-panel-content">
+                            <h1>TÌM KIẾM</h1>
+                            <div style="display: flex; align-items: center; gap: 10px; width: 70%;">
+                                <input type="text" id="search" name="search" placeholder="Nhập thông tin bạn muốn tìm kiếm..." style="width: 60%; height: 40px; font-size: 20px;">
+                                <select id="searchBy" name="searchBy" style="width: 20%; height: 40px; font-size: 20px;">
+                                    <option value="id">ID</option>
+                                    <option value="bienSo">Biển số xe</option>
+                                    <option value="ten">Tên</option>
+                                    <option value="ngayHetHan">Ngày hết hạn</option>
+                                    <option value="ngayRa">Ngày ra</option>
+                                    <option value="ngayRa">Xe Chưa Vào Bãi</option>
+                                </select>
+                                <button class="btn btn-primary" style="width: 150px;" id="mainSearchBtn">Tìm kiếm</button>
+                                <button class="btn btn-primary" style="width: 150px;" onclick="showAddVehiclePanel()">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="height: 90vh; width: 80%; overflow: auto; background-color: #DDD;">
+                        <h1 id="OGXTitle">Ô GIỮ XE</h1>
+                        <div class="TB-OGX">
+                            <div class="TB-OGX-row">
+                                <div class="TB-OGX-item" onclick="showVehicleInfo(0)">
+                                    <p>Ô số 1</p>
+                                    <div class="cell-score"></div>
+                                </div>
+                                <div class="TB-OGX-item" onclick="showVehicleInfo(1)">
+                                    <p>Ô số 2</p>
+                                    <div class="cell-score"></div>
+                                </div>
+                                <div class="TB-OGX-item" onclick="showVehicleInfo(2)">
+                                    <p>Ô số 3</p>
+                                    <div class="cell-score"></div>
+                                </div>
+                                <div class="TB-OGX-item" onclick="showVehicleInfo(3)">
+                                    <p>Ô số 4</p>
+                                    <div class="cell-score"></div>
+                                </div>
+                                <div class="TB-OGX-item" onclick="showVehicleInfo(4)">
+                                    <p>Ô số 5</p>
+                                    <div class="cell-score"></div>
+                                </div>
+                            </div>
+                            <div class="TB-OGX-row">
+                                <div class="TB-OGX-item" onclick="showVehicleInfo(5)">
+                                    <p>Ô số 6</p>
+                                    <div class="cell-score"></div>
+                                </div>
+                                <div class="TB-OGX-item" onclick="showVehicleInfo(6)">
+                                    <p>Ô số 7</p>
+                                    <div class="cell-score"></div>
+                                </div>
+                                <div class="TB-OGX-item" onclick="showVehicleInfo(7)">
+                                    <p>Ô số 8</p>
+                                    <div class="cell-score"></div>
+                                </div>
+                                <div class="TB-OGX-item" onclick="showVehicleInfo(8)">
+                                    <p>Ô số 9</p>
+                                    <div class="cell-score"></div>
+                                </div>
+                                <div class="TB-OGX-item" onclick="showVehicleInfo(9)">
+                                    <p>Ô số 10</p>
+                                    <div class="cell-score"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="info-modal" class="modal-overlay" style="display:none;overflow:auto;">
+        <div class="modal-content">
+            <span class="modal-close" id="modal-close">&times;</span>
+            <h2>Thông tin ô giữ xe</h2>
+            <table class="info-table">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Biển số xe</th>
+                        <th>ID chủ xe</th>
+                        <th>Họ và tên</th>
+                        <th>Ngày hết hạn</th>
+                        <th>Ngày ra</th>
+                        <th>Các tác vụ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be injected by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="search-modal" class="modal-overlay" style="display:none;overflow:auto;">
+        <div class="modal-content">
+            <span class="modal-close" id="search-modal-close">&times;</span>
+            <h2>Kết quả tìm kiếm</h2>
+            <div class="search-results">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Biển số</th>
+                            <th>ID chủ xe</th>
+                            <th>Tên chủ xe</th>
+                            <th>Hết hạn</th>
+                            <th>Ngày ra</th>
+                            <th>Ô giữ xe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Search results will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-confirm-modal" class="modal-overlay" style="display:none;overflow:hidden;">
+        <div class="modal-content" style="min-width:300px;max-width:90vw;text-align:center;height:100px;overflow:hidden;">
+            <h2 style="margin-bottom:24px;">Xác nhận xóa thông tin?</h2>
+            <div style="display:flex;justify-content:center;gap:24px;">
+                <button id="btn-confirm-delete" style="background:#d32f2f;color:#fff;padding:8px 24px;border:none;border-radius:6px;font-size:1rem;" onclick="confirmDelete()">Xác nhận</button>
+                <button id="btn-cancel-delete" style="background:#eee;color:#222;padding:8px 24px;border:none;border-radius:6px;font-size:1rem;" onclick="hideDeleteConfirm()">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/site.js"></script>
+    <script>
+        // Global variables
+        const data = [[], [], [], [], [], [], [], [], [], []];
+        let currentSlotIndex = null;
+        let currentVehicleId = null;
+        let deleteCellIdx = null;
+        let deleteRowStt = null;
+        let deleteVehicleId = null;
+
+        // Vehicle info panel functions
+        function showVehicleInfoPanel() {
+            document.getElementById('flexAppContainer').classList.add('show-vehicle-info');
+        }
+
+        function showAddVehiclePanel() {
+            document.getElementById('flexAppContainer').classList.add('show-vehicle-info');
+            // Clear all input fields
+            document.getElementById('OGX').value = '';
+            document.getElementById('BXX').value = '';
+            document.getElementById('IDCX').value = '';
+            document.getElementById('NameCX').value = '';
+            document.getElementById('NgayHH').value = '';
+            document.getElementById('NgayRa').value = '';
+            document.getElementById('OGX').removeAttribute('readonly');
+            document.getElementById('OGX').style.backgroundColor = '';
+            // Show Thêm button, hide Cập nhật button
+            document.getElementById('btnThem').style.display = 'inline-block';
+            document.getElementById('btnCapNhat').style.display = 'none';
+        }
+
+        function hideVehicleInfoPanel() {
+            document.getElementById('flexAppContainer').classList.remove('show-vehicle-info');
+        }
+
+        function editVehicleFromIframe(row, cellIdx, vehicleId) {
+            currentVehicleId = vehicleId;
+            document.getElementById('BXX').value = row.bienSo || '';
+            document.getElementById('IDCX').value = row.idChu || '';
+            document.getElementById('NameCX').value = row.tenChu || '';
+            document.getElementById('NgayHH').value = row.hetHan || '';
+            document.getElementById('NgayRa').value = row.ngayRa || '';
+            document.getElementById('OGX').value = (cellIdx + 1).toString();
+            document.getElementById('OGX').setAttribute('readonly', true);
+            document.getElementById('OGX').style.backgroundColor = '#e9ecef';
+            // Show Cập nhật button, hide Thêm button
+            document.getElementById('btnCapNhat').style.display = 'inline-block';
+            document.getElementById('btnThem').style.display = 'none';
+            showVehicleInfoPanel();
+        }
+
+        // Vehicle slot functions
+        function showVehicleInfo(idx) {
+            currentSlotIndex = idx;
+            updateTableDisplay(idx);
+            document.getElementById('info-modal').style.display = 'flex';
+        }
+
+        function updateTableDisplay(idx) {
+            const rows = data[idx] || [];
+            const tbody = document.querySelector('#info-modal tbody');
+            document.querySelector('#info-modal h2').textContent = `Thông tin ô giữ xe số ${idx + 1}`;
+            tbody.innerHTML = '';
+
+            rows.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.stt}</td>
+                    <td>${row.bienSo}</td>
+                    <td>${row.idChu}</td>
+                    <td>${row.tenChu}</td>
+                    <td>${row.hetHan}</td>
+                    <td>${row.ngayRa}</td>
+                    <td>
+                        <div class="action-icons">
+                            <img src="/img/edit.png" alt="Edit" style="cursor:pointer" onclick="editVehicleFromIframe(${JSON.stringify(row)}, ${idx}, ${row.id})">
+                            <img src="/img/delete.png" alt="Delete" style="cursor:pointer" class="delete-btn" data-cell-idx="${idx}" data-row-stt="${row.stt}" data-vehicle-id="${row.id}">
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            attachDeleteListeners();
+        }
+
+        function attachDeleteListeners() {
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    showDeleteConfirm(
+                        parseInt(this.getAttribute('data-cell-idx')),
+                        parseInt(this.getAttribute('data-row-stt')),
+                        parseInt(this.getAttribute('data-vehicle-id'))
+                    );
+                });
+            });
+        }
+
+        function updateScores() {
+            const maxCapacity = 10;
+            document.querySelectorAll('.cell-score').forEach(function(el, index) {
+                const cellData = data[index];
+                const occupancy = cellData ? cellData.length : 0;
+                const score = Math.floor((occupancy / maxCapacity) * 10);
+
+                el.textContent = score + '/10';
+                el.classList.remove('green', 'orange', 'red');
+
+                if (score <= 6) el.classList.add('green');
+                else if (score <= 9) el.classList.add('orange');
+                else el.classList.add('red');
+            });
+        }
+
+        // Delete confirmation functions
+        function showDeleteConfirm(cellIdx, rowStt, vehicleId) {
+            deleteCellIdx = cellIdx;
+            deleteRowStt = rowStt;
+            deleteVehicleId = vehicleId;
+            document.getElementById('delete-confirm-modal').style.display = 'flex';
+        }
+
+        function hideDeleteConfirm() {
+            document.getElementById('delete-confirm-modal').style.display = 'none';
+            deleteCellIdx = null;
+            deleteRowStt = null;
+            deleteVehicleId = null;
+        }
+
+        function confirmDelete() {
+            if (!deleteVehicleId) return;
+
+            fetch(`/api/vehicleinfo/delete/${deleteVehicleId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Lỗi khi xóa dữ liệu!');
+                if (deleteCellIdx >= 0 && deleteCellIdx < data.length) {
+                    data[deleteCellIdx] = data[deleteCellIdx].filter(row => row.stt !== deleteRowStt);
+                    updateTableDisplay(deleteCellIdx);
+                    updateScores();
+                }
+                hideDeleteConfirm();
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+        }
+
+        // Data loading and update functions
+        function loadVehicleData() {
+            fetch('/api/vehicleinfo/all')
+                .then(response => response.json())
+                .then(vehicles => {
+                    for (let i = 0; i < 10; i++) data[i] = [];
+
+                    vehicles.forEach(vehicle => {
+                        const slot = vehicle.ogiuXe - 1;
+                        if (slot >= 0 && slot < 10) {
+                            data[slot].push({
+                                id: vehicle.id,
+                                stt: data[slot].length + 1,
+                                bienSo: vehicle.bienSo,
+                                idChu: vehicle.idChu,
+                                tenChu: vehicle.tenChu,
+                                hetHan: vehicle.hetHan,
+                                ngayRa: vehicle.ngayRa
+                            });
+                        }
+                    });
+                })
+                .then(() => {
+                    updateScores();
+                    if (typeof currentSlotIndex === 'number' &&
+                        document.getElementById('info-modal').style.display === 'flex') {
+                        updateTableDisplay(currentSlotIndex);
+                    }
+                });
+        }
+
+        window.updateVehicleData = function(updatedVehicle) {
+            for (let i = 0; i < data.length; i++) {
+                const index = data[i].findIndex(v => v.id === updatedVehicle.id);
+                if (index !== -1) {
+                    data[i][index] = {
+                        id: updatedVehicle.id,
+                        stt: data[i][index].stt,
+                        bienSo: updatedVehicle.bienSo,
+                        idChu: updatedVehicle.idChu,
+                        tenChu: updatedVehicle.tenChu,
+                        hetHan: updatedVehicle.hetHan,
+                        ngayRa: updatedVehicle.ngayRa
+                    };
+                    if (document.getElementById('info-modal').style.display === 'flex') {
+                        updateTableDisplay(i);
+                    }
+                    updateScores();
+                    break;
+                }
+            }
+        };
+
+        // Search functions
+        function performSearch(query) {
+            document.getElementById('search-modal').style.display = 'flex';
+            const tbody = document.querySelector('#search-modal tbody');
+            tbody.innerHTML = '';
+            const searchQuery = query || document.getElementById('search').value;
+
+            fetch(`/api/vehicleinfo/search?query=${encodeURIComponent(searchQuery)}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(vehicle => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${vehicle.bienSo}</td>
+                            <td>${vehicle.idChu}</td>
+                            <td>${vehicle.tenChu}</td>
+                            <td>${vehicle.hetHan}</td>
+                            <td>${vehicle.ngayRa}</td>
+                            <td>${vehicle.ogiuXe}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi tìm kiếm!');
+                });
+        }
+
+        // Validation and form submission
+        function validateAndSubmit(action) {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.textContent = '';
+                el.style.display = 'none';
+            });
+
+            let hasError = false;
+            const ogx = document.getElementById('OGX').value.trim();
+            const bxx = document.getElementById('BXX').value.trim();
+            const idcx = document.getElementById('IDCX').value.trim();
+            const namecx = document.getElementById('NameCX').value.trim();
+            const ngayhh = document.getElementById('NgayHH').value.trim();
+            const ngayra = document.getElementById('NgayRa').value.trim();
+
+            // Validate empty fields
+            if (!ogx) {
+                showError('OGX', 'Giá trị không được để trống!');
+                hasError = true;
+            }
+            if (!bxx) {
+                showError('BXX', 'Giá trị không được để trống!');
+                hasError = true;
+            }
+            if (!idcx) {
+                showError('IDCX', 'Giá trị không được để trống!');
+                hasError = true;
+            }
+            if (!namecx) {
+                showError('NameCX', 'Giá trị không được để trống!');
+                hasError = true;
+            }
+            if (!ngayhh) {
+                showError('NgayHH', 'Giá trị không được để trống!');
+                hasError = true;
+            }
+            if (!ngayra) {
+                showError('NgayRa', 'Giá trị không được để trống!');
+                hasError = true;
+            }
+
+            // Validate Ô giữ xe (1-10)
+            if (ogx && (!/^\d+$/.test(ogx) || Number(ogx) < 1 || Number(ogx) > 10)) {
+                showError('OGX', 'Giá trị không hợp lệ!');
+                hasError = true;
+            }
+
+            // Validate ID chủ xe (numbers only)
+            if (idcx && !/^\d+$/.test(idcx)) {
+                showError('IDCX', 'Giá trị không hợp lệ!');
+                hasError = true;
+            }
+
+            // Validate Họ và tên chủ xe (letters only)
+            if (namecx && !/^[a-zA-ZÀ-ỹ\s]+$/.test(namecx)) {
+                showError('NameCX', 'Giá trị không hợp lệ!');
+                hasError = true;
+            }
+
+            // Validate dates
+            if (ngayra && ngayhh) {
+                const dateRa = new Date(ngayra.split('/').reverse().join('-'));
+                const dateHetHan = new Date(ngayhh.split('/').reverse().join('-'));
+                if (dateRa >= dateHetHan) {
+                    showError('NgayRa', 'Ngày ra không hợp lệ');
+                    hasError = true;
+                }
+            }
+
+            if (hasError) return;
+
+            const vehicle = {
+                ogiuXe: Number(ogx),
+                bienSo: bxx,
+                idChu: idcx,
+                tenChu: namecx,
+                hetHan: ngayhh,
+                ngayRa: ngayra
+            };
+            if (action === 'update') {
+                vehicle.id = currentVehicleId;
+            }
+
+            const url = action === 'update'
+                ? `/api/vehicleinfo/update/${currentVehicleId}`
+                : '/api/vehicleinfo/add';
+            const method = action === 'update' ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(vehicle)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`Lỗi khi ${action === 'update' ? 'cập nhật' : 'thêm'} dữ liệu!`);
+                return response.json();
+            })
+            .then(data => {
+                if (action === 'add') {
+                    loadVehicleData();
+                } else {
+                    window.updateVehicleData(data);
+                }
+                hideVehicleInfoPanel();
+                currentVehicleId = null;
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+        }
+
+        function showError(fieldId, message) {
+            const errorSpan = document.getElementById(`error-${fieldId}`);
+            if (errorSpan) {
+                errorSpan.textContent = message;
+                errorSpan.style.display = 'block';
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            loadVehicleData();
+
+            document.getElementById('btnCapNhat').onclick = function() {
+                validateAndSubmit('update');
+            };
+
+            document.getElementById('btnThem').onclick = function() {
+                validateAndSubmit('add');
+            };
+
+            document.getElementById('mainSearchBtn').onclick = function() {
+                performSearch();
+            };
+
+            document.getElementById('modal-close').onclick = function() {
+                document.getElementById('info-modal').style.display = 'none';
+            };
+
+            document.getElementById('search-modal-close').onclick = function() {
+                document.getElementById('search-modal').style.display = 'none';
+            };
+
+            document.getElementById('info-modal').onclick = function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            };
+
+            document.getElementById('search-modal').onclick = function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            };
+        });
+    </script>
+</body>
+</html>

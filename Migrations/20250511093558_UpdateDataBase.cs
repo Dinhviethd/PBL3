@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PBL3.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateDB : Migration
+    public partial class UpdateDataBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,8 @@ namespace PBL3.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HoTen = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    UserType = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    DiaChi = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     MSSV = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Lop = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),

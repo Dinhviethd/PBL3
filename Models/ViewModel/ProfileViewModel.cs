@@ -28,8 +28,24 @@ namespace PBL3.Models.ViewModel
         [Display(Name = "Lớp")]
         public string Lop { get; set; }
 
+        // Ticket information (read-only)
+        [Display(Name = "Biển Số Xe")]
+        public string BienSoXe { get; set; }
+
+        [Display(Name = "Vị Trí Gửi")]
+        public string ViTriGui { get; set; }
+
+        [Display(Name = "Ngày Đăng Ký")]
+        public DateTime NgayDangKy { get; set; }
+
+        [Display(Name = "Ngày Hết Hạn")]
+        public DateTime NgayHetHan { get; set; }
+
+        [Display(Name = "Giá Vé")]
+        public decimal Price { get; set; }
+
         // Staff specific fields
         [Display(Name = "Địa Chỉ")]
-        public string DiaChi { get; set; }
+        public string? DiaChi { get; set; }
     }
 } 

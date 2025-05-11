@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\css\\Profile.css"
     },
     {
+      "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\QLNX.css",
+      "PackagePath": "staticwebassets\\css\\QLNX.css"
+    },
+    {
       "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\account.css",
       "PackagePath": "staticwebassets\\css\\account.css"
     },
