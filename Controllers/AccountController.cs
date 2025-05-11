@@ -40,7 +40,18 @@ namespace PBL3.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                var roles = await _userManager.GetRolesAsync(user);
+                var role = roles.FirstOrDefault();
+
+                if (role == "Student" || role == "Staff")
+                {
+                    return RedirectToAction("Profile", "Account");
+                }
+                else if (role == "Admin")
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
             ModelState.AddModelError(string.Empty, "Invalid Login Attempt.");
