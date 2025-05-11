@@ -93,7 +93,7 @@ namespace PBL3.Controllers
                 AppUser user;
                 if (model.Role == "Student")
                 {
-                    var studentModel = new StudentRegisterViewModel
+                    var studentModel = new RegisterStudentViewModel
                     {
                         HoTen = model.HoTen,
                         Email = model.Email,
@@ -302,5 +302,54 @@ namespace PBL3.Controllers
             }
             return RedirectToAction("QLSV");
         }
+
+        public async Task<IActionResult> QLNV(int page = 1, string searchType = "Email", string searchValue = "")
+        {
+            ViewBag.SearchType = searchType;
+            ViewBag.SearchValue = searchValue;
+
+            var query = _context.Users.OfType<Staff>().AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                switch (searchType)
+                {
+                    case "Name":
+                        query = query.Where(s => s.HoTen.Contains(searchValue));
+                        break;
+                    case "Email":
+                        query = query.Where(s => s.Email.Contains(searchValue));
+                        break;
+                    case "Phone":
+                        query = query.Where(s => s.PhoneNumber.Contains(searchValue));
+                        break;
+                    case "Address":
+                        query = query.Where(s => s.DiaChi.Contains(searchValue));
+                        break;
+                }
+            }
+
+            var pageSize = 10;
+            var totalItems = await query.CountAsync();
+            var staffs = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var model = new StaffRegisterViewModel
+            {
+                Staffs = staffs,
+                PageInfo = new PageInfo
+                {
+                    CurrentPage = page,
+                    TotalItems = totalItems,
+                    ItemsPerPage = pageSize,
+                    TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
+                }
+            };
+
+            return View(model);
+        }
+
     }
 }

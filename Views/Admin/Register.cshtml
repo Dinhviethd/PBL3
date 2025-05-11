@@ -29,8 +29,8 @@
 
             <!-- Common fields -->
             <div class="form-group">
-                <label asp-for="HoTen"></label>
-                <input asp-for="HoTen" class="form-control" placeholder="Full name" />
+                <label asp-for="HoTen">Họ Tên</label>
+                <input asp-for="HoTen" class="form-control" placeholder="Nhập Họ Tên" />
                 <span asp-validation-for="HoTen" class="text-danger"></span>
             </div>
 
@@ -49,14 +49,14 @@
             <!-- Student-specific fields -->
             <div class="form-group" id="student-fields">
                 <div class="form-group">
-                    <label for="MSSV">Student ID</label>
+                    <label for="MSSV">Mã Số Sinh Viên</label>
                     <input type="text" id="MSSV" name="MSSV" class="form-control"
                            placeholder="MSSV" required="@(Model?.Role == "Student")" />
                     <span class="text-danger" data-valmsg-for="MSSV" data-valmsg-replace="true"></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="Lop">Class</label>
+                    <label for="Lop">Lớp</label>
                     <input type="text" id="Lop" name="Lop" class="form-control"
                            placeholder="Class" required="@(Model?.Role == "Student")" />
                     <span class="text-danger" data-valmsg-for="Lop" data-valmsg-replace="true"></span>
@@ -66,7 +66,7 @@
             <!-- Staff-specific fields -->
             <div class="form-group" id="staff-fields" style="display: none;">
                 <div class="form-group">
-                    <label for="DiaChi">Address</label>
+                    <label for="DiaChi">Địa Chỉ</label>
                     <input type="text" id="DiaChi" name="DiaChi" class="form-control"
                            placeholder="Address" required="@(Model?.Role == "Staff")" />
                     <span class="text-danger" data-valmsg-for="DiaChi" data-valmsg-replace="true"></span>

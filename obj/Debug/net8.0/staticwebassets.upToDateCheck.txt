@@ -2,7 +2,9 @@ wwwroot\css\account.css
 wwwroot\css\Admin\Index.css
 wwwroot\css\Admin\QLSV.css
 wwwroot\css\Admin\register.css
+wwwroot\css\Profile.css
 wwwroot\css\site.css
+wwwroot\img\avt.jpg
 wwwroot\img\school.jpg
 wwwroot\js\Admin\QLSV.js
 wwwroot\js\Admin\register.js

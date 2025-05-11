@@ -15,13 +15,5 @@ namespace PBL3.Models.ViewModel
         public IEnumerable<Student> Students { get; set; }
         public PageInfo PageInfo { get; set; }
     }
-    public class PageInfo
-    {
-        public int CurrentPage { get; set; }
-        public int TotalPages { get; set; }
-        public int TotalItems { get; set; }
-        public int ItemsPerPage { get; set; }
-        public int StartRecord { get; set; }
-        public int EndRecord { get; set; }
-    }
+
 }

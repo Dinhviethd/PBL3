@@ -17,12 +17,20 @@
       "PackagePath": "staticwebassets\\css\\Admin\\register.css"
     },
     {
+      "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Profile.css",
+      "PackagePath": "staticwebassets\\css\\Profile.css"
+    },
+    {
       "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\account.css",
       "PackagePath": "staticwebassets\\css\\account.css"
     },
     {
       "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\img\\avt.jpg",
+      "PackagePath": "staticwebassets\\img\\avt.jpg"
     },
     {
       "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\img\\school.jpg",

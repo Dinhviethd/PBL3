@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "B2uiegkUFJJcqeZJStdNoJxnkBXezJgUEtslhv07AlU=",
+  "Hash": "zkm5mgApLWSFq0RjAV2ld+nBtwYxTW+noiqKTel4Svo=",
   "Source": "PBL3",
   "BasePath": "_content/PBL3",
   "Mode": "Default",
@@ -143,6 +143,27 @@
       "OriginalItemSpec": "wwwroot\\css\\Admin\\register.css"
     },
     {
+      "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Profile.css",
+      "SourceId": "PBL3",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\",
+      "BasePath": "_content/PBL3",
+      "RelativePath": "css/Profile#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "1u4i8gelda",
+      "Integrity": "+VCn6USHOm0/4cKBQGCC1WXFK+hKDIrHaYKA/Rb0w7w=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\Profile.css"
+    },
+    {
       "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\site.css",
       "SourceId": "PBL3",
       "SourceType": "Discovered",
@@ -162,6 +183,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\img\\avt.jpg",
+      "SourceId": "PBL3",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\",
+      "BasePath": "_content/PBL3",
+      "RelativePath": "img/avt#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "fz2fknbjle",
+      "Integrity": "23wR7daZI8hSPP3X+Eezn9zIlxxPKHBJnlcsWusfYhU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\avt.jpg"
     },
     {
       "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\img\\school.jpg",
@@ -1796,6 +1838,88 @@
       ]
     },
     {
+      "Route": "css/Profile.1u4i8gelda.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Profile.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2364"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+VCn6USHOm0/4cKBQGCC1WXFK+hKDIrHaYKA/Rb0w7w=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 11 May 2025 02:22:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "1u4i8gelda"
+        },
+        {
+          "Name": "label",
+          "Value": "css/Profile.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-+VCn6USHOm0/4cKBQGCC1WXFK+hKDIrHaYKA/Rb0w7w="
+        }
+      ]
+    },
+    {
+      "Route": "css/Profile.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Profile.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2364"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+VCn6USHOm0/4cKBQGCC1WXFK+hKDIrHaYKA/Rb0w7w=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 11 May 2025 02:22:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-+VCn6USHOm0/4cKBQGCC1WXFK+hKDIrHaYKA/Rb0w7w="
+        }
+      ]
+    },
+    {
       "Route": "css/site.css",
       "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\site.css",
       "Selectors": [],
@@ -1874,6 +1998,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-gM1x7QlxWkHaFeX4ptVmfqEXgsUoTPBERPqC4hOoT+0="
+        }
+      ]
+    },
+    {
+      "Route": "img/avt.fz2fknbjle.jpg",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\img\\avt.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13145"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"23wR7daZI8hSPP3X+Eezn9zIlxxPKHBJnlcsWusfYhU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 10 May 2025 08:08:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "fz2fknbjle"
+        },
+        {
+          "Name": "label",
+          "Value": "img/avt.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-23wR7daZI8hSPP3X+Eezn9zIlxxPKHBJnlcsWusfYhU="
+        }
+      ]
+    },
+    {
+      "Route": "img/avt.jpg",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\img\\avt.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13145"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"23wR7daZI8hSPP3X+Eezn9zIlxxPKHBJnlcsWusfYhU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 10 May 2025 08:08:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-23wR7daZI8hSPP3X+Eezn9zIlxxPKHBJnlcsWusfYhU="
         }
       ]
     },
