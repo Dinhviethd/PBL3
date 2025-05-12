@@ -11,9 +11,20 @@
 </head>
 <body>
     <!-- Header condition -->
-    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    @if (User.Identity.IsAuthenticated)
     {
-        <partial name="_AdminPartial" />
+        if (User.IsInRole("Admin"))
+        {
+            <partial name="_AdminPartial" />
+        }
+        else if (User.IsInRole("Student"))
+        {
+            <partial name="_StudentPartial" />
+        }
+        else if (User.IsInRole("Staff"))
+        {
+            <partial name="_StaffPartial" />
+        }
     }
     else
     {
