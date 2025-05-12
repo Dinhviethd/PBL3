@@ -157,6 +157,7 @@ namespace PBL3.Controllers
                 // Lấy thông tin Student và Ticket liên quan
                 var student = await _context.Users.OfType<Student>()
                     .Include(s => s.Tickets) // Include Tickets để lấy thông tin vé
+                    .ThenInclude(t => t.ParkingSlot) // Include cả ParkingSlot để lấy thông tin vị trí
                     .FirstOrDefaultAsync(s => s.Id == user.Id);
                 if (student == null)
                 {
@@ -226,8 +227,6 @@ namespace PBL3.Controllers
                 return View(model);
             }
 
-
-
             if (role == "Student")
             {
                 var student = await _context.Users.OfType<Student>()
@@ -251,21 +250,24 @@ namespace PBL3.Controllers
                     // Lấy Ticket mới nhất của Student (nếu có)
                     var latestTicket = student.Tickets?.OrderByDescending(t => t.NgayDangKy).FirstOrDefault();
 
+                    // Kiểm tra xem có Ticket hợp lệ không
+                    bool hasValidTicket = latestTicket != null && latestTicket.NgayDangKy != DateTime.MinValue;
+
                     // Cập nhật lại toàn bộ model với thông tin mới
                     var updatedModel = new ProfileViewModel
                     {
                         HoTen = student.HoTen,
                         Email = student.Email,
                         SDT = student.PhoneNumber,
-                        Role = role, // Đảm bảo role luôn là Student
+                        Role = role, //Đảm bảo luôn là Student
                         MSSV = student.MSSV,
                         Lop = student.Lop,
-                        // Thông tin Ticket (nếu có)
-                        BienSoXe = latestTicket?.BienSoXe ?? "Không hợp lệ",
-                        ViTriGui = latestTicket?.ParkingSlot?.SlotName ?? "Không hợp lệ",
-                        NgayDangKy = latestTicket?.NgayDangKy ?? DateTime.MinValue,
-                        NgayHetHan = latestTicket?.NgayHetHan ?? DateTime.MinValue,
-                        Price = latestTicket?.Price ?? 0
+                        // Thông tin Ticket - sử dụng giá trị mặc định nếu không hợp lệ
+                        BienSoXe = hasValidTicket ? latestTicket.BienSoXe : "Không hợp lệ",
+                        ViTriGui = hasValidTicket ? latestTicket.ParkingSlot?.SlotName ?? "Không hợp lệ" : "Không hợp lệ",
+                        NgayDangKy = hasValidTicket ? latestTicket.NgayDangKy : DateTime.MinValue,
+                        NgayHetHan = hasValidTicket ? latestTicket.NgayHetHan : DateTime.MinValue,
+                        Price = hasValidTicket ? latestTicket.Price : 0
                     };
 
                     TempData["Success"] = "Cập nhật thông tin thành công.";
