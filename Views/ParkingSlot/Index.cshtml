@@ -14,6 +14,62 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/QLNX.css" asp-append-version="true" />
     <title>Document</title>
+    <style>
+        .add-button {
+            padding: 8px 24px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .add-button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .confirm-button {
+            padding: 8px 24px;
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .confirm-button:hover {
+            background-color: #16a34a;
+        }
+
+        #assignParkingModal .modal-content {
+            max-width: 400px;
+            margin: 100px auto;
+        }
+
+        #assignParkingModal .form-group {
+            margin-bottom: 20px;
+        }
+
+        #assignParkingModal label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        #assignParkingModal select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
     <form class="vehicle-form">
@@ -145,6 +201,7 @@
                             </table>
                             <div class="modal-buttons">
                                 <button type="submit" class="delete-button">Xóa</button>
+                                <button type="button" class="add-button" id="addToParkingBtn">Thêm</button>
                                 <button type="button" class="modal-close">Đóng</button>
                             </div>
                         </form>
@@ -152,6 +209,31 @@
                 </div>
             </div>
         }
+
+        <div class="modal" id="assignParkingModal">
+            <div class="modal-content">
+                <h2 class="modal-title">Chọn ô giữ xe</h2>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="parkingSlotSelect">Ô giữ xe:</label>
+                        <select id="parkingSlotSelect" class="form-control">
+                            @foreach (var slot in Model.ParkingSlots)
+                            {
+                                <option value="@slot.ParkingSlotId" 
+                                        data-current="@slot.CurrentCount" 
+                                        data-max="@slot.MaxCapacity">
+                                    Ô số @slot.SlotName (@slot.CurrentCount/@slot.MaxCapacity)
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="confirm-button" id="confirmAssignBtn">Xác nhận</button>
+                    <button type="button" class="modal-close">Hủy</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -444,6 +526,60 @@
             e.preventDefault();
             alert('Vui lòng nhập từ khóa tìm kiếm');
           }
+        });
+
+        // Add button click handler
+        document.getElementById('addToParkingBtn').addEventListener('click', function() {
+            const selectedTickets = document.querySelectorAll('input[name="ticketIds"]:checked');
+            if (selectedTickets.length === 0) {
+                alert('Vui lòng chọn ít nhất một vé');
+                return;
+            }
+            document.getElementById('assignParkingModal').classList.add('show');
+        });
+
+        // Confirm assignment handler
+        document.getElementById('confirmAssignBtn').addEventListener('click', function() {
+            const selectedTickets = Array.from(document.querySelectorAll('input[name="ticketIds"]:checked'))
+                .map(checkbox => checkbox.value);
+            const selectedSlot = document.getElementById('parkingSlotSelect');
+            const option = selectedSlot.options[selectedSlot.selectedIndex];
+            const currentCount = parseInt(option.dataset.current);
+            const maxCapacity = parseInt(option.dataset.max);
+            
+            if (selectedTickets.length + currentCount > maxCapacity) {
+                alert('Số lượng xe vượt quá sức chứa của ô giữ xe');
+                return;
+            }
+
+            // Send request to assign tickets
+            fetch('/ParkingSlot/AssignTickets', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ticketIds: selectedTickets,
+                    parkingSlotId: selectedSlot.value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert(data.message || 'Có lỗi xảy ra');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra');
+            });
+        });
+
+        // Close assign parking modal
+        document.querySelector('#assignParkingModal .modal-close').addEventListener('click', function() {
+            document.getElementById('assignParkingModal').classList.remove('show');
         });
     </script>
 </body>

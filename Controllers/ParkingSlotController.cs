@@ -75,5 +75,47 @@ namespace PBL3.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignTickets([FromBody] AssignTicketsRequest request)
+        {
+            try
+            {
+                var parkingSlot = await _context.ParkingSlots.FindAsync(request.ParkingSlotId);
+                if (parkingSlot == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy ô giữ xe" });
+                }
+
+                var tickets = await _context.Tickets
+                    .Where(t => request.TicketIds.Contains(t.ID_Ticket))
+                    .ToListAsync();
+
+                if (parkingSlot.CurrentCount + tickets.Count > parkingSlot.MaxCapacity)
+                {
+                    return Json(new { success = false, message = "Số lượng xe vượt quá sức chứa của ô giữ xe" });
+                }
+
+                foreach (var ticket in tickets)
+                {
+                    ticket.ParkingSlotId = request.ParkingSlotId;
+                }
+
+                parkingSlot.CurrentCount += tickets.Count;
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Có lỗi xảy ra: " + ex.Message });
+            }
+        }
+
+        public class AssignTicketsRequest
+        {
+            public int[] TicketIds { get; set; }
+            public int ParkingSlotId { get; set; }
+        }
     }
 }

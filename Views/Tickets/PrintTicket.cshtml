@@ -1,0 +1,75 @@
+﻿@model IEnumerable<PBL3.Models.Ticket>
+
+@{
+    ViewData["Title"] = "Danh sách vé xe";
+}
+
+<h1>Danh sách vé xe</h1>
+
+<div class="search-container">
+    <form asp-action="PrintTicket" method="get" class="search-form">
+        <div class="search-group">
+            <label for="searchLicensePlate">Tìm theo biển số xe:</label>
+            <input type="text" id="searchLicensePlate" name="searchLicensePlate" value="@ViewBag.SearchLicensePlate" class="form-control" />
+        </div>
+        
+        <div class="search-buttons">
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            <a asp-action="PrintTicket" class="btn btn-secondary">Xóa bộ lọc</a>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BienSoXe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayDangKy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayHetHan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParkingSlot)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BienSoXe)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayDangKy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayHetHan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.HoTen)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ParkingSlot.SlotName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID_Ticket">In vé</a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
