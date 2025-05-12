@@ -120,8 +120,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>sl5fch7aez</Fingerprint>
-      <Integrity>4NVqsFbcRraykfjbIZheLsaAOyEtgDSVhWK1jwpFo7U=</Integrity>
+      <Fingerprint>uvrc7batc6</Fingerprint>
+      <Integrity>Kms5ezgDVHUmSzyoEkzIFTUcD+4pvDbEk8fW0MhEKHM=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\QLNX.css'))</OriginalItemSpec>
