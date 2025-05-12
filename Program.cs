@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PBL3.Data;
 using PBL3.Models;
+using QuestPDF.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Thanh") ?? throw new InvalidOperationException("Connection string 'PBL3Context' not found.")));
@@ -27,6 +28,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 .AddDefaultTokenProviders();
 
 var app = builder.Build();
+QuestPDF.Settings.License = LicenseType.Community;
 
 await SeedData.Initialize(app);
 // Configure the HTTP request pipeline.
