@@ -1,0 +1,52 @@
+@model PBL3.Models.ViewModel.StaffRegisterViewModel
+
+@{
+    ViewData["Title"] = "Sửa thông tin nhân viên";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="EditStaff" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="id" value="@ViewContext.RouteData.Values["id"]" />
+
+                <div class="form-group mb-3">
+                    <label asp-for="HoTen" class="control-label">Họ và tên</label>
+                    <input asp-for="HoTen" class="form-control" />
+                    <span asp-validation-for="HoTen" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Email" class="control-label">Email</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="SDT" class="control-label">Số điện thoại</label>
+                    <input asp-for="SDT" class="form-control" />
+                    <span asp-validation-for="SDT" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
+                    <input asp-for="DiaChi" class="form-control" />
+                    <span asp-validation-for="DiaChi" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    <a asp-action="QLNV" class="btn btn-secondary">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

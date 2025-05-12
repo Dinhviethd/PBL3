@@ -174,7 +174,9 @@ namespace PBL3.Controllers
                 {
                     // Thêm role cho user
                     await _userManager.AddToRoleAsync(user, model.Role);
-                    return RedirectToAction("QLSV");
+                    if (model.Role == "Student") return RedirectToAction("QLSV");
+                    else return RedirectToAction("QLNV");
+
                 }
 
                 // Nếu có lỗi, thêm vào ModelState
@@ -351,6 +353,118 @@ namespace PBL3.Controllers
 
             return View(model);
         }
+
+        // GET: Sửa thông tin nhân viên
+        public async Task<IActionResult> EditStaff(string id)
+        {
+            var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
+            if (staff == null)
+            {
+                return NotFound();
+            }
+
+            var model = new StaffRegisterViewModel
+            {
+                HoTen = staff.HoTen,
+                Email = staff.Email,
+                SDT = staff.PhoneNumber,
+                DiaChi = staff.DiaChi,
+                Role = "Staff"
+            };
+
+            return View(model);
+        }
+
+        // POST: Sửa thông tin nhân viên
+        [HttpPost]
+        public async Task<IActionResult> EditStaff(string id, StaffRegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
+                if (staff == null)
+                {
+                    return NotFound();
+                }
+
+                // Cập nhật thông tin staff
+                staff.HoTen = model.HoTen;
+                staff.Email = model.Email;
+                staff.PhoneNumber = model.SDT;
+                staff.DiaChi = model.DiaChi;
+
+                var result = await _userManager.UpdateAsync(staff);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("QLNV");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return View(model);
+        }
+
+        // GET: Xác nhận xóa nhân viên
+        public async Task<IActionResult> ConfirmDeleteStaff(string id)
+        {
+            var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
+            if (staff == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.Message = "Bạn chắc chắn muốn xóa nhân viên này?";
+            return View(staff);
+        }
+
+        // POST: Xóa nhân viên
+        [HttpPost]
+        public async Task<IActionResult> DeleteStaff(string id)
+        {
+            var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
+            if (staff != null)
+            {
+                var result = await _userManager.DeleteAsync(staff);
+                if (result.Succeeded)
+                {
+                    TempData["Success"] = "Đã xóa nhân viên thành công.";
+                }
+                else
+                {
+                    TempData["Error"] = "Có lỗi xảy ra khi xóa nhân viên.";
+                }
+            }
+            return RedirectToAction("QLNV");
+        }
+
+        // GET: Reset password
+        public async Task<IActionResult> ResetPassword(string id, string role)
+        {
+            AppUser user = null;
+            if (role == "Staff")
+            {
+                user = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
+            }
+            else if (role == "Student")
+            {
+                user = await _context.Users.OfType<Student>().FirstOrDefaultAsync(s => s.Id == id);
+            }
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.UserName = user.HoTen;
+            ViewBag.UserId = user.Id;
+            ViewBag.UserType = role == "Staff" ? "nhân viên" : "sinh viên";
+            ViewBag.Role = role;
+            return View();
+        }
+
 
     }
 }
