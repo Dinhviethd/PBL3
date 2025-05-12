@@ -6,9 +6,9 @@ namespace PBL3.Controllers
     [Authorize(Roles = "Student")]
     public class StudentController : Controller
     {
-        public IActionResult Index()
+        public IActionResult BuyTicket()
         {
-            return RedirectToAction("Profile", "Account");
+            return View();
         }
     }
 }

@@ -17,6 +17,10 @@
       "PackagePath": "staticwebassets\\css\\Admin\\register.css"
     },
     {
+      "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\BuyTicket.css",
+      "PackagePath": "staticwebassets\\css\\BuyTicket.css"
+    },
+    {
       "Id": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Profile.css",
       "PackagePath": "staticwebassets\\css\\Profile.css"
     },

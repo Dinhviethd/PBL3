@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Trang Cá Nhân";
     var isStudent = (Model.Role == "Student");
+    // Kiểm tra xem có thông tin vé hợp lệ không
+    var hasValidTicket = isStudent && Model.NgayDangKy != DateTime.MinValue;
 }
 
 <!DOCTYPE html>
@@ -11,7 +13,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Trang Cá Nhân"] - PBL3</title>
     <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
-
 </head>
 <body>
     <div class="profile-panel">
@@ -23,7 +24,7 @@
                 <h3>@Model.HoTen</h3>
                 <p>@Model.Role</p>
                 <button class="profile-btn active">Thông Tin Cá Nhân</button>
-                <button class="profile-btn">Đổi Mật Khẩu</button>
+                <a asp-controller="Account" asp-action="VerifyEmail" asp-route-username="@Model.Email" class="btn profile-btn">Đổi Mật Khẩu</a>
                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                     @Html.AntiForgeryToken()
                     <button type="submit" class="profile-btn">Đăng Xuất</button>
@@ -71,6 +72,34 @@
                                 <label asp-for="Lop"></label>
                                 <input asp-for="Lop" class="form-control" />
                                 <span asp-validation-for="Lop" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Thêm phần hiển thị thông tin vé (read-only) -->
+                        <div class="form-row">
+                            <div class="form-group half-width">
+                                <label>Biển Số Xe</label>
+                                <input value="@Model.BienSoXe" class="form-control" readonly />
+                            </div>
+                            <div class="form-group half-width">
+                                <label>Vị Trí Gửi</label>
+                                <input value="@Model.ViTriGui" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group half-width">
+                                <label>Ngày Đăng Ký</label>
+                                <input value="@(hasValidTicket ? Model.NgayDangKy.ToString("dd/MM/yyyy") : "Không hợp lệ")" class="form-control" readonly />
+                            </div>
+                            <div class="form-group half-width">
+                                <label>Ngày Hết Hạn</label>
+                                <input value="@(hasValidTicket ? Model.NgayHetHan.ToString("dd/MM/yyyy") : "Không hợp lệ")" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group half-width">
+                                <label>Giá Vé</label>
+                                <input value="@(hasValidTicket ? Model.Price.ToString("N0") + " VND" : "Không hợp lệ")" class="form-control" readonly />
                             </div>
                         </div>
                     }

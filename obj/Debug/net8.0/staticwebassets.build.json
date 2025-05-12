@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "1cXKBbIG/j9CggvoXRtjIw4qw1tFheLtDtR7kk5EK+0=",
+  "Hash": "tgp6LjBPTFcAvnRlqxvkz/8Uzh39wttSQxAzlfuEDuM=",
   "Source": "PBL3",
   "BasePath": "_content/PBL3",
   "Mode": "Default",
@@ -141,6 +141,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\Admin\\register.css"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\BuyTicket.css",
+      "SourceId": "PBL3",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\",
+      "BasePath": "_content/PBL3",
+      "RelativePath": "css/BuyTicket#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "opniczzihb",
+      "Integrity": "dA9uK75yse60VZINFYj3BCJNob3bdW2OZn9iABPGjxo=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\BuyTicket.css"
     },
     {
       "Identity": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\Profile.css",
@@ -1855,6 +1876,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-O3mx+w2bQwtvL3rN/02qmCvGvKZBPN3uO+JYINd+Iek="
+        }
+      ]
+    },
+    {
+      "Route": "css/BuyTicket.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\BuyTicket.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6394"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"dA9uK75yse60VZINFYj3BCJNob3bdW2OZn9iABPGjxo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 11 May 2025 20:46:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-dA9uK75yse60VZINFYj3BCJNob3bdW2OZn9iABPGjxo="
+        }
+      ]
+    },
+    {
+      "Route": "css/BuyTicket.opniczzihb.css",
+      "AssetFile": "C:\\Users\\Admin\\source\\repos\\PBL3\\PBL3\\wwwroot\\css\\BuyTicket.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6394"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"dA9uK75yse60VZINFYj3BCJNob3bdW2OZn9iABPGjxo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 11 May 2025 20:46:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "opniczzihb"
+        },
+        {
+          "Name": "label",
+          "Value": "css/BuyTicket.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-dA9uK75yse60VZINFYj3BCJNob3bdW2OZn9iABPGjxo="
         }
       ]
     },
