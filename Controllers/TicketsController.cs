@@ -170,4 +170,68 @@ public class TicketsController : Controller
         return View(tickets);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CheckAndUpdateTicket([FromBody] TicketUpdateRequest request)
+    {
+        try
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Không tìm thấy thông tin người dùng." });
+            }
+
+            var existingTicket = await _context.Tickets
+                .Where(t => t.StudentId == user.Id)
+                .OrderByDescending(t => t.NgayHetHan)
+                .FirstOrDefaultAsync();
+
+            var today = DateTime.Now;
+            var hasValidTicket = existingTicket != null && existingTicket.NgayHetHan > today;
+
+            if (hasValidTicket)
+            {
+                // Calculate months to add based on package
+                int monthsToAdd = request.PackageName switch
+                {
+                    "Gói 1 Tháng" => 1,
+                    "Gói 3 Tháng" => 3,
+                    "Gói 6 Tháng" => 6,
+                    _ => 0
+                };
+
+                // Update existing ticket
+                existingTicket.NgayHetHan = existingTicket.NgayHetHan.AddMonths(monthsToAdd);
+                existingTicket.Price += request.Price;
+                _context.Update(existingTicket);
+                await _context.SaveChangesAsync();
+
+                return Json(new
+                {
+                    success = true,
+                    hasValidTicket = true,
+                    licensePlate = existingTicket.BienSoXe,
+                    newExpiryDate = existingTicket.NgayHetHan.ToString("dd/MM/yyyy")
+                });
+            }
+
+            return Json(new
+            {
+                success = true,
+                hasValidTicket = false
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error checking and updating ticket");
+            return Json(new { success = false, message = "Có lỗi xảy ra khi xử lý yêu cầu." });
+        }
+    }
+
+    public class TicketUpdateRequest
+    {
+        public string PackageName { get; set; }
+        public decimal Price { get; set; }
+    }
 }

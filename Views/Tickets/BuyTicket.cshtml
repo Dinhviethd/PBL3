@@ -22,7 +22,7 @@
                 <li>Thẻ xe điện tử</li>
                 <li class="highlight">Gói cơ bản</li>
             </ul>
-            <button class="register-btn" onclick="openLicenseModal('Gói 1 Tháng', 50000)">Đăng Ký Ngay</button>
+            <button class="register-btn" onclick="checkAndUpdateTicket('Gói 1 Tháng', 50000)">Đăng Ký Ngay</button>
         </div>
 
         <div class="package">
@@ -34,7 +34,7 @@
                 <li>Thẻ xe điện tử</li>
                 <li class="highlight">Giảm 20% tổng giá</li>
             </ul>
-            <button class="register-btn" onclick="openLicenseModal('Gói 3 Tháng', 120000)">Đăng Ký Ngay</button>
+            <button class="register-btn" onclick="checkAndUpdateTicket('Gói 3 Tháng', 120000)">Đăng Ký Ngay</button>
         </div>
 
         <div class="package">
@@ -46,7 +46,7 @@
                 <li>Thẻ xe điện tử</li>
                 <li class="highlight">Giảm 33% tổng giá</li>
             </ul>
-            <button class="register-btn" onclick="openLicenseModal('Gói 6 Tháng', 200000)">Đăng Ký Ngay</button>
+            <button class="register-btn" onclick="checkAndUpdateTicket('Gói 6 Tháng', 200000)">Đăng Ký Ngay</button>
         </div>
     </div>
 
@@ -137,15 +137,73 @@
         </div>
     </div>
 
+    <!-- Extension Confirmation Modal -->
+    <div id="extensionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeExtensionModal()">×</span>
+            <h2 class="modal-title">Gia hạn vé</h2>
+            <div class="extension-info">
+                <p>Bạn đã có vé còn hiệu lực với biển số xe: <strong id="currentLicensePlate"></strong></p>
+                <p>Ngày hết hạn mới sau khi gia hạn: <strong id="newExpiryDate"></strong></p>
+                <p>Bạn có muốn gia hạn vé không?</p>
+            </div>
+            <div class="action-buttons">
+                <button class="confirm-button" onclick="confirmExtension()">Xác nhận gia hạn</button>
+                <button class="cancel-button" onclick="closeExtensionModal()">Hủy</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Get modal elements
         var licenseModal = document.getElementById("licenseModal");
         var confirmationModal = document.getElementById("confirmationModal");
+        var extensionModal = document.getElementById("extensionModal");
 
         var currentPackageName = "";
+        var currentPrice = 0;
+
+        function checkAndUpdateTicket(packageName, price) {
+            currentPackageName = packageName;
+            currentPrice = price;
+
+            // Check if student has any valid tickets
+            fetch('/Tickets/CheckAndUpdateTicket', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({
+                    packageName: packageName,
+                    price: price
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.hasValidTicket) {
+                        // Show extension confirmation modal
+                        document.getElementById("currentLicensePlate").textContent = data.licensePlate;
+                        document.getElementById("newExpiryDate").textContent = data.newExpiryDate;
+                        extensionModal.style.display = "block";
+                    } else {
+                        // Show license plate input modal for new ticket
+                        openLicenseModal(packageName, price);
+                    }
+                } else {
+                    alert(data.message || 'Có lỗi xảy ra khi xử lý yêu cầu.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi kiểm tra vé hiện tại.');
+            });
+        }
 
         function openLicenseModal(packageName, price) {
             currentPackageName = packageName;
+            currentPrice = price;
             document.getElementById("licensePackageName").textContent = packageName;
             document.getElementById("packageNameInput").value = packageName;
             document.getElementById("priceInput").value = price;
@@ -170,7 +228,6 @@
                 if (ulElement) ulElement.innerHTML = '';
             }
 
-
             licenseModal.style.display = "block";
         }
 
@@ -178,9 +235,17 @@
             licenseModal.style.display = "none";
         }
 
+        function closeConfirmationModal() {
+            confirmationModal.style.display = "none";
+        }
+
+        function closeExtensionModal() {
+            extensionModal.style.display = "none";
+        }
+
         function openConfirmationModal() {
             var licensePlate = document.getElementById("bienSoXeInput").value;
-            var isValid = true; // Flag for client-side validation
+            var isValid = true;
 
             if (licensePlate.trim() === "") {
                 var validationSpan = document.querySelector('span[data-valmsg-for="BienSoXe"]');
@@ -189,45 +254,35 @@
                     validationSpan.classList.remove("field-validation-valid");
                     validationSpan.classList.add("field-validation-error");
                 } else {
-                    // Fallback if span not found, though less likely with asp-validation-for
                     var inputContainer = document.getElementById("bienSoXeInput").parentNode;
                     var errorMsg = document.createElement("span");
                     errorMsg.className = "text-danger";
                     errorMsg.textContent = "Vui lòng nhập biển số xe.";
-                    // Check if an error message already exists to prevent duplicates
                     if (!inputContainer.querySelector(".text-danger.custom-error")) {
-                        errorMsg.classList.add("custom-error"); // Add a class to identify it
+                        errorMsg.classList.add("custom-error");
                         inputContainer.appendChild(errorMsg);
                     }
                 }
-                isValid = false; // Mark as invalid
+                isValid = false;
             } else {
-                 var validationSpan = document.querySelector('span[data-valmsg-for="BienSoXe"]');
+                var validationSpan = document.querySelector('span[data-valmsg-for="BienSoXe"]');
                 if (validationSpan) {
-                    validationSpan.textContent = ""; // Clear previous error
+                    validationSpan.textContent = "";
                     validationSpan.classList.remove("field-validation-error");
                     validationSpan.classList.add("field-validation-valid");
                 }
-                // Remove custom error if it exists
                 var customError = document.getElementById("bienSoXeInput").parentNode.querySelector(".text-danger.custom-error");
                 if(customError) customError.remove();
             }
 
-            if (!isValid) return; // Stop if client-side validation fails
-
+            if (!isValid) return;
 
             var expiryDate = calculateExpiryDate(currentPackageName);
-
             document.getElementById("confirmPackageName").textContent = currentPackageName;
             document.getElementById("confirmLicensePlate").textContent = licensePlate;
             document.getElementById("confirmExpiryDate").textContent = expiryDate;
-
             closeLicenseModal();
             confirmationModal.style.display = "block";
-        }
-
-        function closeConfirmationModal() {
-            confirmationModal.style.display = "none";
         }
 
         function calculateExpiryDate(packageName) {
@@ -252,15 +307,45 @@
         }
 
         function submitTicketForm() {
-            // Clear any existing general validation summary messages before submitting
             var validationSummaryDiv = document.querySelector('.validation-summary-errors[data-valmsg-summary="true"]');
             if (validationSummaryDiv) {
                 var ul = validationSummaryDiv.querySelector('ul');
-                if (ul) ul.innerHTML = ''; // Clear list items
+                if (ul) ul.innerHTML = '';
                 validationSummaryDiv.classList.remove('validation-summary-errors');
                 validationSummaryDiv.classList.add('validation-summary-valid');
             }
             document.getElementById("ticketForm").submit();
+        }
+
+        function confirmExtension() {
+            // Submit the extension request
+            fetch('/Tickets/CheckAndUpdateTicket', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({
+                    packageName: currentPackageName,
+                    price: currentPrice
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Đã gia hạn vé thành công!\nBiển số xe: ${data.licensePlate}\nNgày hết hạn mới: ${data.newExpiryDate}`);
+                    location.reload(); // Refresh page to show updated status
+                } else {
+                    alert(data.message || 'Có lỗi xảy ra khi gia hạn vé.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi gia hạn vé.');
+            })
+            .finally(() => {
+                closeExtensionModal();
+            });
         }
 
         window.onclick = function(event) {
@@ -270,23 +355,22 @@
             if (event.target == confirmationModal) {
                 closeConfirmationModal();
             }
+            if (event.target == extensionModal) {
+                closeExtensionModal();
+            }
         }
 
-        // --- NEW SCRIPT TO SHOW TEMP DATA MESSAGE ---
         @if (TempData["SuccessMessage"] != null)
         {
             <text>
-                // Ensure this runs after the DOM is fully loaded, or at least modals are defined
                 document.addEventListener('DOMContentLoaded', function () {
                     alert('@Html.Raw(HttpUtility.JavaScriptStringEncode(TempData["SuccessMessage"].ToString()))');
-                    // Optionally, close any open modals if the registration was successful
                     if (licenseModal.style.display === "block") {
                         closeLicenseModal();
                     }
                     if (confirmationModal.style.display === "block") {
                         closeConfirmationModal();
                     }
-                    // Reset the form to clear inputs after successful submission
                     var ticketForm = document.getElementById("ticketForm");
                     if (ticketForm) {
                         ticketForm.reset();
@@ -294,8 +378,6 @@
                 });
             </text>
         }
-        // --- END NEW SCRIPT ---
-
     </script>
 </body>
 </html>
