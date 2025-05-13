@@ -192,6 +192,11 @@ namespace PBL3.Controllers
         // GET: Sửa thông tin sinh viên
         public async Task<IActionResult> EditStudent(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
             var student = await _context.Users.OfType<Student>().FirstOrDefaultAsync(s => s.Id == id);
             if (student == null)
             {
@@ -213,14 +218,31 @@ namespace PBL3.Controllers
 
         // POST: Sửa thông tin sinh viên
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditStudent(string id, RegisterStudentViewModel model)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
                 var student = await _context.Users.OfType<Student>().FirstOrDefaultAsync(s => s.Id == id);
                 if (student == null)
                 {
                     return NotFound();
+                }
+
+                // Kiểm tra email mới có bị trùng không (nếu có thay đổi)
+                if (student.Email != model.Email)
+                {
+                    var existingUser = await _userManager.FindByEmailAsync(model.Email);
+                    if (existingUser != null)
+                    {
+                        ModelState.AddModelError(string.Empty, "Email này đã được sử dụng bởi người dùng khác.");
+                        return View(model);
+                    }
                 }
 
                 // Kiểm tra MSSV mới có bị trùng không (nếu có thay đổi)
@@ -230,7 +252,7 @@ namespace PBL3.Controllers
                         .FirstOrDefaultAsync(s => s.MSSV == model.MSSV);
                     if (existingStudent != null)
                     {
-                        ModelState.AddModelError(string.Empty, "MSSV này đã được sử dụng.");
+                        ModelState.AddModelError(string.Empty, "MSSV này đã được sử dụng bởi sinh viên khác.");
                         return View(model);
                     }
                 }
@@ -238,6 +260,7 @@ namespace PBL3.Controllers
                 // Cập nhật thông tin student
                 student.HoTen = model.HoTen;
                 student.Email = model.Email;
+                student.UserName = model.Email; // Cập nhật cả UserName vì nó được sử dụng để đăng nhập
                 student.PhoneNumber = model.SDT;
                 student.MSSV = model.MSSV;
                 student.Lop = model.Lop;
@@ -245,6 +268,7 @@ namespace PBL3.Controllers
                 var result = await _userManager.UpdateAsync(student);
                 if (result.Succeeded)
                 {
+                    TempData["Success"] = "Cập nhật thông tin sinh viên thành công.";
                     return RedirectToAction("QLSV");
                 }
 

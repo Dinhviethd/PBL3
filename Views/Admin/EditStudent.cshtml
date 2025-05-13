@@ -1,0 +1,58 @@
+@model PBL3.Models.ViewModel.RegisterStudentViewModel
+
+@{
+    ViewData["Title"] = "Sửa thông tin sinh viên";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="EditStudent" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Role" value="Student" />
+
+                <div class="form-group mb-3">
+                    <label asp-for="HoTen" class="control-label">Họ và tên</label>
+                    <input asp-for="HoTen" class="form-control" />
+                    <span asp-validation-for="HoTen" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Email" class="control-label">Email</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="SDT" class="control-label">Số điện thoại</label>
+                    <input asp-for="SDT" class="form-control" />
+                    <span asp-validation-for="SDT" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="MSSV" class="control-label">Mã số sinh viên</label>
+                    <input asp-for="MSSV" class="form-control" />
+                    <span asp-validation-for="MSSV" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Lop" class="control-label">Lớp</label>
+                    <input asp-for="Lop" class="form-control" />
+                    <span asp-validation-for="Lop" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    <a asp-action="QLSV" class="btn btn-secondary">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 
