@@ -1,0 +1,301 @@
+﻿@using System.Web
+@model PBL3.Models.ViewModel.TicketViewModel
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Các gói đăng ký</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/BuyTicket.css" asp-append-version="true" />
+</head>
+<body>
+    <h1>Các gói hiện có</h1>
+    <div class="package-container">
+        <!-- Your package divs here -->
+        <div class="package">
+            <h3>Gói 1 Tháng</h3>
+            <div class="price">50.000đ</div>
+            <ul class="features">
+                <li>Giữ xe 24/7</li>
+                <li>Bảo hiểm xe</li>
+                <li>Thẻ xe điện tử</li>
+                <li class="highlight">Gói cơ bản</li>
+            </ul>
+            <button class="register-btn" onclick="openLicenseModal('Gói 1 Tháng', 50000)">Đăng Ký Ngay</button>
+        </div>
+
+        <div class="package">
+            <h3>Gói 3 Tháng</h3>
+            <div class="price">120.000đ</div>
+            <ul class="features">
+                <li>Giữ xe 24/7</li>
+                <li>Bảo hiểm xe</li>
+                <li>Thẻ xe điện tử</li>
+                <li class="highlight">Giảm 20% tổng giá</li>
+            </ul>
+            <button class="register-btn" onclick="openLicenseModal('Gói 3 Tháng', 120000)">Đăng Ký Ngay</button>
+        </div>
+
+        <div class="package">
+            <h3>Gói 6 Tháng</h3>
+            <div class="price">200.000đ</div>
+            <ul class="features">
+                <li>Giữ xe 24/7</li>
+                <li>Bảo hiểm xe</li>
+                <li>Thẻ xe điện tử</li>
+                <li class="highlight">Giảm 33% tổng giá</li>
+            </ul>
+            <button class="register-btn" onclick="openLicenseModal('Gói 6 Tháng', 200000)">Đăng Ký Ngay</button>
+        </div>
+    </div>
+
+    <!-- License Plate Modal -->
+    <div id="licenseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLicenseModal()">×</span>
+            <h2 class="modal-title">Đăng ký <span id="licensePackageName"></span></h2>
+            <form asp-controller="Tickets" asp-action="CreateTicket" method="post" id="ticketForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <input type="hidden" asp-for="PackageName" id="packageNameInput" />
+                <input type="hidden" asp-for="Price" id="priceInput" />
+                <input type="hidden" asp-for="HoTen" value="@Model.HoTen" />
+                <input type="hidden" asp-for="MSSV" value="@Model.MSSV" />
+                <input type="hidden" asp-for="Lop" value="@Model.Lop" />
+
+                <p>Vui lòng nhập biển số xe của bạn:</p>
+                <div class="input-container">
+                    <input type="text" asp-for="BienSoXe" id="bienSoXeInput" class="license-plate-input" placeholder="VD: 51A-12345" required>
+                    <span asp-validation-for="BienSoXe" class="text-danger"></span>
+                    <button type="button" class="continue-btn" onclick="openConfirmationModal()">Tiếp tục</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="confirmation-modal">
+        <div class="confirmation-content">
+            <header class="confirmation-header">
+                <div class="success-icon-wrapper">
+                    <svg width="22" height="24" viewBox="0 0 22 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="success-icon">
+                        <g clip-path="url(#clip0_7_293)">
+                            <path d="M21.0594 4.94061C21.6453 5.52655 21.6453 6.47811 21.0594 7.06405L9.05938 19.0641C8.47344 19.65 7.52188 19.65 6.93594 19.0641L0.935944 13.0641C0.350006 12.4781 0.350006 11.5266 0.935944 10.9406C1.52188 10.3547 2.47344 10.3547 3.05938 10.9406L8.00001 15.8766L18.9406 4.94061C19.5266 4.35468 20.4781 4.35468 21.0641 4.94061H21.0594Z" fill="#10B981" />
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_7_293">
+                                <path d="M0.5 0H21.5V24H0.5V0Z" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                </div>
+                <h2 class="confirmation-message">Xác nhận đăng ký gói giữ xe</h2>
+            </header>
+
+            <article class="student-info-section">
+                <h3 class="section-title">Thông tin sinh viên</h3>
+                <div class="info-grid">
+                    <div class="info-row">
+                        <span class="info-label">Họ và tên:</span>
+                        <span class="info-value">@Model.HoTen</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">MSSV:</span>
+                        <span class="info-value">@Model.MSSV</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Lớp:</span>
+                        <span class="info-value">@Model.Lop</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Gói giữ xe:</span>
+                        <span class="info-value" id="confirmPackageName"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Ngày hết hạn:</span>
+                        <span class="info-value" id="confirmExpiryDate"></span>
+                    </div>
+                </div>
+            </article>
+
+            <section class="vehicle-info-section">
+                <h3 class="section-title">Thông tin xe</h3>
+                <div class="vehicle-input-group">
+                    <span class="info-label">Biển số:</span>
+                    <span class="info-value" id="confirmLicensePlate"></span>
+                </div>
+            </section>
+
+            <footer class="action-buttons">
+                <button class="print-button" onclick="submitTicketForm()">
+                    <span>Xác nhận</span>
+                </button>
+                <button class="cancel-button" onclick="closeConfirmationModal()">Hủy</button>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Get modal elements
+        var licenseModal = document.getElementById("licenseModal");
+        var confirmationModal = document.getElementById("confirmationModal");
+
+        var currentPackageName = "";
+
+        function openLicenseModal(packageName, price) {
+            currentPackageName = packageName;
+            document.getElementById("licensePackageName").textContent = packageName;
+            document.getElementById("packageNameInput").value = packageName;
+            document.getElementById("priceInput").value = price;
+
+            var bienSoXeInput = document.getElementById("bienSoXeInput");
+            if (bienSoXeInput) {
+                bienSoXeInput.value = "";
+                var validationSpan = document.querySelector('span[data-valmsg-for="BienSoXe"]');
+                if (validationSpan) {
+                    validationSpan.textContent = "";
+                    validationSpan.classList.remove("field-validation-error");
+                    validationSpan.classList.add("field-validation-valid");
+                }
+            }
+            var validationSummary = document.querySelector('.validation-summary-errors ul');
+            if (validationSummary) {
+                validationSummary.innerHTML = '';
+            }
+            var generalValidationSummaryDiv = document.querySelector('.validation-summary-errors[data-valmsg-summary="true"]');
+            if(generalValidationSummaryDiv){
+                var ulElement = generalValidationSummaryDiv.querySelector('ul');
+                if (ulElement) ulElement.innerHTML = '';
+            }
+
+
+            licenseModal.style.display = "block";
+        }
+
+        function closeLicenseModal() {
+            licenseModal.style.display = "none";
+        }
+
+        function openConfirmationModal() {
+            var licensePlate = document.getElementById("bienSoXeInput").value;
+            var isValid = true; // Flag for client-side validation
+
+            if (licensePlate.trim() === "") {
+                var validationSpan = document.querySelector('span[data-valmsg-for="BienSoXe"]');
+                if (validationSpan) {
+                    validationSpan.textContent = "Vui lòng nhập biển số xe.";
+                    validationSpan.classList.remove("field-validation-valid");
+                    validationSpan.classList.add("field-validation-error");
+                } else {
+                    // Fallback if span not found, though less likely with asp-validation-for
+                    var inputContainer = document.getElementById("bienSoXeInput").parentNode;
+                    var errorMsg = document.createElement("span");
+                    errorMsg.className = "text-danger";
+                    errorMsg.textContent = "Vui lòng nhập biển số xe.";
+                    // Check if an error message already exists to prevent duplicates
+                    if (!inputContainer.querySelector(".text-danger.custom-error")) {
+                        errorMsg.classList.add("custom-error"); // Add a class to identify it
+                        inputContainer.appendChild(errorMsg);
+                    }
+                }
+                isValid = false; // Mark as invalid
+            } else {
+                 var validationSpan = document.querySelector('span[data-valmsg-for="BienSoXe"]');
+                if (validationSpan) {
+                    validationSpan.textContent = ""; // Clear previous error
+                    validationSpan.classList.remove("field-validation-error");
+                    validationSpan.classList.add("field-validation-valid");
+                }
+                // Remove custom error if it exists
+                var customError = document.getElementById("bienSoXeInput").parentNode.querySelector(".text-danger.custom-error");
+                if(customError) customError.remove();
+            }
+
+            if (!isValid) return; // Stop if client-side validation fails
+
+
+            var expiryDate = calculateExpiryDate(currentPackageName);
+
+            document.getElementById("confirmPackageName").textContent = currentPackageName;
+            document.getElementById("confirmLicensePlate").textContent = licensePlate;
+            document.getElementById("confirmExpiryDate").textContent = expiryDate;
+
+            closeLicenseModal();
+            confirmationModal.style.display = "block";
+        }
+
+        function closeConfirmationModal() {
+            confirmationModal.style.display = "none";
+        }
+
+        function calculateExpiryDate(packageName) {
+            var today = new Date();
+            var expiryDate = new Date(today);
+
+            if (packageName.includes("1 Tháng")) {
+                expiryDate.setMonth(today.getMonth() + 1);
+            } else if (packageName.includes("3 Tháng")) {
+                expiryDate.setMonth(today.getMonth() + 3);
+            } else if (packageName.includes("6 Tháng")) {
+                expiryDate.setMonth(today.getMonth() + 6);
+            }
+
+            var day = expiryDate.getDate();
+            var month = expiryDate.getMonth() + 1;
+            var year = expiryDate.getFullYear();
+
+            return (day < 10 ? '0' : '') + day + '/' +
+                   (month < 10 ? '0' : '') + month + '/' +
+                   year;
+        }
+
+        function submitTicketForm() {
+            // Clear any existing general validation summary messages before submitting
+            var validationSummaryDiv = document.querySelector('.validation-summary-errors[data-valmsg-summary="true"]');
+            if (validationSummaryDiv) {
+                var ul = validationSummaryDiv.querySelector('ul');
+                if (ul) ul.innerHTML = ''; // Clear list items
+                validationSummaryDiv.classList.remove('validation-summary-errors');
+                validationSummaryDiv.classList.add('validation-summary-valid');
+            }
+            document.getElementById("ticketForm").submit();
+        }
+
+        window.onclick = function(event) {
+            if (event.target == licenseModal) {
+                closeLicenseModal();
+            }
+            if (event.target == confirmationModal) {
+                closeConfirmationModal();
+            }
+        }
+
+        // --- NEW SCRIPT TO SHOW TEMP DATA MESSAGE ---
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                // Ensure this runs after the DOM is fully loaded, or at least modals are defined
+                document.addEventListener('DOMContentLoaded', function () {
+                    alert('@Html.Raw(HttpUtility.JavaScriptStringEncode(TempData["SuccessMessage"].ToString()))');
+                    // Optionally, close any open modals if the registration was successful
+                    if (licenseModal.style.display === "block") {
+                        closeLicenseModal();
+                    }
+                    if (confirmationModal.style.display === "block") {
+                        closeConfirmationModal();
+                    }
+                    // Reset the form to clear inputs after successful submission
+                    var ticketForm = document.getElementById("ticketForm");
+                    if (ticketForm) {
+                        ticketForm.reset();
+                    }
+                });
+            </text>
+        }
+        // --- END NEW SCRIPT ---
+
+    </script>
+</body>
+</html>

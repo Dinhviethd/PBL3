@@ -1,0 +1,241 @@
+@model PBL3.Models.ViewModel.ProfileViewModel
+@{
+    ViewData["Title"] = "Trang Cá Nhân";
+    var isStudent = (Model.Role == "Student");
+    // Kiểm tra xem có thông tin vé hợp lệ không
+    var hasValidTicket = isStudent && Model.NgayDangKy != DateTime.MinValue;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Trang Cá Nhân"] - PBL3</title>
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="profile-panel">
+        <div class="profile-panel-left">
+            <div class="profile-avatar">
+                <img src="~/img/avt.jpg" alt="Profile Picture" style="border-radius: 50%; width: 150px; height: 150px; border: 3px solid #f5f5f5; margin-bottom: 20px; display: block;" />
+            </div>
+            <div class="profile-info">
+                <h3>@Model.HoTen</h3>
+                <p>@Model.Role</p>
+                <button class="profile-btn active">Thông Tin Cá Nhân</button>
+                <a asp-controller="Account" asp-action="VerifyEmail" asp-route-username="@Model.Email" class="btn profile-btn">Đổi Mật Khẩu</a>
+                <button class="profile-btn">Khiếu nại</button>
+                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="profile-btn">Đăng Xuất</button>
+                </form>
+            </div>
+        </div>
+        <div class="profile-panel-right">
+            <div class="profile-form" id="personal-info-form">
+                <h1>Thông tin cá nhân</h1>
+                <form asp-action="Profile" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Role" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["Success"]</div>
+                    }
+                    <div class="form-row">
+                        <div class="form-group third-width">
+                            <label asp-for="HoTen"></label>
+                            <input asp-for="HoTen" class="form-control" />
+                            <span asp-validation-for="HoTen" class="text-danger"></span>
+                        </div>
+                        <div class="form-group third-width">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="form-control" readonly />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group third-width">
+                            <label asp-for="SDT"></label>
+                            <input asp-for="SDT" class="form-control" />
+                            <span asp-validation-for="SDT" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    @if (isStudent)
+                    {
+                        <div class="form-row">
+                            <div class="form-group half-width">
+                                <label asp-for="MSSV"></label>
+                                <input asp-for="MSSV" class="form-control" />
+                                <span asp-validation-for="MSSV" class="text-danger"></span>
+                            </div>
+                            <div class="form-group half-width">
+                                <label asp-for="Lop"></label>
+                                <input asp-for="Lop" class="form-control" />
+                                <span asp-validation-for="Lop" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Thêm phần hiển thị thông tin vé (read-only) -->
+                        <div class="form-row">
+                            <div class="form-group half-width">
+                                <label>Biển Số Xe</label>
+                                <input value="@Model.BienSoXe" class="form-control" readonly />
+                            </div>
+                            <div class="form-group half-width">
+                                <label>Vị Trí Gửi</label>
+                                <input value="@Model.ViTriGui" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group half-width">
+                                <label>Ngày Đăng Ký</label>
+                                <input value="@(hasValidTicket ? Model.NgayDangKy.ToString("dd/MM/yyyy") : "Không hợp lệ")" class="form-control" readonly />
+                            </div>
+                            <div class="form-group half-width">
+                                <label>Ngày Hết Hạn</label>
+                                <input value="@(hasValidTicket ? Model.NgayHetHan.ToString("dd/MM/yyyy") : "Không hợp lệ")" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group half-width">
+                                <label>Giá Vé</label>
+                                <input value="@(hasValidTicket ? Model.Price.ToString("N0") + " VND" : "Không hợp lệ")" class="form-control" readonly />
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label asp-for="DiaChi"></label>
+                                <input asp-for="DiaChi" class="form-control" />
+                                <span asp-validation-for="DiaChi" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <button type="submit" class="submit-button">Cập Nhật Thông Tin</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="profile-form" id="change-password-form" style="display:none;"></div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const personalBtn = document.querySelector('.profile-btn.active');
+            const changePwdBtn = document.querySelectorAll('.profile-btn')[1];
+            const complaintBtn = document.querySelectorAll('.profile-btn')[2];
+            const personalForm = document.getElementById('personal-info-form');
+            const changePwdForm = document.getElementById('change-password-form');
+            const modal = document.getElementById('complaintModal');
+            const closeModal = document.querySelector('.close-modal');
+
+            personalBtn.addEventListener('click', function() {
+                personalForm.style.display = '';
+                changePwdForm.style.display = 'none';
+                personalBtn.classList.add('active');
+                changePwdBtn.classList.remove('active');
+                complaintBtn.classList.remove('active');
+            });
+
+            changePwdBtn.addEventListener('click', function() {
+                personalForm.style.display = 'none';
+                changePwdForm.style.display = '';
+                personalBtn.classList.remove('active');
+                changePwdBtn.classList.add('active');
+                complaintBtn.classList.remove('active');
+            });
+
+            complaintBtn.addEventListener('click', function() {
+                modal.style.display = 'block';
+                complaintBtn.classList.add('active');
+                personalBtn.classList.remove('active');
+                changePwdBtn.classList.remove('active');
+            });
+
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+                complaintBtn.classList.remove('active');
+                personalBtn.classList.add('active');
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                    complaintBtn.classList.remove('active');
+                    personalBtn.classList.add('active');
+                }
+            });
+
+            document.getElementById('complaintForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('complaintTitle').value;
+                const content = document.getElementById('complaintContent').value;
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+                fetch('/Complaints/Submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        content: content
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Khiếu nại đã được gửi thành công.');
+                        modal.style.display = 'none';
+                        complaintBtn.classList.remove('active');
+                        personalBtn.classList.add('active');
+                        document.getElementById('complaintForm').reset();
+                    } else {
+                        alert('Có lỗi xảy ra khi gửi khiếu nại.');
+                    }
+                })
+                .catch(() => {
+                    alert('Có lỗi xảy ra khi gửi khiếu nại.');
+                });
+            });
+        });
+    </script>
+
+    <!-- Complaint Modal -->
+    <div class="modal fade" id="complaintModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Gửi Khiếu Nại</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="complaintForm">
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Tiêu đề</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Nội dung</label>
+                            <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="submitComplaint()">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

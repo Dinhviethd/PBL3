@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PBL3</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <!-- Thêm Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <!-- Header condition -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (User.IsInRole("Admin"))
+        {
+            <partial name="_AdminPartial" />
+        }
+        else if (User.IsInRole("Student"))
+        {
+            <partial name="_StudentPartial" />
+        }
+        else if (User.IsInRole("Staff"))
+        {
+            <partial name="_StaffPartial" />
+        }
+    }
+    else
+    {
+        
+        <div class="icon_container">
+            <div class="icon">
+                <div class="icon_left">
+                    <a asp-controller="Home" asp-action="Index">
+                        <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/7/72/Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_B%C3%A1ch_khoa%2C_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_%C4%90%C3%A0_N%E1%BA%B5ng.svg/2048px-Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_B%C3%A1ch_khoa%2C_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_%C4%90%C3%A0_N%E1%BA%B5ng.svg.png" alt="DUT's Logo" />
+                    </a>
+                    <span>SmartParking</span>
+                </div>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="#About">About</a></li>
+                    <li><a href="#Testimonials">Guide</a></li>
+                    <li><a href="/team">Team</a></li>
+                    <li><a href="/Features">Features</a></li>
+                    <li><a href="/pricing">Pricing</a></li>
+                    <partial name="_LoginPartial" />
+                </ul>
+                <i class="fa-solid fa-bars" id="menu_button"></i>
+            </div>
+        </div>
+    }
+
+    <div>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,96 @@
+@model PBL3.Models.Student
+
+@{
+    ViewData["Title"] = "Xác nhận xóa sinh viên";
+}
+
+<div class="container">
+    <div class="confirmation-dialog">
+        <h2>Xác nhận xóa</h2>
+        <p>@ViewBag.Message</p>
+
+        <div class="student-info">
+            <p><strong>Họ và tên:</strong> @Model.HoTen</p>
+            <p><strong>MSSV:</strong> @Model.MSSV</p>
+            <p><strong>Lớp:</strong> @Model.Lop</p>
+            <p><strong>Email:</strong> @Model.Email</p>
+        </div>
+
+        <div class="confirmation-actions">
+            <form asp-action="DeleteStudent" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn btn-danger">Có, xóa</button>
+                <a asp-action="QLSV" class="btn btn-secondary">Không, quay lại</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .confirmation-dialog {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+    }
+
+    .confirmation-dialog h2 {
+        color: #dc3545;
+        margin-bottom: 20px;
+    }
+
+    .student-info {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+        margin: 20px 0;
+    }
+
+    .student-info p {
+        margin: 5px 0;
+    }
+
+    .confirmation-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+</style> 
