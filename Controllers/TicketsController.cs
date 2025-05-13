@@ -7,7 +7,7 @@ using PBL3.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
-[Authorize(Roles = "Student")]
+//[Authorize(Roles = "Student")]
 public class TicketsController : Controller
 {
     private readonly AppDBContext _context;
@@ -142,5 +142,32 @@ public class TicketsController : Controller
             ModelState.AddModelError("", "Đã xảy ra lỗi khi xử lý yêu cầu của bạn.");
             return View("BuyTicket", model);
         }
+
     }
+    //[Authorize(Roles = "Staff")]
+    public async Task<IActionResult> PrintTicket(string searchLicensePlate = "", string searchStudentName = "")
+    {
+        var query = _context.Tickets
+            .Include(t => t.ParkingSlot)
+            .Include(t => t.Student)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(searchLicensePlate))
+        {
+            query = query.Where(t => t.BienSoXe.Contains(searchLicensePlate));
+        }
+
+        if (!string.IsNullOrWhiteSpace(searchStudentName))
+        {
+            query = query.Where(t => t.Student.HoTen.Contains(searchStudentName));
+        }
+
+        var tickets = await query.ToListAsync();
+
+        ViewBag.SearchLicensePlate = searchLicensePlate;
+        ViewBag.SearchStudentName = searchStudentName;
+
+        return View(tickets);
+    }
+
 }
