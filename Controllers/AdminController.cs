@@ -539,7 +539,7 @@ namespace PBL3.Controllers
                 title = complaint.Title,
                 content = complaint.Content,
                 userName = complaint.User.HoTen,
-                createdAt = complaint.CreatedAt.ToString("dd/MM/yyyy HH:mm"),
+                createdAt = complaint.CreatedAt.ToString("dd-MM-yyyy THH:mm:ss"), // ISO format
                 status = complaint.Status.ToString()
             });
         }

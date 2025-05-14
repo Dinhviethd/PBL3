@@ -111,16 +111,23 @@
             return statusClassMap[status] || 'secondary';
         }
 
-        function viewDetails(complaintId) {            $.get(`/Admin/GetComplaintDetails/${complaintId}`, function (data) {
-                const statusText = getStatusInVietnamese(data.status);
-                const statusClass = getStatusClass(data.status);
-                $('#detailsModal .modal-body').html(`
-                    <p><strong>Tiêu đề:</strong> ${data.title}</p>
-                    <p><strong>Nội dung:</strong> ${data.content}</p>
-                    <p><strong>Người gửi:</strong> ${data.userName}</p>
-                    <p><strong>Ngày tạo:</strong> ${new Date(data.createdAt).toLocaleString()}</p>
-                    <p><strong>Trạng thái:</strong> <span class="status-badge badge bg-${statusClass}">${statusText}</span></p>
-                `);
+        function viewDetails(complaintId) {
+            $.get(`/Admin/GetComplaintDetails/${complaintId}`, function (data) {
+                if (data.success) {
+                    const statusText = getStatusInVietnamese(data.status);
+                    const statusClass = getStatusClass(data.status);
+                    
+                    $('#detailsModal .modal-body').html(`
+                        <p><strong>Tiêu đề:</strong> ${data.title}</p>
+                        <p><strong>Nội dung:</strong> ${data.content}</p>
+                        <p><strong>Người gửi:</strong> ${data.userName}</p>
+                        <p><strong>Trạng thái:</strong> <span class="status-badge badge bg-${statusClass}">${statusText}</span></p>
+                    `);
+                } else {
+                    alert('Không thể tải thông tin khiếu nại');
+                }
+            }).fail(function() {
+                alert('Có lỗi xảy ra khi tải thông tin khiếu nại');
             });
         }
 
@@ -152,7 +159,7 @@
                     url: '/Admin/DeleteComplaint',
                     type: 'POST',
                     data: {
-                        complaintId: complaintId,
+                        id: complaintId,
                         __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
                     },
                     success: function (result) {

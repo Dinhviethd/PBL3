@@ -25,7 +25,7 @@
                 <p>@Model.Role</p>
                 <button class="profile-btn active">Thông Tin Cá Nhân</button>
                 <a asp-controller="Account" asp-action="VerifyEmail" asp-route-username="@Model.Email" class="btn profile-btn">Đổi Mật Khẩu</a>
-                <button class="profile-btn">Khiếu nại</button>
+                <button class="profile-btn" data-bs-toggle="modal" data-bs-target="#complaintModal">Khiếu nại</button>
                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                     @Html.AntiForgeryToken()
                     <button type="submit" class="profile-btn">Đăng Xuất</button>
@@ -132,8 +132,7 @@
             const complaintBtn = document.querySelectorAll('.profile-btn')[2];
             const personalForm = document.getElementById('personal-info-form');
             const changePwdForm = document.getElementById('change-password-form');
-            const modal = document.getElementById('complaintModal');
-            const closeModal = document.querySelector('.close-modal');
+            const complaintModal = new bootstrap.Modal(document.getElementById('complaintModal'));
 
             personalBtn.addEventListener('click', function() {
                 personalForm.style.display = '';
@@ -152,31 +151,19 @@
             });
 
             complaintBtn.addEventListener('click', function() {
-                modal.style.display = 'block';
                 complaintBtn.classList.add('active');
                 personalBtn.classList.remove('active');
                 changePwdBtn.classList.remove('active');
             });
 
-            closeModal.addEventListener('click', function() {
-                modal.style.display = 'none';
+            document.getElementById('complaintModal').addEventListener('hidden.bs.modal', function () {
                 complaintBtn.classList.remove('active');
                 personalBtn.classList.add('active');
             });
 
-            window.addEventListener('click', function(event) {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                    complaintBtn.classList.remove('active');
-                    personalBtn.classList.add('active');
-                }
-            });
-
-            document.getElementById('complaintForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const title = document.getElementById('complaintTitle').value;
-                const content = document.getElementById('complaintContent').value;
+            window.submitComplaint = function() {
+                const title = document.getElementById('title').value;
+                const content = document.getElementById('content').value;
                 const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
 
                 fetch('/Complaints/Submit', {
@@ -194,9 +181,7 @@
                 .then(data => {
                     if (data.success) {
                         alert('Khiếu nại đã được gửi thành công.');
-                        modal.style.display = 'none';
-                        complaintBtn.classList.remove('active');
-                        personalBtn.classList.add('active');
+                        complaintModal.hide();
                         document.getElementById('complaintForm').reset();
                     } else {
                         alert('Có lỗi xảy ra khi gửi khiếu nại.');
@@ -205,13 +190,13 @@
                 .catch(() => {
                     alert('Có lỗi xảy ra khi gửi khiếu nại.');
                 });
-            });
+            }
         });
     </script>
 
     <!-- Complaint Modal -->
     <div class="modal fade" id="complaintModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 1000px;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Gửi Khiếu Nại</h5>
