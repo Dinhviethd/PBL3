@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using PBL3.Data;
 using PBL3.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PBL3.Controllers
 {
+    [Authorize(Roles = "Admin,Staff")]
     public class StatController : Controller
     {
         private readonly AppDBContext _context;
@@ -54,7 +56,7 @@ namespace PBL3.Controllers
 
             for (var date = startDate.Date; date <= endDate.Date; date = date.AddDays(1))
             {
-                labels.Add(date.ToString("dd/MM"));
+                labels.Add(date.ToString("dd/MM/yyyy"));
                 if (dailyStats.TryGetValue(date, out var stats))
                 {
                     revenueData.Add(stats.Revenue);
@@ -88,7 +90,8 @@ namespace PBL3.Controllers
 
             while (currentDate <= lastDate)
             {
-                labels.Add(currentDate.ToString("MM/yyyy"));
+                // Format as dd/MM/yyyy to match daily format and allow splitting
+                labels.Add("01/" + currentDate.ToString("MM/yyyy"));
                 if (monthlyStats.TryGetValue(currentDate, out var stats))
                 {
                     revenueData.Add(stats.Revenue);
