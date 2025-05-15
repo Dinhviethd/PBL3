@@ -6,6 +6,7 @@ using PBL3.Models.ViewModel;
 using PBL3.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using QuestPDF.Fluent;
 
 //[Authorize(Roles = "Student")]
 public class TicketsController : Controller
@@ -233,5 +234,39 @@ public class TicketsController : Controller
     {
         public string PackageName { get; set; }
         public decimal Price { get; set; }
+    }
+    [Authorize(Roles = "Staff")]
+    public async Task<IActionResult> PrintTicketPdf(int id)
+    {
+        var ticket = await _context.Tickets
+            .Include(t => t.Student)
+            .Include(t => t.ParkingSlot)
+            .FirstOrDefaultAsync(t => t.ID_Ticket == id);
+
+        if (ticket == null)
+        {
+            return NotFound();
+        }
+
+        // Tạo model cho PDF
+        var model = new TicketPdfModel
+        {
+            HoTen = ticket.Student.HoTen,
+            MSSV = (ticket.Student as Student)?.MSSV,
+            BienSoXe = ticket.BienSoXe,
+            NgayDangKy = ticket.NgayDangKy,
+            NgayHetHan = ticket.NgayHetHan,
+            Price = ticket.Price,
+            SlotName = ticket.ParkingSlot?.SlotName ?? "Chưa chỉ định"
+        };
+
+        // Tạo PDF
+        var document = new TicketPdfDocument(model);
+        var stream = new MemoryStream();
+        document.GeneratePdf(stream);
+        stream.Position = 0;
+
+        // Trả về file PDF
+        return File(stream, "application/pdf", $"VeXe_{ticket.BienSoXe}_{DateTime.Now:yyyyMMdd}.pdf");
     }
 }

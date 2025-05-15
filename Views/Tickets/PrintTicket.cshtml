@@ -67,7 +67,7 @@
                     @Html.DisplayFor(modelItem => item.ParkingSlot.SlotName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID_Ticket">In vé</a> 
+                    <a asp-action="PrintTicketPdf" asp-route-id="@item.ID_Ticket" class="btn btn-primary">In vé</a>
                 </td>
             </tr>
         }
