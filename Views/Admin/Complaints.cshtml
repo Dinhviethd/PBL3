@@ -1,0 +1,180 @@
+@model IEnumerable<PBL3.Models.Complaint>
+@using PBL3.Models
+
+<style>
+    .status-badge {
+        width: 100px;
+        text-align: center;
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+</style>
+
+@Html.AntiForgeryToken()
+
+<div class="container mt-4">
+    <h2>Danh Sách Khiếu Nại</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Người Gửi</th>
+                <th>Tiêu Đề</th>
+                <th>Ngày Gửi</th>
+                <th>Trạng Thái</th>
+                <th>Các thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.User.HoTen</td>
+                    <td>@item.Title</td>
+                    <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        @{
+                            var (statusText, statusClass) = item.Status switch
+                            {
+                                ComplaintStatus.Rejected => ("Từ chối", "danger"),
+                                ComplaintStatus.Pending => ("Chờ xử lý", "primary"),
+                                ComplaintStatus.InProgress => ("Đang xử lý", "warning"),
+                                ComplaintStatus.Resolved => ("Đã xử lý", "success"),
+                                _ => ("Không xác định", "secondary")
+                            };
+                        }
+                        <span class="status-badge badge bg-@statusClass">@statusText</span>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#detailsModal" onclick="viewDetails(@item.ComplaintId)">Chi tiết</button>
+                            <div class="btn-group me-2">
+                                <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Cập nhật
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" onclick="updateStatus(@item.ComplaintId, 'Pending')">Chờ xử lý</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="updateStatus(@item.ComplaintId, 'InProgress')">Đang xử lý</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="updateStatus(@item.ComplaintId, 'Resolved')">Đã xử lý</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="updateStatus(@item.ComplaintId, 'Rejected')">Từ chối</a></li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-danger btn-sm" onclick="deleteComplaint(@item.ComplaintId)">Xóa</button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi tiết khiếu nại</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Tiêu đề:</strong> <span id="modalTitle"></span></p>
+                <p><strong>Người gửi:</strong> <span id="modalUser"></span></p>
+                <p><strong>Thời gian:</strong> <span id="modalTime"></span></p>
+                <p><strong>Trạng thái:</strong> <span id="modalStatus"></span></p>
+                <p><strong>Nội dung:</strong></p>
+                <p id="modalContent"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+                              function getStatusInVietnamese(status) {
+                                  const statusMap = {
+                                      'Pending': 'Chờ xử lý',
+                                      'InProgress': 'Đang xử lý',
+                                      'Resolved': 'Đã xử lý',
+                                      'Rejected': 'Từ chối'
+                                  };
+                                  return statusMap[status] || status;
+                              }
+
+                              function getStatusClass(status) {
+                                  const statusClassMap = {
+                                      'Pending': 'primary',
+                                      'InProgress': 'warning',
+                                      'Resolved': 'success',
+                                      'Rejected': 'danger'
+                                  };
+                                  return statusClassMap[status] || 'secondary';
+                              }
+
+                              function viewDetails(complaintId) {
+                                  $.get(`/Admin/GetComplaintDetails/${complaintId}`, function (data) {
+                                      if (data.success) {
+                                          const statusText = getStatusInVietnamese(data.status);
+                                          const statusClass = getStatusClass(data.status);
+
+                                          $('#detailsModal .modal-body').html(`
+                                              <p><strong>Tiêu đề:</strong> ${data.title}</p>
+                                              <p><strong>Nội dung:</strong> ${data.content}</p>
+                                              <p><strong>Người gửi:</strong> ${data.userName}</p>
+                                              <p><strong>Trạng thái:</strong> <span class="status-badge badge bg-${statusClass}">${statusText}</span></p>
+                                          `);
+                                      } else {
+                                          alert('Không thể tải thông tin khiếu nại');
+                                      }
+                                  }).fail(function() {
+                                      alert('Có lỗi xảy ra khi tải thông tin khiếu nại');
+                                  });
+                              }
+
+                              function updateStatus(complaintId, status) {
+                                  $.ajax({
+                                      url: '/Admin/UpdateComplaintStatus',
+                                      type: 'POST',
+                                      data: {
+                                          complaintId: complaintId,
+                                          status: status,
+                                          __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                                      },
+                                      success: function (result) {
+                                          if (result.success) {
+                                              location.reload();
+                                          } else {
+                                              alert('Có lỗi xảy ra khi cập nhật trạng thái.');
+                                          }
+                                      },
+                                      error: function () {
+                                          alert('Có lỗi xảy ra khi cập nhật trạng thái.');
+                                      }
+                                  });
+                              }
+
+                              function deleteComplaint(complaintId) {
+                                  if (confirm('Bạn có chắc chắn muốn xóa khiếu nại này?')) {
+                                      $.ajax({
+                                          url: '/Admin/DeleteComplaint',
+                                          type: 'POST',
+                                          data: {
+                                              id: complaintId,
+                                              __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                                          },
+                                          success: function (result) {
+                                              if (result.success) {
+                                                  location.reload();
+                                              } else {
+                                                  alert('Có lỗi xảy ra khi xóa khiếu nại.');
+                                              }
+                                          },
+                                          error: function () {
+                                              alert('Có lỗi xảy ra khi xóa khiếu nại.');
+                                          }
+                                      });
+                                  }
+                              }
+    </script>
+}

@@ -1,5 +1,18 @@
-﻿@{
-    IgnoreBody();
+﻿﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@{
+    Layout = null;
+}
+
+@if (!User.IsInRole("Admin") && !User.IsInRole("Staff"))
+{
+    <div class="container mt-4">
+        <div class="alert alert-danger">
+            Bạn không có quyền truy cập trang này. Chỉ Admin và Nhân viên mới có thể xem thống kê.
+        </div>
+    </div>
+    return;
+}
 }
 
 <!DOCTYPE html>
@@ -12,8 +25,11 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Stat.css" asp-append-version="true" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 </head>
-<body>    <div class="container mt-4">        <div class="row mb-4">
+<body>
+    <div class="container mt-4">
+        <div class="row mb-4">
             <div class="col-md-5">
                 <div class="form-group">
                     <label for="statType">Loại thống kê:</label>
@@ -22,11 +38,11 @@
                         <option value="tickets">Số vé</option>
                     </select>
                 </div>
-            </div>            <div class="col-md-5">
+            </div>
+            <div class="col-md-5">
                 <div class="form-group">
                     <label for="timePeriod">Khoảng thời gian:</label>
                     <select class="form-control" id="timePeriod">
-                        <option value="7">7 ngày</option>
                         <option value="30" selected>1 tháng</option>
                         <option value="180">6 tháng</option>
                         <option value="365">12 tháng</option>
@@ -49,13 +65,14 @@
                 </div>
             </div>
         </div>
-    </div>    <script>
+    </div>
+    <script>
         let statChart = null;
-        
+
         // Function to initialize or update chart
         function updateChart(labels, data, type) {
             const ctx = document.getElementById('statChart').getContext('2d');
-            
+
             // Destroy existing chart if it exists
             if (statChart) {
                 statChart.destroy();
@@ -64,16 +81,21 @@
             const isRevenue = type === 'revenue';
             const title = isRevenue ? 'Doanh thu' : 'Số lượng vé đăng ký';
             const yLabel = isRevenue ? 'Doanh thu (VND)' : 'Số vé';
-            
+            const timePeriod = parseInt(document.getElementById('timePeriod').value);
+
             statChart = new Chart(ctx, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: labels,
                     datasets: [{
                         data: data,
-                        backgroundColor: '#4CAF50',
+                        backgroundColor: 'rgba(56, 142, 60, 0.1)',  // Slightly transparent dark green
                         borderColor: '#388E3C',
-                        borderWidth: 1
+                        borderWidth: 2,
+                        pointBackgroundColor: '#4CAF50',
+                        pointRadius: 4,
+                        fill: true,  // Enable area fill
+                        tension: 0.4
                     }]
                 },
                 options: {
@@ -84,16 +106,57 @@
                         text: title,
                         fontSize: 16
                     },
+                    plugins: {
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            formatter: function(value) {
+                                if (isRevenue) {
+                                    return new Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND',
+                                        maximumFractionDigits: 0
+                                    }).format(value);
+                                }
+                                return value;
+                            },
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    },
                     scales: {
                         xAxes: [{
                             scaleLabel: {
                                 display: true,
-                                labelString: 'Ngày'
+                                labelString: timePeriod <= 30 ? 'Ngày' : 'Tháng'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    if (!labels[index]) return '';
+                                    const parts = labels[index].split('/');
+                                    if (timePeriod <= 30) {
+                                        // For 1 month view, return dd/MM
+                                        return parts[0] + '/' + parts[1];
+                                    }
+                                    // For 6 and 12 month views, return MM/yyyy
+                                    return parts[1] + '/' + parts[2];
+                                }
                             }
                         }],
                         yAxes: [{
                             ticks: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                callback: function(value) {
+                                    if (isRevenue) {
+                                        return new Intl.NumberFormat('vi-VN', {
+                                            style: 'currency',
+                                            currency: 'VND',
+                                            maximumFractionDigits: 0
+                                        }).format(value);
+                                    }
+                                    return value;
+                                }
                             },
                             scaleLabel: {
                                 display: true,
@@ -101,7 +164,8 @@
                             }
                         }]
                     }
-                }
+                },
+                plugins: [ChartDataLabels]
             });
         }
 
@@ -109,16 +173,17 @@
         function loadData() {
             const statType = document.getElementById('statType').value;
             const timePeriod = document.getElementById('timePeriod').value;
-            
+
             fetch(`/Stat/GetStats?statType=${statType}&days=${timePeriod}`)
                 .then(response => response.json())
                 .then(data => {
-                    updateChart(data.labels, 
-                              statType === 'revenue' ? data.revenueData : data.ticketCountData, 
-                              statType);
+                    updateChart(data.labels,
+                            statType === 'revenue' ? data.revenueData : data.ticketCountData,
+                            statType);
                 })
                 .catch(error => console.error('Error loading data:', error));
-        }        // Add event listeners to comboboxes and button
+        }
+        // Add event listeners to comboboxes and button
         document.getElementById('statType').addEventListener('change', loadData);
         document.getElementById('timePeriod').addEventListener('change', loadData);
         document.getElementById('dataButton').addEventListener('click', loadData);
@@ -126,8 +191,5 @@
         // Initial load
         loadData();
     </script>
-
-
-
 </body>
 </html>

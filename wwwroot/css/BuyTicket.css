@@ -344,3 +344,59 @@ h2 {
     width: 21px;
     height: 24px;
 }
+
+/* Extension Modal Styles */
+.extension-info {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.extension-info p {
+    margin: 10px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.extension-info strong {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.confirm-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.confirm-button:hover {
+    background-color: #218838;
+}
+
+.cancel-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.cancel-button:hover {
+    background-color: #c82333;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}

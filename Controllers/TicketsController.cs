@@ -6,6 +6,7 @@ using PBL3.Models.ViewModel;
 using PBL3.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using QuestPDF.Fluent;
 
 //[Authorize(Roles = "Student")]
 public class TicketsController : Controller
@@ -170,4 +171,102 @@ public class TicketsController : Controller
         return View(tickets);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CheckAndUpdateTicket([FromBody] TicketUpdateRequest request)
+    {
+        try
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Không tìm thấy thông tin người dùng." });
+            }
+
+            var existingTicket = await _context.Tickets
+                .Where(t => t.StudentId == user.Id)
+                .OrderByDescending(t => t.NgayHetHan)
+                .FirstOrDefaultAsync();
+
+            var today = DateTime.Now;
+            var hasValidTicket = existingTicket != null && existingTicket.NgayHetHan > today;
+
+            if (hasValidTicket)
+            {
+                // Calculate months to add based on package
+                int monthsToAdd = request.PackageName switch
+                {
+                    "Gói 1 Tháng" => 1,
+                    "Gói 3 Tháng" => 3,
+                    "Gói 6 Tháng" => 6,
+                    _ => 0
+                };
+
+                // Update existing ticket
+                existingTicket.NgayHetHan = existingTicket.NgayHetHan.AddMonths(monthsToAdd);
+                existingTicket.Price += request.Price;
+                _context.Update(existingTicket);
+                await _context.SaveChangesAsync();
+
+                return Json(new
+                {
+                    success = true,
+                    hasValidTicket = true,
+                    licensePlate = existingTicket.BienSoXe,
+                    newExpiryDate = existingTicket.NgayHetHan.ToString("dd/MM/yyyy")
+                });
+            }
+
+            return Json(new
+            {
+                success = true,
+                hasValidTicket = false
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error checking and updating ticket");
+            return Json(new { success = false, message = "Có lỗi xảy ra khi xử lý yêu cầu." });
+        }
+    }
+
+    public class TicketUpdateRequest
+    {
+        public string PackageName { get; set; }
+        public decimal Price { get; set; }
+    }
+    [Authorize(Roles = "Staff")]
+    public async Task<IActionResult> PrintTicketPdf(int id)
+    {
+        var ticket = await _context.Tickets
+            .Include(t => t.Student)
+            .Include(t => t.ParkingSlot)
+            .FirstOrDefaultAsync(t => t.ID_Ticket == id);
+
+        if (ticket == null)
+        {
+            return NotFound();
+        }
+
+        // Tạo model cho PDF
+        var model = new TicketPdfModel
+        {
+            HoTen = ticket.Student.HoTen,
+            MSSV = (ticket.Student as Student)?.MSSV,
+            BienSoXe = ticket.BienSoXe,
+            NgayDangKy = ticket.NgayDangKy,
+            NgayHetHan = ticket.NgayHetHan,
+            Price = ticket.Price,
+            SlotName = ticket.ParkingSlot?.SlotName ?? "Chưa chỉ định"
+        };
+
+        // Tạo PDF
+        var document = new TicketPdfDocument(model);
+        var stream = new MemoryStream();
+        document.GeneratePdf(stream);
+        stream.Position = 0;
+
+        // Trả về file PDF
+        return File(stream, "application/pdf", $"VeXe_{ticket.BienSoXe}_{DateTime.Now:yyyyMMdd}.pdf");
+    }
 }
