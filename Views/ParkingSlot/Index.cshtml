@@ -1,6 +1,11 @@
 ﻿@model PBL3.Models.ViewModel.ParkingSlotViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+
 @{
     IgnoreBody();
+    var user = await UserManager.GetUserAsync(User);
+    var isStaff = await UserManager.IsInRoleAsync(user, "Staff");
 }
 
 
@@ -173,14 +178,20 @@
                             <table class="modal-table">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox" id="selectAll" /></th>
+                                        @if (isStaff)
+                                        {
+                                            <th><input type="checkbox" id="selectAll" /></th>
+                                        }
                                         <th>STT</th>
                                         <th>Họ và tên</th>
                                         <th>Mã số sinh viên</th>
                                         <th>Biển số xe</th>
                                         <th>Ngày giữ xe</th>
                                         <th>Ngày ra gần nhất</th>
-                                        <th>Thao tác</th>
+                                        @if (isStaff)
+                                        {
+                                            <th>Thao tác</th>
+                                        }
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -188,23 +199,32 @@
                                     @foreach (var ticket in Model.Tickets)
                                     {
                                         <tr>
-                                            <td><input type="checkbox" name="ticketIds" value="@ticket.ID_Ticket" class="mark-checkbox" /></td>
+                                            @if (isStaff)
+                                            {
+                                                <td><input type="checkbox" name="ticketIds" value="@ticket.ID_Ticket" class="mark-checkbox" /></td>
+                                            }
                                             <td>@(index++)</td>
                                             <td>@ticket.Student?.HoTen</td>
                                             <td>@ticket.Student?.MSSV</td>
                                             <td>@ticket.BienSoXe</td>
                                             <td>@ticket.NgayDangKy.ToString("dd/MM/yyyy")</td>
                                             <td>@ticket.NgayHetHan.ToString("dd/MM/yyyy")</td>
-                                            <td><button type="button" class="edit-button" onclick="showEditForm('@ticket.ID_Ticket', '@ticket.Student?.HoTen', '@ticket.Student?.MSSV', '@ticket.BienSoXe', '@ticket.NgayDangKy.ToString("dd/MM/yyyy")', '@ticket.NgayHetHan.ToString("dd/MM/yyyy")', null, '')">Edit</button></td>
+                                            @if (isStaff)
+                                            {
+                                                <td><button type="button" class="edit-button" onclick="showEditForm('@ticket.ID_Ticket', '@ticket.Student?.HoTen', '@ticket.Student?.MSSV', '@ticket.BienSoXe', '@ticket.NgayDangKy.ToString("dd/MM/yyyy")', '@ticket.NgayHetHan.ToString("dd/MM/yyyy")', null, '')">Edit</button></td>
+                                            }
                                         </tr>
                                     }
                                 </tbody>
                             </table>
                             <div class="modal-buttons">
-                                <button type="submit" class="delete-button">Xóa</button>
-                                @if (Model.SearchType == "not-entered")
+                                @if (isStaff)
                                 {
-                                    <button type="button" class="add-button" id="addToParkingBtn">Thêm</button>
+                                    <button type="submit" class="delete-button">Xóa</button>
+                                    @if (Model.SearchType == "not-entered")
+                                    {
+                                        <button type="button" class="add-button" id="addToParkingBtn">Thêm</button>
+                                    }
                                 }
                                 <button type="button" class="modal-close">Đóng</button>
                             </div>
@@ -265,6 +285,23 @@
             const div = document.createElement('div');
             div.id = 'parkingModal';
             div.className = 'modal';
+            const isStaff = @Json.Serialize(isStaff);
+
+            let tableHeaders = `
+                <th>STT</th>
+                <th>Họ và tên</th>
+                <th>Mã số sinh viên</th>
+                <th>Biển số xe</th>
+                <th>Ngày giữ xe</th>
+                <th>Ngày ra gần nhất</th>`;
+
+            if (isStaff) {
+                tableHeaders = `
+                    <th><input type="checkbox" id="selectAll" /></th>
+                    ${tableHeaders}
+                    <th>Thao tác</th>`;
+            }
+
             div.innerHTML = `
                 <div class="modal-content">
                     <h2 class="modal-title">Danh sách xe</h2>
@@ -272,35 +309,43 @@
                         <form method="post" action="@Url.Action("DeleteTickets", "ParkingSlot")">
                             <table class="modal-table">
                                 <thead>
-                                    <tr>
-                                        <th><input type="checkbox" id="selectAll" /></th>
-                                        <th>STT</th>
-                                        <th>Họ và tên</th>
-                                        <th>Mã số sinh viên</th>
-                                        <th>Biển số xe</th>
-                                        <th>Ngày giữ xe</th>
-                                        <th>Ngày ra gần nhất</th>
-                                        <th>Thao tác</th>
-                                    </tr>
+                                    <tr>${tableHeaders}</tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
                             <div class="modal-buttons">
-                                <button type="submit" class="delete-button">Xóa</button>
+                                ${isStaff ? 
+                                    `<button type="submit" class="delete-button">Xóa</button>
+                                    ${@Json.Serialize(Model.SearchType == "not-entered") ? '<button type="button" class="add-button" id="addToParkingBtn">Thêm</button>' : ''}`
+                                    : ''}
                                 <button type="button" class="modal-close">Đóng</button>
                             </div>
                         </form>
                     </div>
-                </div>
-            `;
+                </div>`;
             return div;
         }
 
         // Initialize occupancy badges and click handlers when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            const isStaff = @Json.Serialize(isStaff);
+            
             // Create a reusable modal element
             const modal = createParkingModal();
             document.querySelector('.right-container').appendChild(modal);
+
+            // Add selectAll functionality only for staff
+            if (isStaff) {
+                const selectAllCheckbox = document.getElementById('selectAll');
+                if (selectAllCheckbox) {
+                    selectAllCheckbox.addEventListener('change', function() {
+                        const checkboxes = document.querySelectorAll('.mark-checkbox');
+                        checkboxes.forEach(checkbox => {
+                            checkbox.checked = this.checked;
+                        });
+                    });
+                }
+            }
 
             // Add event listeners to all modal close buttons
             document.querySelectorAll('.modal-close').forEach(button => {
@@ -338,38 +383,52 @@
                         const result = await response.json();
                         
                         if (result.success) {
-                            const modalTitle = modal.querySelector('.modal-title');
-                            const tableBody = modal.querySelector('tbody');
+                            const parkingModal = document.getElementById('parkingModal');
+                            const modalTitle = parkingModal.querySelector('.modal-title');
+                            const tableBody = parkingModal.querySelector('tbody');
                             
                             modalTitle.textContent = `Danh sách xe trong Ô số ${slotName}`;
                             tableBody.innerHTML = '';
                             
                             result.data.forEach((ticket, index) => {
                                 const row = document.createElement('tr');
-                                row.innerHTML = `
-                                    <td><input type="checkbox" name="ticketIds" value="${ticket.id}" class="mark-checkbox" /></td>
+                                let rowHtml = '';
+                                
+                                if (isStaff) {
+                                    rowHtml += `<td><input type="checkbox" name="ticketIds" value="${ticket.id}" class="mark-checkbox" /></td>`;
+                                }
+                                
+                                rowHtml += `
                                     <td>${index + 1}</td>
                                     <td>${ticket.studentName || ''}</td>
                                     <td>${ticket.studentId || ''}</td>
                                     <td>${ticket.licensePlate}</td>
                                     <td>${ticket.entryDate}</td>
-                                    <td>${ticket.exitDate}</td>
-                                    <td><button type="button" class="edit-button" onclick="showEditForm('${ticket.id}', '${ticket.studentName}', '${ticket.studentId}', '${ticket.licensePlate}', '${ticket.entryDate}', '${ticket.exitDate}', ${slotId}, '${slotName}')">Edit</button></td>
-                                `;
+                                    <td>${ticket.exitDate}</td>`;
+                                
+                                if (isStaff) {
+                                    rowHtml += `<td><button type="button" class="edit-button" onclick="showEditForm('${ticket.id}', '${ticket.studentName}', '${ticket.studentId}', '${ticket.licensePlate}', '${ticket.entryDate}', '${ticket.exitDate}', ${slotId}, '${slotName}')">Edit</button></td>`;
+                                }
+                                
+                                row.innerHTML = rowHtml;
                                 tableBody.appendChild(row);
                             });
 
-                            // Add select all functionality
-                            const selectAll = modal.querySelector('#selectAll');
-                            selectAll.checked = false;
-                            selectAll.onchange = function() {
-                                const checkboxes = modal.querySelectorAll('.mark-checkbox');
-                                checkboxes.forEach(checkbox => {
-                                    checkbox.checked = this.checked;
-                                });
-                            };
+                            // Add select all functionality only for staff users
+                            if (isStaff) {
+                                const selectAll = parkingModal.querySelector('#selectAll');
+                                if (selectAll) {
+                                    selectAll.checked = false;
+                                    selectAll.addEventListener('change', function() {
+                                        const checkboxes = parkingModal.querySelectorAll('.mark-checkbox');
+                                        checkboxes.forEach(checkbox => {
+                                            checkbox.checked = this.checked;
+                                        });
+                                    });
+                                }
+                            }
                             
-                            modal.classList.add('show');
+                            parkingModal.classList.add('show');
                         }
                     } catch (error) {
                         console.error('Error:', error);
@@ -674,6 +733,7 @@
                 } else {
                     alert(data.message || 'Có lỗi xảy ra');
                 }
+                
             })
             .catch(error => {
                 console.error('Error:', error);

@@ -9,5 +9,6 @@ namespace PBL3.Models.ViewModel
         public string SearchTerm { get; set; }
         public string SearchType { get; set; }
         public List<ParkingSlot> ParkingSlots { get; set; }
+        public bool IsStaff { get; set; }
     }
 }
