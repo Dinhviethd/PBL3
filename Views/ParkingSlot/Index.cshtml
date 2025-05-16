@@ -78,7 +78,7 @@
         <div class="form-container">
             <div class="form-group">
                 <label class="form-label" for="OGX">Ô giữ xe</label>
-                <input type="number" id="OGX" class="form-input" max="10" min="0" />
+                <input type="number" id="OGX" class="form-input" max="10" min="0" readonly />
             </div>
             <div class="form-group">
                 <label class="form-label" for="fullName">Họ và tên</label>
@@ -153,7 +153,7 @@
                 {
                     <div class="parking-row">
                         <article class="parking-space">
-                            <div class="space-content">
+                            <div class="space-content" data-slot-id="@slot.ParkingSlotId">
                                 <h3 class="space-title">Ô số @slot.SlotName</h3>
                                 <span class="occupancy-badge @(slot.CurrentCount <= 6 ? "occupancy-normal" : slot.CurrentCount <= 9 ? "occupancy-warning" : "occupancy-danger")">@slot.CurrentCount/@slot.MaxCapacity</span>
                             </div>
@@ -165,7 +165,7 @@
 
         @if (Model.Tickets != null && Model.Tickets.Any())
         {
-            <div class="modal show" id="parkingModal">
+            <div class="modal" id="parkingModal">
                 <div class="modal-content">
                     <h2 class="modal-title">Kết quả tìm kiếm</h2>
                     <div class="modal-table-container">
@@ -184,24 +184,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @{var index = 1;}
                                     @foreach (var ticket in Model.Tickets)
                                     {
                                         <tr>
                                             <td><input type="checkbox" name="ticketIds" value="@ticket.ID_Ticket" class="mark-checkbox" /></td>
-                                            <td>@ticket.ID_Ticket</td>
+                                            <td>@(index++)</td>
                                             <td>@ticket.Student?.HoTen</td>
                                             <td>@ticket.Student?.MSSV</td>
                                             <td>@ticket.BienSoXe</td>
                                             <td>@ticket.NgayDangKy.ToString("dd/MM/yyyy")</td>
                                             <td>@ticket.NgayHetHan.ToString("dd/MM/yyyy")</td>
-                                            <td><button type="button" class="edit-button">Edit</button></td>
+                                            <td><button type="button" class="edit-button" onclick="showEditForm('@ticket.ID_Ticket', '@ticket.Student?.HoTen', '@ticket.Student?.MSSV', '@ticket.BienSoXe', '@ticket.NgayDangKy.ToString("dd/MM/yyyy")', '@ticket.NgayHetHan.ToString("dd/MM/yyyy")', null, '')">Edit</button></td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
                             <div class="modal-buttons">
                                 <button type="submit" class="delete-button">Xóa</button>
-                                <button type="button" class="add-button" id="addToParkingBtn">Thêm</button>
+                                @if (Model.SearchType == "not-entered")
+                                {
+                                    <button type="button" class="add-button" id="addToParkingBtn">Thêm</button>
+                                }
                                 <button type="button" class="modal-close">Đóng</button>
                             </div>
                         </form>
@@ -238,131 +242,211 @@
 
     <script>
         // Function to update occupancy badge
-        function updateOccupancyBadge(space, recordCount) {
-          const badge = space.querySelector('.occupancy-badge');
-          badge.textContent = `${recordCount}/10`;
+        function updateOccupancyBadge(space, recordCount, maxCapacity) {
+            const badge = space.querySelector('.occupancy-badge');
+            badge.textContent = `${recordCount}/${maxCapacity}`;
 
-          // Remove existing color classes
-          badge.classList.remove('occupancy-normal', 'occupancy-warning', 'occupancy-danger');
+            // Remove existing color classes
+            badge.classList.remove('occupancy-normal', 'occupancy-warning', 'occupancy-danger');
 
-          // Add appropriate color class
-          if (recordCount <= 6) {
-            badge.classList.add('occupancy-normal');
-          } else if (recordCount <= 9) {
-            badge.classList.add('occupancy-warning');
-          } else {
-            badge.classList.add('occupancy-danger');
-          }
+            // Add appropriate color class based on percentage occupancy
+            const occupancyPercentage = (recordCount / maxCapacity) * 100;
+            if (occupancyPercentage <= 60) {
+                badge.classList.add('occupancy-normal');
+            } else if (occupancyPercentage <= 90) {
+                badge.classList.add('occupancy-warning');
+            } else {
+                badge.classList.add('occupancy-danger');
+            }
         }
 
-        // Mapping for number of records per space (updated as requested)
-        const spaceRecordCounts = {
-          '1': 3,
-          '2': 4,
-          '3': 7,
-          '4': 8,
-          '5': 10,
-          '6': 10,
-          '7': 2,
-          '8': 8,
-          '9': 1,
-          '10': 3
-        };
-
-        // Function to get record count for a space
-        function getRecordCount(spaceNumber) {
-          return spaceRecordCounts[spaceNumber] || 0;
+        // Function to create a new parking modal
+        function createParkingModal() {
+            const div = document.createElement('div');
+            div.id = 'parkingModal';
+            div.className = 'modal';
+            div.innerHTML = `
+                <div class="modal-content">
+                    <h2 class="modal-title">Danh sách xe</h2>
+                    <div class="modal-table-container">
+                        <form method="post" action="@Url.Action("DeleteTickets", "ParkingSlot")">
+                            <table class="modal-table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAll" /></th>
+                                        <th>STT</th>
+                                        <th>Họ và tên</th>
+                                        <th>Mã số sinh viên</th>
+                                        <th>Biển số xe</th>
+                                        <th>Ngày giữ xe</th>
+                                        <th>Ngày ra gần nhất</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <div class="modal-buttons">
+                                <button type="submit" class="delete-button">Xóa</button>
+                                <button type="button" class="modal-close">Đóng</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            return div;
         }
 
-        // Function to generate records for a space
-        function generateRecords(spaceNumber) {
-          const count = getRecordCount(spaceNumber);
-          const records = [];
-          for (let i = 0; i < count; i++) {
-            records.push({
-              name: `Nguyễn Văn ${String.fromCharCode(65 + i)}`,
-              id: `2023${spaceNumber}${String(i + 1).padStart(3, '0')}`,
-              plate: `51G-${spaceNumber}${String(i + 1).padStart(4, '0')}`,
-              entry: `${String(i + 1).padStart(2, '0')}/03/2024`,
-              exit: `${String(i + 15).padStart(2, '0')}/03/2024`
-            });
-          }
-          return records;
-        }
+        // Initialize occupancy badges and click handlers when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create a reusable modal element
+            const modal = createParkingModal();
+            document.querySelector('.right-container').appendChild(modal);
 
-        // Initialize all occupancy badges
-        function initializeOccupancyBadges() {
-          document.querySelectorAll('.parking-space').forEach(space => {
-            const spaceNumber = space.querySelector('.space-title').textContent.split(' ')[2];
-            const recordCount = getRecordCount(spaceNumber);
-            updateOccupancyBadge(space, recordCount);
-          });
-        }
-
-        // Add click event listeners to all parking spaces
-        document.querySelectorAll('.parking-space').forEach(space => {
-          space.addEventListener('click', function() {
-            const spaceNumber = this.querySelector('.space-title').textContent.split(' ')[2];
-            document.getElementById('parkingNumber').textContent = spaceNumber;
-
-            // Clear existing table content
-            const tableBody = document.getElementById('parkingTableBody');
-            tableBody.innerHTML = '';
-
-            // Generate records for the space
-            const records = generateRecords(spaceNumber);
-            const recordCount = records.length;
-
-            // Add records to table
-            records.forEach((record, index) => {
-              const row = document.createElement('tr');
-              row.innerHTML = `
-                <td><input type=\"checkbox\" class=\"mark-checkbox\"></td>
-                <td>${index + 1}</td>
-                <td>${record.name}</td>
-                <td>${record.id}</td>
-                <td>${record.plate}</td>
-                <td>${record.entry}</td>
-                <td>${record.exit}</td>
-                <td><button class=\"edit-button\">Edit</button></td>
-              `;
-              tableBody.appendChild(row);
+            // Add event listeners to all modal close buttons
+            document.querySelectorAll('.modal-close').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Find the closest parent modal and hide it
+                    const parentModal = this.closest('.modal');
+                    if (parentModal) {
+                        parentModal.classList.remove('show');
+                    }
+                });
             });
 
-            // Update occupancy badge
-            updateOccupancyBadge(this, recordCount);
-
-            document.getElementById('parkingModal').classList.add('show');
-
-            // Add event listeners to edit buttons (after table is rendered)
-            tableBody.querySelectorAll('.edit-button').forEach(btn => {
-              btn.addEventListener('click', function(e) {
-                e.stopPropagation(); // Prevent modal from closing
-                document.body.classList.add('show-form');
-              });
+            // Close modal when clicking outside
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('show');
+                    }
+                });
             });
-          });
+
+            document.querySelectorAll('.parking-space').forEach(space => {
+                // Initialize occupancy badge
+                const badge = space.querySelector('.occupancy-badge');
+                const [current, max] = badge.textContent.split('/').map(num => parseInt(num));
+                updateOccupancyBadge(space, current, max);
+
+                // Add click handler
+                space.addEventListener('click', async function() {
+                    const slotId = this.querySelector('.space-content').dataset.slotId;
+                    const slotName = this.querySelector('.space-title').textContent.split(' ')[2];
+                    
+                    try {
+                        const response = await fetch(`/ParkingSlot/GetTicketsBySlot?slotId=${slotId}`);
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            const modalTitle = modal.querySelector('.modal-title');
+                            const tableBody = modal.querySelector('tbody');
+                            
+                            modalTitle.textContent = `Danh sách xe trong Ô số ${slotName}`;
+                            tableBody.innerHTML = '';
+                            
+                            result.data.forEach((ticket, index) => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td><input type="checkbox" name="ticketIds" value="${ticket.id}" class="mark-checkbox" /></td>
+                                    <td>${index + 1}</td>
+                                    <td>${ticket.studentName || ''}</td>
+                                    <td>${ticket.studentId || ''}</td>
+                                    <td>${ticket.licensePlate}</td>
+                                    <td>${ticket.entryDate}</td>
+                                    <td>${ticket.exitDate}</td>
+                                    <td><button type="button" class="edit-button" onclick="showEditForm('${ticket.id}', '${ticket.studentName}', '${ticket.studentId}', '${ticket.licensePlate}', '${ticket.entryDate}', '${ticket.exitDate}', ${slotId}, '${slotName}')">Edit</button></td>
+                                `;
+                                tableBody.appendChild(row);
+                            });
+
+                            // Add select all functionality
+                            const selectAll = modal.querySelector('#selectAll');
+                            selectAll.checked = false;
+                            selectAll.onchange = function() {
+                                const checkboxes = modal.querySelectorAll('.mark-checkbox');
+                                checkboxes.forEach(checkbox => {
+                                    checkbox.checked = this.checked;
+                                });
+                            };
+                            
+                            modal.classList.add('show');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Có lỗi xảy ra khi tải danh sách vé');
+                    }
+                });
+            });
         });
 
-        // Close modal when clicking the close button
-        document.querySelector('.modal-close').addEventListener('click', function() {
-          document.getElementById('parkingModal').classList.remove('show');
-        });
+        // Function to show the edit form
+        function showEditForm(ticketId, studentName, studentId, licensePlate, entryDate, exitDate, slotId, slotName) {
+            // Fill the form with ticket data
+            document.getElementById('OGX').value = slotId;
+            document.getElementById('fullName').value = studentName;
+            document.getElementById('studentId').value = studentId;
+            document.getElementById('licensePlate').value = licensePlate;
+            document.getElementById('date').value = entryDate;
+            document.getElementById('latestLeave').value = exitDate;
+            
+            // Show the form
+            document.body.classList.add('show-form');
 
-        // Close modal when clicking outside
-        document.getElementById('parkingModal').addEventListener('click', function(e) {
-          if (e.target === this) {
-            this.classList.remove('show');
-          }
+            // Store the ticket ID
+            document.querySelector('.vehicle-form').dataset.ticketId = ticketId;
+        }
+
+        // Form submission handler
+        document.querySelector('.vehicle-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const ticketData = {
+                ticketId: parseInt(this.dataset.ticketId),
+                studentName: document.getElementById('fullName').value,
+                studentId: document.getElementById('studentId').value,
+                licensePlate: document.getElementById('licensePlate').value,
+                entryDate: document.getElementById('date').value,
+                exitDate: document.getElementById('latestLeave').value
+            };
+
+            try {
+                const response = await fetch('/ParkingSlot/UpdateTicket', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify(ticketData)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Cập nhật thành công');
+                    document.body.classList.remove('show-form');
+                    
+                    // Get the slot ID and handle refresh appropriately
+                    const slotId = document.getElementById('OGX').value;
+                    if (slotId && slotId !== 'null') {
+                        const parkingSpace = document.querySelector(`[data-slot-id="${slotId}"]`)?.closest('.parking-space');
+                        if (parkingSpace) {
+                            parkingSpace.click();
+                        }
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    alert(result.message || 'Có lỗi xảy ra khi cập nhật');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi cập nhật');
+            }
         });
 
         // Close Thông tin xe panel only when its close button is clicked
-        document.querySelector('.form-close').addEventListener('click', function() {
-          document.body.classList.remove('show-form');
+        document.querySelector('.form-close')?.addEventListener('click', function() {
+            document.body.classList.remove('show-form');
         });
-
-        // Initialize occupancy badges when page loads
-        document.addEventListener('DOMContentLoaded', initializeOccupancyBadges);
 
         // Date picker functionality
         function createDatePicker(inputId) {
@@ -517,15 +601,35 @@
           });
         });
 
+        // Show search results modal on page load if there are search results
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchTerm = document.querySelector('input[name="searchTerm"]').value;
+            const searchType = document.querySelector('select[name="searchType"]').value;
+            
+            // If we have a search term or it's "not-entered" search type, show the modal
+            if (searchTerm || searchType === 'not-entered') {
+                const modal = document.getElementById('parkingModal');
+                if (modal) {
+                    modal.classList.add('show');
+                }
+            }
+        });
+
         // Update the search form submission
         document.querySelector('.search-container').addEventListener('submit', function(e) {
-          const searchTerm = this.querySelector('input[name="searchTerm"]').value;
-          const searchType = this.querySelector('select[name="searchType"]').value;
+            const searchTerm = this.querySelector('input[name="searchTerm"]').value;
+            const searchType = this.querySelector('select[name="searchType"]').value;
 
-          if (!searchTerm && searchType !== 'not-entered') {
-            e.preventDefault();
-            alert('Vui lòng nhập từ khóa tìm kiếm');
-          }
+            if (searchType === 'not-entered') {
+                return true; // Allow submission without search term for "not-entered"
+            }
+
+            if (!searchTerm) {
+                e.preventDefault();
+                alert('Vui lòng nhập từ khóa tìm kiếm');
+                return false;
+            }
+            return true;
         });
 
         // Add button click handler
