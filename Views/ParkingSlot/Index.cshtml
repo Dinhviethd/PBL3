@@ -3,9 +3,8 @@
 @inject UserManager<AppUser> UserManager
 
 @{
-    // IgnoreBody(); // Bỏ qua nếu không cần thiết cho layout của bạn
     ViewData["Title"] = "Quản Lý Nhà Xe";
-    var isStaff = User.IsInRole("Staff"); // Đơn giản hóa việc kiểm tra role
+    var isStaff = User.IsInRole("Staff");
 }
 
 <!DOCTYPE html>
@@ -18,23 +17,22 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/QLNX.css" asp-append-version="true" />
     <style>
-        /* CSS của bạn cho .add-button, .confirm-button, #assignParkingModal có thể xóa nếu không dùng nữa */
-        /* Giữ lại các style cần thiết cho các phần tử còn lại */
         .form-input[readonly], .date-input[readonly] {
             background-color: #e9ecef;
             opacity: 1;
+            cursor: default;
         }
 
         .vehicle-form {
-            display: none; /* Ẩn form chi tiết ban đầu */
+            display: none;
         }
 
         .modal-table th, .modal-table td {
             white-space: nowrap;
             padding: 8px 10px;
-            vertical-align: middle; /* Căn giữa theo chiều dọc */
+            vertical-align: middle;
         }
-            /* Điều chỉnh độ rộng cột */
+
             .modal-table th:nth-child(1), .modal-table td:nth-child(1) {
                 width: 5%;
                 text-align: center;
@@ -45,19 +43,19 @@
             }
             /* STT */
             .modal-table th:nth-child(3), .modal-table td:nth-child(3) {
-                width: 18%;
+                width: 20%;
             }
             /* Họ tên */
             .modal-table th:nth-child(4), .modal-table td:nth-child(4) {
-                width: 12%;
+                width: 15%;
             }
             /* MSSV */
             .modal-table th:nth-child(5), .modal-table td:nth-child(5) {
-                width: 12%;
+                width: 15%;
             }
             /* Biển số */
             .modal-table th:nth-child(6), .modal-table td:nth-child(6) {
-                width: 13%;
+                width: 15%;
             }
             /* Ngày ĐK Vé */
             .modal-table th:nth-child(7), .modal-table td:nth-child(7) {
@@ -67,60 +65,50 @@
             .modal-table th:nth-child(8), .modal-table td:nth-child(8) {
                 width: 10%;
             }
-            /* Ngày Hết Hạn Vé */
-            .modal-table th:nth-child(9), .modal-table td:nth-child(9) {
-                width: 10%;
-                text-align: center;
-            }
-        /* Thao tác */
+        /* Ngày Hết Hạn Vé */
+        /* Bỏ cột thao tác nếu không còn nút "Xem" */
     </style>
 </head>
 <body>
-    <form class="vehicle-form">
+    @* Form "Thông tin xe" - Giờ chỉ để hiển thị *@
+    <div class="vehicle-form">
         <button type="button" class="form-close" style="position:absolute;top:10px;right:10px;font-size:20px;background:none;border:none;cursor:pointer;">×</button>
         <h1 class="form-title">Thông tin chi tiết vé</h1>
         <div class="form-container">
             <div class="form-group">
-                <label class="form-label" for="formParkingSlotName">Ô giữ xe</label>
-                <input type="text" id="formParkingSlotName" class="form-input" readonly />
+                <label class="form-label" for="viewParkingSlotName">Ô giữ xe</label>
+                <input type="text" id="viewParkingSlotName" class="form-input" readonly />
             </div>
             <div class="form-group">
-                <label class="form-label" for="formFullName">Họ và tên</label>
-                <input type="text" id="formFullName" class="form-input" />
+                <label class="form-label" for="viewFullName">Họ và tên</label>
+                <input type="text" id="viewFullName" class="form-input" readonly />
             </div>
             <div class="form-group">
-                <label class="form-label" for="formStudentId">Mã số sinh viên</label>
-                <input type="text" id="formStudentId" class="form-input" />
+                <label class="form-label" for="viewStudentId">Mã số sinh viên</label>
+                <input type="text" id="viewStudentId" class="form-input" readonly />
             </div>
             <div class="form-group">
-                <label class="form-label" for="formLicensePlate">Biển số xe</label>
-                <input type="text" id="formLicensePlate" class="form-input" />
+                <label class="form-label" for="viewLicensePlate">Biển số xe</label>
+                <input type="text" id="viewLicensePlate" class="form-input" readonly />
             </div>
             <div class="form-group">
-                <label class="form-label" for="formEntryDate">Ngày Đăng Ký Vé</label>
-                <div class="date-input-wrapper">
-                    <input type="text" id="formEntryDate" class="date-input" placeholder="dd/MM/yyyy" />
-                </div>
+                <label class="form-label" for="viewEntryDate">Ngày Đăng Ký Vé</label>
+                <input type="text" id="viewEntryDate" class="form-input" readonly />
             </div>
             <div class="form-group">
-                <label class="form-label" for="formCheckInDate">Ngày Check-In (để trống nếu chưa vào/sửa)</label>
-                <div class="date-input-wrapper">
-                    <input type="text" id="formCheckInDate" class="date-input" placeholder="dd/MM/yyyy HH:mm" />
-                </div>
+                <label class="form-label" for="viewCheckInDate">Ngày Check-In</label>
+                <input type="text" id="viewCheckInDate" class="form-input" readonly />
             </div>
             <div class="form-group">
-                <label class="form-label" for="formTicketExpiryDate">Ngày Hết Hạn Vé</label>
-                <div class="date-input-wrapper">
-                    <input type="text" id="formTicketExpiryDate" class="date-input" placeholder="dd/MM/yyyy" />
-                </div>
+                <label class="form-label" for="viewTicketExpiryDate">Ngày Hết Hạn</label>
+                <input type="text" id="viewTicketExpiryDate" class="form-input" readonly />
             </div>
-            <button type="submit" class="submit-button">Cập nhật thông tin</button>
+            @* Bỏ nút submit *@
         </div>
-    </form>
+    </div>
 
     <div class="right-container">
         <form class="search-container" method="get" asp-action="Index" asp-controller="ParkingSlot">
-            @Html.AntiForgeryToken() @* Thêm nếu bạn có filter POST, nhưng đây là GET *@
             <div class="search-content">
                 <div class="search-input-container">
                     <div class="search-input-wrapper">
@@ -131,9 +119,6 @@
                     <option value="mssv" selected="@(Model.SearchType == "mssv")">MSSV</option>
                     <option value="name" selected="@(Model.SearchType == "name")">Họ và tên</option>
                     <option value="license" selected="@(Model.SearchType == "license")">Biển số xe</option>
-                    <option value="entry-date" selected="@(Model.SearchType == "entry-date")">Ngày ĐK Vé</option>
-                    <option value="checkin-date" selected="@(Model.SearchType == "checkin-date")">Ngày Check-in</option>
-                    <option value="exit-date" selected="@(Model.SearchType == "exit-date")">Ngày Hết Hạn Vé</option>
                     <option value="not-entered" selected="@(Model.SearchType == "not-entered")">Xe chưa vào bãi</option>
                 </select>
                 <button type="submit" class="search-button">
@@ -163,7 +148,7 @@
         {
             <div class="modal" id="parkingModal">
                 <div class="modal-content">
-                    <h2 class="modal-title">Kết quả tìm kiếm / Danh sách xe trong ô</h2>
+                    <h2 class="modal-title">Kết quả tìm kiếm</h2>
                     <div class="modal-table-container">
                         <form method="post" asp-action="DeleteTickets" asp-controller="ParkingSlot" id="deleteTicketsForm">
                             @Html.AntiForgeryToken()
@@ -180,11 +165,7 @@
                                         <th>Biển số xe</th>
                                         <th>Ngày ĐK Vé</th>
                                         <th>Ngày Check-In</th>
-                                        <th>Ngày Hết Hạn Vé</th>
-                                        @if (isStaff)
-                                        {
-                                            <th>Thao tác</th>
-                                        }
+                                        <th>Ngày Hết Hạn</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -212,7 +193,7 @@
                             <div class="modal-buttons">
                                 @if (isStaff)
                                 {
-                                    <button type="submit" class="delete-button">Bỏ Gán Vé Khỏi Ô/Đánh Dấu Đã Ra</button> @* Đổi tên nút *@
+                                    <button type="submit" class="delete-button">Xóa xe khỏi bãi</button>
                                 }
                                 <button type="button" class="modal-close" data-target-modal="parkingModal">Đóng</button>
                             </div>
@@ -221,17 +202,10 @@
                 </div>
             </div>
         }
-
-        @* XÓA BỎ HOÀN TOÀN MODAL assignParkingModal *@
-        @*
-        <div class="modal" id="assignParkingModal">
-            ...
-        </div>
-        *@
+        @* Xóa modal assignParkingModal *@
     </div>
 
     <script>
-        // Function to update occupancy badge (giữ nguyên)
         function updateOccupancyBadge(spaceElement, recordCount, maxCapacity) {
             const badge = spaceElement.querySelector('.occupancy-badge');
             if (!badge) return;
@@ -247,14 +221,10 @@
             }
         }
 
-        // XÓA BỎ HÀM createParkingModal vì modal đã có sẵn trong HTML
-        // function createParkingModal() { ... }
-
         document.addEventListener('DOMContentLoaded', function () {
             const isStaff = @Json.Serialize(isStaff);
             const mainModal = document.getElementById('parkingModal');
-            // const assignModal = document.getElementById('assignParkingModal'); // Bỏ
-            const vehicleForm = document.querySelector('.vehicle-form');
+            const vehicleInfoDisplayForm = document.querySelector('.vehicle-form');
 
             function toggleModal(modalElement, show) {
                 if (modalElement) {
@@ -280,8 +250,8 @@
                 });
             });
 
-            vehicleForm.querySelector('.form-close')?.addEventListener('click', function() {
-                vehicleForm.style.display = 'none';
+            vehicleInfoDisplayForm.querySelector('.form-close')?.addEventListener('click', function() {
+                vehicleInfoDisplayForm.style.display = 'none';
             });
 
             if (isStaff && mainModal) {
@@ -302,9 +272,6 @@
              if (mainModal && (hasSearchTerm || isNotEnteredSearch)) {
                  if (@Json.Serialize(Model.Tickets != null && Model.Tickets.Any())) {
                     toggleModal(mainModal, true);
-                } else if (hasSearchTerm || isNotEnteredSearch && @Json.Serialize(Model.Tickets == null || !Model.Tickets.Any())) {
-                     // Bạn có thể hiển thị một thông báo "Không tìm thấy kết quả" ở đâu đó trên trang
-                     // thay vì dùng alert, ví dụ: document.getElementById('searchNotification').textContent = 'Không tìm thấy vé nào.';
                 }
             }
 
@@ -351,17 +318,15 @@
                                     row.insertCell(cellIndex++).textContent = ticket.checkInDate || 'Chưa vào';
                                     row.insertCell(cellIndex++).textContent = ticket.ticketExpiryDate || 'N/A';
 
-                                    if (isStaff) {
-                                        row.insertCell(cellIndex++).innerHTML = `<button type="button" class="edit-button"
-                                            onclick="showEditForm('${ticket.id}',
+                                    if (isStaff) { // Nút "Xem"
+                                        row.insertCell(cellIndex++).innerHTML = `<button type="button" class="view-button"
+                                            onclick="showViewForm(
                                                                  '${escapeJsString(ticket.studentName)}',
                                                                  '${escapeJsString(ticket.studentId)}',
                                                                  '${escapeJsString(ticket.licensePlate)}',
                                                                  '${ticket.registrationDate?.split(' ')[0]}',
                                                                  '${ticket.checkInDate}',
-                                                                 '${ticket.ticketExpiryDate}',
-                                                                 '${slotId}',
-                                                                 '${escapeJsString(slotName)}')">Sửa</button>`;
+                                                                 '${ticket.ticketExpiryDate}'`;
                                     }
                                 });
                             } else {
@@ -387,6 +352,26 @@
         function escapeJsString(str) {
             if (str === null || typeof str === 'undefined') return '';
             return String(str).replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+        }
+
+        // Đổi tên hàm và chỉ điền dữ liệu vào form hiển thị
+        function showViewForm(studentName, studentId, licensePlate, entryDate, checkInDate, ticketExpiryDate, slotName) {
+            const formDisplay = document.querySelector('.vehicle-form');
+            formDisplay.style.display = 'block';
+
+            const setValue = (elementId, value) => {
+                const el = document.getElementById(elementId);
+                // Đổi ID của các input trong form hiển thị để tránh nhầm lẫn (ví dụ: viewParkingSlotName)
+                if (el) el.value = (value === null || typeof value === 'undefined' || value.toLowerCase() === 'n/a' || value.toLowerCase() === 'chưa vào') ? '' : value;
+            };
+
+            setValue('viewParkingSlotName', slotName || "Chưa được gán ô");
+            setValue('viewFullName', studentName);
+            setValue('viewStudentId', studentId);
+            setValue('viewLicensePlate', licensePlate);
+            setValue('viewEntryDate', entryDate);
+            setValue('viewCheckInDate', checkInDate);
+            setValue('viewTicketExpiryDate', ticketExpiryDate);
         }
 
 
