@@ -23,17 +23,21 @@ body.show-form {
   left: 50%;
   transform: translate(-50%, -50%) scale(0.95);
   width: 30%;
+  max-width: 500px;  /* Add max-width */
+  min-width: 300px;  /* Add min-width */
   height: 75%;
+  max-height: 90vh;  /* Add max-height */
   border-radius: 8px;
   background-color: #ffffff;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
-  padding: 60px 60px 0 60px;
+  padding: 30px 0px 30px 30px;  /* Adjust padding */
   display: flex;
   flex-direction: column;
   opacity: 0;
   pointer-events: none;
   z-index: 10000;
   transition: opacity 0.4s, transform 0.4s;
+  overflow-y: auto;  /* Add scroll if content overflows */
 }
 
 body.show-form .vehicle-form {
@@ -77,15 +81,15 @@ body.show-form::before {
 
 .form-container {
   margin-top: 24px;
+  flex: 1;
+  overflow-y: auto;  /* Allow scrolling in the form container */
+  padding-right: 10px;  /* Add some padding for the scrollbar */
 }
 
 .form-group {
   background-color: transparent;
   margin-top: 16px;
-}
-
-.form-group:first-child {
-  margin-top: 0;
+  min-height: fit-content;  /* Ensure form groups don't collapse */
 }
 
 .form-label {
@@ -319,8 +323,11 @@ body.show-form::before {
 .submit-button {
   border-radius: 6px;
   background-color: #22c55e;
-  margin: 20px auto 0; /* Center horizontally */
-  padding: 10px 10px;
+  margin: 20px auto;
+  width: auto;  /* Change from 50% to auto */
+  min-width: 120px;  /* Add minimum width */
+  max-width: 200px;  /* Add maximum width */
+  padding: 10px 20px;  /* Adjust padding */
   font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 16px;
   color: #ffffff;
@@ -328,7 +335,6 @@ body.show-form::before {
   text-align: center;
   border: none;
   cursor: pointer;
-  width: 50%;
   transition: background-color 0.2s ease;
   display: block; /* Ensure block display for margin auto to work */
 }
