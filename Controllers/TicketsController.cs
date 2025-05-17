@@ -269,30 +269,5 @@ public class TicketsController : Controller
         // Trả về file PDF
         return File(stream, "application/pdf", $"VeXe_{ticket.BienSoXe}_{DateTime.Now:yyyyMMdd}.pdf");
     }
-    //[Authorize(Roles = "Staff")]
-    public async Task<IActionResult> PrintTicket(string searchLicensePlate = "", string searchStudentName = "")
-    {
-        var query = _context.Tickets
-            .Include(t => t.ParkingSlot)
-            .Include(t => t.Student)
-            .AsQueryable();
-
-        if (!string.IsNullOrWhiteSpace(searchLicensePlate))
-        {
-            query = query.Where(t => t.BienSoXe.Contains(searchLicensePlate));
-        }
-
-        if (!string.IsNullOrWhiteSpace(searchStudentName))
-        {
-            query = query.Where(t => t.Student.HoTen.Contains(searchStudentName));
-        }
-
-        var tickets = await query.ToListAsync();
-
-        ViewBag.SearchLicensePlate = searchLicensePlate;
-        ViewBag.SearchStudentName = searchStudentName;
-
-        return View(tickets);
-    }
-
+    
 }
