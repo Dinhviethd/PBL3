@@ -1,809 +1,814 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&family=Inter:wght@400&display=swap');
 
 body {
-  display: grid;
-  grid-template-columns: 100%; /* Single column by default */
-  height: 100vh;
-  margin: 0;
-  padding: 20px;
-  box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
-  background-color: #AFAFAF;
-  transition: grid-template-columns 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: grid;
+    grid-template-columns: 100%; /* Single column by default */
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    background-color: #AFAFAF;
+    transition: grid-template-columns 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body.show-form {
-  grid-template-columns: 100%; /* Keep single column when form is shown */
-  position: relative;
-}
+    body.show-form {
+        grid-template-columns: 100%; /* Keep single column when form is shown */
+        position: relative;
+    }
 
 .vehicle-form {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.95);
-  width: 30%;
-  height: 75%;
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
-  padding: 60px 60px 0 60px;
-  display: flex;
-  flex-direction: column;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 10000;
-  transition: opacity 0.4s, transform 0.4s;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 30%;
+    max-width: 500px; /* Add max-width */
+    min-width: 300px; /* Add min-width */
+    height: 75%;
+    max-height: 90vh; /* Add max-height */
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+    padding: 30px 0px 30px 30px; /* Adjust padding */
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10000;
+    transition: opacity 0.4s, transform 0.4s;
+    overflow-y: auto; /* Add scroll if content overflows */
 }
 
 body.show-form .vehicle-form {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
-  z-index: 10001; /* Ensure panel is above overlay */
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+    z-index: 10001; /* Ensure panel is above overlay */
 }
 
 /* Add overlay background when form is shown */
 body.show-form::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Darker overlay */
-  z-index: 10000; /* Ensure overlay is below panel */
-  opacity: 0;
-  animation: fadeIn 0.4s forwards;
-  cursor: pointer;
-  pointer-events: all;
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Darker overlay */
+    z-index: 10000; /* Ensure overlay is below panel */
+    opacity: 0;
+    animation: fadeIn 0.4s forwards;
+    cursor: pointer;
+    pointer-events: all;
 }
 
 @keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
+    to {
+        opacity: 1;
+    }
 }
 
 .form-title {
-  background-color: transparent;
-  padding: 5px 0;
-  font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
-  font-size: 20px;
-  color: #000000;
-  font-weight: 600;
-  margin: 0;
+    background-color: transparent;
+    padding: 5px 0;
+    font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 20px;
+    color: #000000;
+    font-weight: 600;
+    margin: 0;
 }
 
 .form-container {
-  margin-top: 24px;
+    margin-top: 24px;
+    flex: 1;
+    overflow-y: auto; /* Allow scrolling in the form container */
+    padding-right: 10px; /* Add some padding for the scrollbar */
 }
 
 .form-group {
-  background-color: transparent;
-  margin-top: 16px;
-}
-
-.form-group:first-child {
-  margin-top: 0;
+    background-color: transparent;
+    margin-top: 16px;
+    min-height: fit-content; /* Ensure form groups don't collapse */
 }
 
 .form-label {
-  display: block;
-  background-color: transparent;
-  padding: 4px 0;
-  font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
-  font-size: 14px;
-  color: #374151;
-  font-weight: 500;
+    display: block;
+    background-color: transparent;
+    padding: 4px 0;
+    font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #374151;
+    font-weight: 500;
 }
 
 .form-input {
-  border-radius: 6px;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  display: flex;
-  margin-top: 4px;
-  height: 42px;
-  width: 100%;
-  padding: 0 12px;
-  font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
-  font-size: 14px;
+    border-radius: 6px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    margin-top: 4px;
+    height: 42px;
+    width: 100%;
+    padding: 0 12px;
+    font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 14px;
 }
 
 .date-input-wrapper {
-  border-radius: 6px;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  display: flex;
-  margin-top: 4px;
-  width: 100%;
-  padding: 0;
-  align-items: center;
-  position: relative;
+    border-radius: 6px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    margin-top: 4px;
+    width: 100%;
+    padding: 0;
+    align-items: center;
+    position: relative;
 }
 
 .date-input {
-  border: none;
-  outline: none;
-  color: #000000;
-  font-size: 16px;
-  font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
-  font-weight: 400;
-  line-height: 1;
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  background-color: #ffffff;
+    border: none;
+    outline: none;
+    color: #000000;
+    font-size: 16px;
+    font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
+    font-weight: 400;
+    line-height: 1;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #ffffff;
 }
 
 .date-picker-icon {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #6b7280;
-  cursor: pointer;
-  transition: color 0.2s ease;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    cursor: pointer;
+    transition: color 0.2s ease;
 }
 
-.date-picker-icon:hover {
-  color: #22c55e;
-}
+    .date-picker-icon:hover {
+        color: #22c55e;
+    }
 
 /* Date picker popup styles */
 .date-picker-popup {
-  position: absolute;
-  bottom: calc(100% + 4px); /* Change from top to bottom */
-  left: 0;
-  width: 300px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06); /* Adjust shadow direction */
-  padding: 16px;
-  z-index: 1000;
-  display: none;
+    position: absolute;
+    bottom: calc(100% + 4px); /* Change from top to bottom */
+    left: 0;
+    width: 300px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06); /* Adjust shadow direction */
+    padding: 16px;
+    z-index: 1000;
+    display: none;
 }
 
-.date-picker-popup.show {
-  display: block;
-}
+    .date-picker-popup.show {
+        display: block;
+    }
 
 .date-picker-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    position: relative;
 }
 
 .date-picker-month {
-  font-weight: 500;
-  font-size: 16px;
-  text-align: center;
-  flex: 1;
+    font-weight: 500;
+    font-size: 16px;
+    text-align: center;
+    flex: 1;
 }
 
 .date-picker-nav {
-  display: flex;
-  gap: 8px;
-  position: absolute;
-  left: 0;
+    display: flex;
+    gap: 8px;
+    position: absolute;
+    left: 0;
 }
 
-.date-picker-nav button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  color: #6b7280;
-  transition: color 0.2s ease;
-}
+    .date-picker-nav button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        color: #6b7280;
+        transition: color 0.2s ease;
+    }
 
-.date-picker-nav button:hover {
-  color: #22c55e;
-}
+        .date-picker-nav button:hover {
+            color: #22c55e;
+        }
 
 .date-picker-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
 }
 
 .date-picker-weekday {
-  text-align: center;
-  font-size: 12px;
-  color: #6b7280;
-  padding: 4px;
+    text-align: center;
+    font-size: 12px;
+    color: #6b7280;
+    padding: 4px;
 }
 
 .date-picker-day {
-  text-align: center;
-  padding: 8px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s ease;
+    text-align: center;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
 }
 
-.date-picker-day:hover {
-  background-color: #f3f4f6;
-}
+    .date-picker-day:hover {
+        background-color: #f3f4f6;
+    }
 
-.date-picker-day.selected {
-  background-color: #22c55e;
-  color: white;
-}
+    .date-picker-day.selected {
+        background-color: #22c55e;
+        color: white;
+    }
 
-.date-picker-day.today {
-  border: 1px solid #22c55e;
-}
+    .date-picker-day.today {
+        border: 1px solid #22c55e;
+    }
 
-.date-picker-day.disabled {
-  color: #d1d5db;
-  cursor: not-allowed;
-}
+    .date-picker-day.disabled {
+        color: #d1d5db;
+        cursor: not-allowed;
+    }
 
 /* Style the date input calendar icon */
 .date-input::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  padding: 0 8px;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
-  background: transparent;
-  z-index: 2;
+    cursor: pointer;
+    padding: 0 8px;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    z-index: 2;
 }
 
-.date-input::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-}
+    .date-input::-webkit-calendar-picker-indicator:hover {
+        opacity: 1;
+    }
 
 /* Firefox specific styles */
 .date-input::-moz-calendar-picker-indicator {
-  cursor: pointer;
-  padding: 0 8px;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
-  background: transparent;
-  z-index: 2;
+    cursor: pointer;
+    padding: 0 8px;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    z-index: 2;
 }
 
-.date-input::-moz-calendar-picker-indicator:hover {
-  opacity: 1;
-}
+    .date-input::-moz-calendar-picker-indicator:hover {
+        opacity: 1;
+    }
 
 /* Add focus styles */
 .date-input:focus {
-  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
 }
 
 /* Style the calendar popup */
 .date-input::-webkit-datetime-edit {
-  padding: 0;
-  width: 100%;
+    padding: 0;
+    width: 100%;
 }
 
 .date-input::-webkit-datetime-edit-fields-wrapper {
-  padding: 0;
+    padding: 0;
 }
 
 .date-input::-webkit-datetime-edit-text {
-  padding: 0 2px;
+    padding: 0 2px;
 }
 
 .date-input::-webkit-datetime-edit-year-field,
 .date-input::-webkit-datetime-edit-month-field,
 .date-input::-webkit-datetime-edit-day-field {
-  padding: 0 2px;
+    padding: 0 2px;
 }
 
 /* Remove the calendar icon styles since we're not using them anymore */
 .calendar-icon,
 .calendar-img {
-  display: none;
+    display: none;
 }
 
 /* Center-align the submit button horizontally */
 .submit-button {
-  border-radius: 6px;
-  background-color: #22c55e;
-  margin: 20px auto 0; /* Center horizontally */
-  padding: 10px 10px;
-  font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
-  font-size: 16px;
-  color: #ffffff;
-  font-weight: 500;
-  text-align: center;
-  border: none;
-  cursor: pointer;
-  width: 50%;
-  transition: background-color 0.2s ease;
-  display: block; /* Ensure block display for margin auto to work */
+    border-radius: 6px;
+    background-color: #22c55e;
+    margin: 20px auto;
+    width: auto; /* Change from 50% to auto */
+    min-width: 120px; /* Add minimum width */
+    max-width: 200px; /* Add maximum width */
+    padding: 10px 20px; /* Adjust padding */
+    font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: 500;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: block; /* Ensure block display for margin auto to work */
 }
 
-.submit-button:hover {
-  background-color: #16a34a;
-}
+    .submit-button:hover {
+        background-color: #16a34a;
+    }
 
 /* Remove default input styles */
 input {
-  outline: none;
-  box-sizing: border-box;
+    outline: none;
+    box-sizing: border-box;
 }
 
-/* Remove calendar icon from date input */
-input[type="date"]::-webkit-calendar-picker-indicator {
-  display: none;
-}
+    /* Remove calendar icon from date input */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        display: none;
+    }
 
 /* Resize the right container to take up 100% width */
 .right-container {
-  grid-column: 1 / -1; /* Span across all columns */
-  height: 80%; /* Maintain height */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    grid-column: 1 / -1; /* Span across all columns */
+    height: 80%; /* Maintain height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-container {
-  height: 10%; /* Chiều cao 30% của tổng chiều cao */
-  margin-bottom: 0; /* Remove gap below search-container */
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4); /* Apply consistent shadow with new offset */
-  padding: 0 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    height: 10%; /* Chiều cao 30% của tổng chiều cao */
+    margin-bottom: 0; /* Remove gap below search-container */
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4); /* Apply consistent shadow with new offset */
+    padding: 0 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .search-wrapper {
-  display: flex;
-  width: 911px;
-  height: 90%;
-  padding: 24px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  border: 0px solid #e5e7eb;
-  background-color: #fff;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1),
-    0px 4px 6px 0px rgba(0, 0, 0, 0.1);
+    display: flex;
+    width: 911px;
+    height: 90%;
+    padding: 24px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border: 0px solid #e5e7eb;
+    background-color: #fff;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1), 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
 }
 
 .search-content {
-  display: flex;
-  width: 100%;
-  height: 42px;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 16px;
+    display: flex;
+    width: 100%;
+    height: 42px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
 }
 
 .search-input-container {
-  display: flex;
-  width: calc(565px - 50px); /* Decrease width by 50px */
-  height: 42px;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    width: calc(565px - 50px); /* Decrease width by 50px */
+    height: 42px;
+    justify-content: center;
+    align-items: center;
 }
 
 .search-input-wrapper {
-  display: flex;
-  width: 100%;
-  height: 42px;
-  position: relative;
-  border-radius: 6px;
-  border: 1px solid #e5e7eb;
-  background-color: #fff;
+    display: flex;
+    width: 100%;
+    height: 42px;
+    position: relative;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    background-color: #fff;
 }
 
 .search-input {
-  width: 100%;
-  height: 100%;
-  padding: 0 16px;
-  color: #adaebc;
-  font-family: Roboto;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  border-radius: 6px;
-  border: none;
-  outline: none;
+    width: 100%;
+    height: 100%;
+    padding: 0 16px;
+    color: #adaebc;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
 }
 
 .filter-dropdown {
-  display: flex;
-  height: 42px;
-  width: calc(128px + 50px); /* Increase width by 50px */
-  padding: 0 8px 0 12px;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 6px;
-  border: 1px solid #e5e7eb;
-  background-color: #fff;
-  cursor: pointer;
+    display: flex;
+    height: 42px;
+    width: calc(128px + 50px); /* Increase width by 50px */
+    padding: 0 8px 0 12px;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    background-color: #fff;
+    cursor: pointer;
 }
 
 .filter-text {
-  color: #000;
-  font-family: Roboto;
-  font-size: 16px;
-  font-weight: 400;
+    color: #000;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 .filter-icon {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .search-button {
-  display: flex;
-  height: 42px;
-  padding: 0 15px;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  border-radius: 6px;
-  background-color: #2563eb;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap; /* Prevent text wrapping */
+    display: flex;
+    height: 42px;
+    padding: 0 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    background-color: #2563eb;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap; /* Prevent text wrapping */
 }
 
 .search-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
 }
 
 .search-button-text {
-  color: #fff;
-  text-align: center;
-  font-family: Roboto;
-  font-size: 16px;
-  font-weight: 400;
+    color: #fff;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 @media (max-width: 991px) {
-  .search-container {
-    padding: 16px;
-  }
+    .search-container {
+        padding: 16px;
+    }
 
-  .search-wrapper {
-    width: 100%;
-  }
+    .search-wrapper {
+        width: 100%;
+    }
 
-  .search-content {
-    gap: 12px;
-  }
+    .search-content {
+        gap: 12px;
+    }
 
-  .search-input-container {
-    flex: 1;
-  }
+    .search-input-container {
+        flex: 1;
+    }
 }
 
 @media (max-width: 640px) {
-  .search-container {
-    padding: 12px;
-  }
+    .search-container {
+        padding: 12px;
+    }
 
-  .search-content {
-    gap: 8px;
-  }
+    .search-content {
+        gap: 8px;
+    }
 
-  .filter-dropdown {
-    width: 100px;
-  }
+    .filter-dropdown {
+        width: 100px;
+    }
 
-  .search-button {
-    padding: 11px 16px;
-  }
+    .search-button {
+        padding: 11px 16px;
+    }
 }
 
 .parking-container {
-  height: 80%; /* Chiều cao 65% của tổng chiều cao */
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4); /* Apply consistent shadow with new offset */
-  padding: 24px;
-  overflow-y: auto; /* Thêm cuộn dọc nếu nội dung vượt quá chiều cao */
-  font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
+    height: 80%; /* Chiều cao 65% của tổng chiều cao */
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4); /* Apply consistent shadow with new offset */
+    padding: 24px;
+    overflow-y: auto; /* Thêm cuộn dọc nếu nội dung vượt quá chiều cao */
+    font-family: Roboto, -apple-system, Roboto, Helvetica, sans-serif;
 }
 
 .parking-title {
-  font-size: 20px;
-  color: #000000;
-  font-weight: 600;
-  padding: 3px 0;
+    font-size: 20px;
+    color: #000000;
+    font-weight: 600;
+    padding: 3px 0;
 }
 
 .parking-grid {
-  margin-top: 24px;
-  width: 100%;
+    margin-top: 24px;
+    width: 100%;
 }
 
 .parking-row {
-  display: flex;
-  align-items: stretch;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
 }
 
-.parking-row:last-child {
-  margin-bottom: 0;
-}
+    .parking-row:last-child {
+        margin-bottom: 0;
+    }
 
 .parking-space {
-  border-radius: 8px;
-  border: 2px solid #e5e7eb;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-  flex: 1;
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: 0;
-  width: fit-content;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Add smooth transition */
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    flex: 1;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+    width: fit-content;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Add smooth transition */
 }
 
-.parking-space:hover {
-  background-color: #3b71ca; /* Change background color on hover */
-}
+    .parking-space:hover {
+        background-color: #3b71ca; /* Change background color on hover */
+    }
 
-.parking-space:hover .space-title {
-  color: #ffffff; /* Change text color to white on hover for space-title only */
-}
+        .parking-space:hover .space-title {
+            color: #ffffff; /* Change text color to white on hover for space-title only */
+        }
 
-/* Add click effect for parking-space */
-.parking-space:active {
-  transform: scale(0.95); /* Shrink the parking space slightly on click */
-  transition: transform 0.1s ease; /* Smooth transition for the shrinking effect */
-}
+    /* Add click effect for parking-space */
+    .parking-space:active {
+        transform: scale(0.95); /* Shrink the parking space slightly on click */
+        transition: transform 0.1s ease; /* Smooth transition for the shrinking effect */
+    }
 
 .space-content {
-  display: flex;
-  align-items: stretch;
-  gap: 20px;
-  justify-content: space-between;
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+    justify-content: space-between;
 }
 
 /* Vertically center-align text in .space-title */
 .space-title {
-  display: flex;
-  align-items: center; /* Center text vertically */
-  justify-content: center; /* Center text horizontally */
-  color: #000000;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1;
-  margin: 0;
+    display: flex;
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    color: #000000;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1;
+    margin: 0;
 }
 
 .occupancy-badge {
-  border-radius: 9999px;
-  padding: 9px 8px;
-  font-size: 14px;
-  font-weight: 400;
-  white-space: nowrap;
+    border-radius: 9999px;
+    padding: 9px 8px;
+    font-size: 14px;
+    font-weight: 400;
+    white-space: nowrap;
 }
 
 .occupancy-normal {
-  background-color: #d1fae5;
-  color: #065f46;
+    background-color: #d1fae5;
+    color: #065f46;
 }
 
 .occupancy-warning {
-  background-color: #fef3c7;
-  color: #92400e;
+    background-color: #fef3c7;
+    color: #92400e;
 }
 
 .occupancy-danger {
-  background-color: #fee2e2;
-  color: #991b1b;
+    background-color: #fee2e2;
+    color: #991b1b;
 }
 
 @media (max-width: 991px) {
-  .parking-container {
-    padding: 20px;
-  }
+    .parking-container {
+        padding: 20px;
+    }
 
-  .parking-title {
-    max-width: 100%;
-    padding-right: 20px;
-  }
+    .parking-title {
+        max-width: 100%;
+        padding-right: 20px;
+    }
 
-  .parking-grid {
-    max-width: 100%;
-  }
+    .parking-grid {
+        max-width: 100%;
+    }
 
-  .parking-space {
-    max-width: 100%;
-  }
+    .parking-space {
+        max-width: 100%;
+    }
 
-  .occupancy-badge {
-    white-space: initial;
-  }
+    .occupancy-badge {
+        white-space: initial;
+    }
 }
 
 /* Modal Styles */
 .modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.1s ease;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.1s ease;
 }
 
-.modal.show {
-  display: flex;
-  opacity: 1;
-  justify-content: center;
-  align-items: center;
-}
+    .modal.show {
+        display: flex;
+        opacity: 1;
+        justify-content: center;
+        align-items: center;
+    }
 
 .modal-content {
-  background-color: white;
-  width: 80%;
-  height: 80%;
-  border-radius: 8px;
-  padding: 0;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+    background-color: white;
+    width: 80%;
+    height: 80%;
+    border-radius: 8px;
+    padding: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 /* Remove the width transition and form-dependent width */
 body.show-form .modal-content {
-  width: 80%; /* Keep the same width */
+    width: 80%; /* Keep the same width */
 }
 
 .modal-title {
-  padding: 24px;
-  font-size: 24px;
-  font-weight: 600;
-  color: #000000;
-  margin: 0;
+    padding: 24px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0;
 }
 
 .modal-table-container {
-  flex: 1;
-  overflow-y: auto;
-  width: 100%;
-  height: 70%;
-  margin: 0 auto;
+    flex: 1;
+    overflow-y: auto;
+    width: 100%;
+    height: 70%;
+    margin: 0 auto;
 }
 
 .modal-table {
-  width: 100%;
-  height: 50px;
-  border-collapse: collapse;
-  margin-top: 16px;
-  table-layout: fixed; /* Fix table layout to prevent resizing */
+    width: 100%;
+    height: 50px;
+    border-collapse: collapse;
+    margin-top: 16px;
+    table-layout: fixed; /* Fix table layout to prevent resizing */
 }
 
-.modal-table th,
-.modal-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #e5e7eb;
-  height: 50px;
-  vertical-align: middle;
-}
+    .modal-table th,
+    .modal-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+        height: 50px;
+        vertical-align: middle;
+    }
 
-.modal-table th {
-  background-color: #f3f4f6;
-  font-weight: 500;
-  color: #374151;
-  height: 50px;
-}
+    .modal-table th {
+        background-color: #f3f4f6;
+        font-weight: 500;
+        color: #374151;
+        height: 50px;
+    }
 
-.modal-table tr:hover {
-  background-color: #f9fafb;
-}
+    .modal-table tr:hover {
+        background-color: #f9fafb;
+    }
 
 .edit-button {
-  padding: 6px 12px;
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+    padding: 6px 12px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
 }
 
-.edit-button:hover {
-  background-color: #1d4ed8;
-}
+    .edit-button:hover {
+        background-color: #1d4ed8;
+    }
 
 .mark-checkbox {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  accent-color: #2563eb;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #2563eb;
 }
 
 .modal-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 24px;
 }
 
 .delete-button {
-  padding: 8px 24px;
-  background-color: #dc2626;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+    padding: 8px 24px;
+    background-color: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
 }
 
-.delete-button:hover {
-  background-color: #b91c1c;
-}
+    .delete-button:hover {
+        background-color: #b91c1c;
+    }
 
 .modal-close {
-  padding: 8px 24px;
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+    padding: 8px 24px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
 }
 
-.modal-close:hover {
-  background-color: #1d4ed8;
-}
+    .modal-close:hover {
+        background-color: #1d4ed8;
+    }
 
 .date-picker-close {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #6b7280;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
 }
 
-.date-picker-close:hover {
-  color: #22c55e;
-  background-color: #f3f4f6;
-}
+    .date-picker-close:hover {
+        color: #22c55e;
+        background-color: #f3f4f6;
+    }

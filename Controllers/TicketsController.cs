@@ -7,8 +7,8 @@ using PBL3.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using QuestPDF.Fluent;
+using QRCoder;
 
-//[Authorize(Roles = "Student")]
 public class TicketsController : Controller
 {
     private readonly AppDBContext _context;
@@ -117,7 +117,9 @@ public class TicketsController : Controller
                     NgayHetHan = today.AddMonths(monthsToAdd),
                     Price = model.Price,
                     StudentId = user.Id,
-                    ParkingSlotId = null // Để trống
+                    ParkingSlotId = null, // Để trống
+                    ThoiGianVao = today,
+                    ThoiGianRa = null
                 };
                 _context.Tickets.Add(newTicket);
                 _logger.LogInformation("Creating new ticket: {@Ticket}", newTicket);
@@ -145,7 +147,7 @@ public class TicketsController : Controller
         }
 
     }
-    [Authorize(Roles = "Staff")]
+    //[Authorize(Roles = "Staff")]
     public async Task<IActionResult> PrintTicket(string searchLicensePlate = "", string searchStudentName = "")
     {
         var query = _context.Tickets
@@ -248,6 +250,23 @@ public class TicketsController : Controller
             return NotFound();
         }
 
+        var studentDetails = ticket.Student as Student; // Ép kiểu AppUser sang Student
+        // 1. Tạo nội dung cho QR Code (ID_Ticket)
+        string qrContent = ticket.ID_Ticket.ToString();
+        _logger.LogInformation("PrintTicketPdf GET: QR content for ticket ID {TicketId} will be '{QRContent}'.", id, qrContent);
+
+        // 2. Tạo QR Code Data
+        QRCodeGenerator qrGenerator = new QRCodeGenerator();
+        QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrContent, QRCodeGenerator.ECCLevel.Q); // Mức sửa lỗi Q (khá tốt)
+
+        // 3. Tạo ảnh QR Code dưới dạng byte array (PNG)
+        PngByteQRCode pngQrCode = new PngByteQRCode(qrCodeData);
+        byte[] qrCodeBytes = pngQrCode.GetGraphic(20); // 20 pixels per module
+
+        // 4. Chuyển byte array thành chuỗi Base64
+        string qrCodeBase64 = Convert.ToBase64String(qrCodeBytes);
+        _logger.LogDebug("PrintTicketPdf GET: Generated Base64 QR code (length: {Length}) for ticket ID {TicketId}.", qrCodeBase64.Length, id);
+
         // Tạo model cho PDF
         var model = new TicketPdfModel
         {
@@ -257,7 +276,8 @@ public class TicketsController : Controller
             NgayDangKy = ticket.NgayDangKy,
             NgayHetHan = ticket.NgayHetHan,
             Price = ticket.Price,
-            SlotName = ticket.ParkingSlot?.SlotName ?? "Chưa chỉ định"
+            SlotName = ticket.ParkingSlot?.SlotName ?? "Chưa chỉ định",
+            QRCode = qrCodeBase64
         };
 
         // Tạo PDF
@@ -269,5 +289,4 @@ public class TicketsController : Controller
         // Trả về file PDF
         return File(stream, "application/pdf", $"VeXe_{ticket.BienSoXe}_{DateTime.Now:yyyyMMdd}.pdf");
     }
-    
 }

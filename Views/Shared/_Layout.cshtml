@@ -6,7 +6,6 @@
     <title>@ViewData["Title"] - PBL3</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <!-- Thêm Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
@@ -43,7 +42,7 @@
                     <li><a href="#Testimonials">Guide</a></li>
                     <li><a href="/team">Team</a></li>
                     <li><a href="/Features">Features</a></li>
-                    <li><a href="/pricing">Pricing</a></li>
+                    <li><a asp-controller="Tickets" asp-action="BuyTicket">Pricing</a></li>
                     <partial name="_LoginPartial" />
                 </ul>
                 <i class="fa-solid fa-bars" id="menu_button"></i>
@@ -56,7 +55,9 @@
             @RenderBody()
         </main>
     </div>
-
-    @RenderSection("Scripts", required: false)
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

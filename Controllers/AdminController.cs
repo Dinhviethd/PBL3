@@ -489,6 +489,113 @@ namespace PBL3.Controllers
             return View();
         }
 
+        // Complaints management
+        public async Task<IActionResult> Complaints()
+        {
+            var complaints = await _context.Complaints
+                .Include(c => c.User)
+                .OrderByDescending(c => c.CreatedAt)
+                .ToListAsync();
+            return View(complaints);
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateComplaintStatus(int complaintId, string status)
+        {
+            var complaint = await _context.Complaints.FindAsync(complaintId);
+
+            if (complaint == null)
+            {
+                return Json(new { success = false, message = "Không tìm thấy khiếu nại" });
+            }
+
+            try
+            {
+                complaint.Status = Enum.Parse<ComplaintStatus>(status);
+                await _context.SaveChangesAsync();
+                return Json(new { success = true });
+            }
+            catch
+            {
+                return Json(new { success = false, message = "Cập nhật trạng thái thất bại" });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteComplaint(int id)
+        {
+            var complaint = await _context.Complaints.FindAsync(id);
+
+            if (complaint == null)
+            {
+                return Json(new { success = false });
+            }
+
+            try
+            {
+                _context.Complaints.Remove(complaint);
+                await _context.SaveChangesAsync();
+                return Json(new { success = true });
+            }
+            catch
+            {
+                return Json(new { success = false });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetComplaintDetails(int id)
+        {
+            var complaint = await _context.Complaints
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.ComplaintId == id);
+
+            if (complaint == null)
+            {
+                return Json(new { success = false });
+            }
+
+            return Json(new
+            {
+                success = true,
+                title = complaint.Title,
+                content = complaint.Content,
+                userName = complaint.User.HoTen,
+                createdAt = complaint.CreatedAt.ToString("dd-MM-yyyy THH:mm:ss"), // ISO format
+                status = complaint.Status.ToString()
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubmitComplaint([FromBody] ComplaintSubmitModel model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false });
+
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var complaint = new Complaint
+                {
+                    UserId = user.Id,
+                    Title = model.Title,
+                    Content = model.Content,
+                    CreatedAt = DateTime.UtcNow,
+                    Status = ComplaintStatus.Pending
+                };
+
+                _context.Complaints.Add(complaint);
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true });
+            }
+            catch
+            {
+                return Json(new { success = false });
+            }
+        }
     }
 }

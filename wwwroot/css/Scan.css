@@ -1,0 +1,296 @@
+﻿.vehicle-checkin {
+    background-color: rgb(243, 244, 246);
+    display: flex;
+    width: 100%;
+    padding: 32px 20px; /* Adjusted for smaller screens */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+.checkin-container {
+    width: 100%;
+    max-width: 896px;
+}
+
+.checkin-card {
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    overflow: hidden;
+}
+
+.checkin-header {
+    border-bottom: 1px solid rgb(229, 231, 235);
+    padding: 20px 24px;
+    line-height: 1.2;
+}
+
+.header-title {
+    color: rgb(31, 41, 55);
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.header-subtitle {
+    color: rgb(75, 85, 99);
+    font-size: 15px;
+    font-weight: 400;
+    margin: 8px 0 0;
+}
+
+.checkin-content {
+    padding: 20px 24px;
+}
+
+.content-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+/* Thay thế img bằng div cho QR Scanner */
+.vehicle-image-container { /* Đổi tên class để chứa QR reader */
+    width: 100%; /* Default full width */
+    order: 1; /* Default order */
+}
+
+#qr-reader-wrapper {
+    width: 100%;
+    max-width: 350px; /* Max width for the QR reader */
+    min-height: 300px; /* Min height for QR reader visibility */
+    margin: 0 auto 15px auto; /* Center it and add bottom margin */
+    border: 2px dashed #007bff; /* Blue dashed border */
+    border-radius: 8px;
+    padding: 5px;
+    background-color: #f8f9fa; /* Light background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center content if video is smaller */
+}
+
+#qr-reader {
+    width: 100%;
+    height: auto; /* Let the video determine its height based on width */
+}
+
+    #qr-reader video {
+        border-radius: 6px; /* Rounded corners for the video feed */
+    }
+
+
+.vehicle-info {
+    width: 100%; /* Default full width */
+    order: 2; /* Default order */
+}
+
+.info-container {
+    border-radius: 8px;
+    background-color: rgb(249, 250, 251);
+    padding: 20px;
+    font-family: Roboto, -apple-system, Helvetica, sans-serif;
+    height: 100%;
+    min-height: 280px; /* Ensure space for all info rows */
+}
+
+.info-title {
+    font-size: 18px;
+    color: black;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.info-details {
+    margin-top: 12px;
+    font-size: 15px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dotted #eaeaea;
+}
+
+    .info-row:first-child {
+        margin-top: 0;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+
+.info-label {
+    color: rgb(75, 85, 99);
+    font-weight: 400;
+    flex-shrink: 0; /* Prevent label from shrinking */
+}
+
+.info-value {
+    color: black;
+    font-weight: 600;
+    text-align: right;
+    word-break: break-all; /* Break long values */
+}
+
+    .info-value.placeholder { /* Style cho placeholder text */
+        color: #999;
+        font-style: italic;
+    }
+
+
+.input-section {
+    display: flex;
+    margin-top: 20px;
+    gap: 15px;
+    font-size: 15px;
+    flex-wrap: wrap; /* Allow items to wrap */
+    align-items: center;
+}
+
+.input-wrapper {
+    flex: 1 1 250px; /* Flexible width for input */
+}
+
+.mssv-input { /* Đổi tên từ license-input */
+    width: 100%;
+    border-radius: 8px;
+    background-color: white;
+    border: 1px solid rgb(209, 213, 219);
+    padding: 12px 16px;
+    color: rgb(55, 65, 81);
+}
+
+    .mssv-input::placeholder {
+        color: rgb(156, 163, 175);
+    }
+
+.action-button { /* Class chung cho các nút */
+    border-radius: 8px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease;
+}
+
+    .action-button:hover {
+        opacity: 0.9;
+    }
+
+
+.manual-find-button { /* Đổi tên class cho nút tìm thủ công */
+    background-color: #007bff; /* Primary blue */
+    color: white;
+}
+
+    .manual-find-button img {
+        filter: brightness(0) invert(1);
+    }
+
+
+.scan-again-button { /* Nút quét lại QR */
+    background-color: #17a2b8; /* Info cyan */
+    color: white;
+    width: 100%; /* Full width for this button below QR */
+    max-width: 350px; /* Match qr-reader-wrapper max-width */
+    margin: 10px auto 0 auto; /* Center it */
+}
+
+    .scan-again-button img {
+        filter: brightness(0) invert(1);
+    }
+/* Icon trắng */
+
+.retry-icon {
+    width: 16px;
+    aspect-ratio: 0.84;
+    object-fit: contain;
+}
+
+.checkin-footer {
+    background-color: rgb(249, 250, 251);
+    padding: 15px 24px;
+    text-align: center;
+    font-size: 13px;
+    color: #6c757d;
+}
+
+/* Spinner */
+.processing-indicator {
+    display: none; /* Hidden by default */
+    text-align: center;
+    padding: 15px;
+}
+/* Modal Styling */
+.modal-header.bg-success {
+    background-color: #28a745 !important;
+    color: white;
+}
+
+.modal-header.bg-danger {
+    background-color: #dc3545 !important;
+    color: white;
+}
+
+.modal-header .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+
+@media (min-width: 768px) {
+    .vehicle-image-container {
+        width: 45%; /* QR scanner takes less space */
+        order: 1; /* QR on the left */
+        margin-right: 5%;
+    }
+
+    .vehicle-info {
+        width: 50%; /* Info takes more space */
+        order: 2; /* Info on the right */
+    }
+
+    .input-wrapper {
+        flex: 1 1 300px; /* Allow more space for input on larger screens */
+    }
+}
+
+@media (max-width: 767px) {
+    /* On smaller screens, stack them */
+    .vehicle-image-container, .vehicle-info {
+        width: 100%;
+        margin-right: 0;
+        order: 0; /* Reset order to flow naturally */
+    }
+
+    .vehicle-info {
+        margin-top: 20px; /* Add space between QR and Info */
+    }
+
+    .input-section {
+        flex-direction: column;
+    }
+
+    .input-wrapper, .action-button.manual-find-button {
+        width: 100%; /* Full width for input and find button */
+    }
+
+    .action-button.manual-find-button {
+        margin-top: 10px; /* Space if stacked */
+    }
+}
+

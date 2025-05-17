@@ -12,8 +12,8 @@ using PBL3.Data;
 namespace PBL3.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250511093558_UpdateDataBase")]
-    partial class UpdateDataBase
+    [Migration("20250517022600_UpdateDB")]
+    partial class UpdateDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -236,6 +236,40 @@ namespace PBL3.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("PBL3.Models.Complaint", b =>
+                {
+                    b.Property<int>("ComplaintId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ComplaintId"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ComplaintId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Complaints");
+                });
+
             modelBuilder.Entity("PBL3.Models.ParkingSlot", b =>
                 {
                     b.Property<int>("ParkingSlotId")
@@ -289,6 +323,12 @@ namespace PBL3.Migrations
                     b.Property<string>("StudentId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("ThoiGianRa")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ThoiGianVao")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("ID_Ticket");
 
@@ -375,6 +415,17 @@ namespace PBL3.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PBL3.Models.Complaint", b =>
+                {
+                    b.HasOne("PBL3.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PBL3.Models.Ticket", b =>

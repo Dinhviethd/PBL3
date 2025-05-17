@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using PBL3.Data;
 using PBL3.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PBL3.Controllers
 {
+    [Authorize(Roles = "Admin,Staff")]
     public class StatController : Controller
     {
         private readonly AppDBContext _context;
@@ -21,102 +23,89 @@ namespace PBL3.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMonthlyStats(int? month, int? year)
+        public IActionResult GetStats(string statType, int days)
         {
-            // If month or year not provided, use current date
-            var today = DateTime.Now;
-            month ??= today.Month;
-            year ??= today.Year;
-
-            // Get first and last day of the month
-            var firstDayOfMonth = new DateTime(year.Value, month.Value, 1);
-            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
-
-            // Get all tickets for the month
-            var tickets = await _context.Tickets
-                .Where(t => t.NgayDangKy >= firstDayOfMonth && t.NgayDangKy <= lastDayOfMonth)
-                .ToListAsync();
-
-            // Group by date and calculate daily stats
-            var dailyStats = tickets
-                .GroupBy(t => t.NgayDangKy.Date)
-                .Select(g => new
-                {
-                    Date = g.Key,
-                    Revenue = g.Sum(t => t.Price),
-                    TicketCount = g.Count()
-                })
-                .OrderBy(x => x.Date)
-                .ToList();
-
-            // Calculate monthly totals
-            var monthlyStats = new
-            {
-                TotalRevenue = dailyStats.Sum(x => x.Revenue),
-                TotalTickets = dailyStats.Sum(x => x.TicketCount),
-                DailyData = new
-                {
-                    Labels = dailyStats.Select(x => x.Date.ToString("dd/MM")).ToArray(),
-                    RevenueData = dailyStats.Select(x => (double)x.Revenue).ToArray(),
-                    TicketCountData = dailyStats.Select(x => x.TicketCount).ToArray()
-                }
-            };
-
-            return Json(monthlyStats);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetStats(string statType, int days)
-        {
-            // Calculate the start date based on the selected period
             var endDate = DateTime.Now;
             var startDate = endDate.AddDays(-days);
 
-            // Get tickets within the date range
-            var tickets = await _context.Tickets
+            var tickets = _context.Tickets
                 .Where(t => t.NgayDangKy >= startDate && t.NgayDangKy <= endDate)
-                .ToListAsync();
-
-            // Group by date and calculate daily stats
-            var dailyStats = tickets
-                .GroupBy(t => t.NgayDangKy.Date)
-                .OrderBy(g => g.Key)
-                .Select(g => new
-                {
-                    Date = g.Key,
-                    Revenue = g.Sum(t => t.Price),
-                    TicketCount = g.Count()
-                })
                 .ToList();
 
-            // Create list of all dates in range (to include days with no tickets)
-            var allDates = Enumerable.Range(0, days)
-                .Select(offset => endDate.AddDays(-offset).Date)
-                .OrderBy(date => date);
-
-            // Fill in missing dates with zero values
-            var completeStats = allDates.GroupJoin(
-                dailyStats,
-                date => date,
-                stat => stat.Date,
-                (date, stats) => new
-                {
-                    Date = date,
-                    Revenue = stats.FirstOrDefault()?.Revenue ?? 0,
-                    TicketCount = stats.FirstOrDefault()?.TicketCount ?? 0
-                })
-                .OrderBy(x => x.Date)
-                .ToList();
-
-            // Prepare the response data
-            var response = new
+            var (labels, revenueData, ticketCountData) = days switch
             {
-                labels = completeStats.Select(x => x.Date.ToString("dd/MM/yyyy")).ToArray(),
-                revenueData = completeStats.Select(x => (double)x.Revenue).ToArray(),
-                ticketCountData = completeStats.Select(x => x.TicketCount).ToArray()
+                30 => GetDailyStats(tickets, startDate, endDate),
+                _ => GetMonthlyStats(tickets, startDate, endDate)
             };
 
-            return Json(response);
+            return Json(new { labels, revenueData, ticketCountData });
+        }
+
+        private (List<string>, List<decimal>, List<int>) GetDailyStats(List<Ticket> tickets, DateTime startDate, DateTime endDate)
+        {
+            var dailyStats = tickets
+                .GroupBy(t => t.NgayDangKy.Date)
+                .ToDictionary(
+                    g => g.Key,
+                    g => (Revenue: g.Sum(t => t.Price), Count: g.Count())
+                );
+
+            var labels = new List<string>();
+            var revenueData = new List<decimal>();
+            var ticketCountData = new List<int>();
+
+            for (var date = startDate.Date; date <= endDate.Date; date = date.AddDays(1))
+            {
+                labels.Add(date.ToString("dd/MM/yyyy"));
+                if (dailyStats.TryGetValue(date, out var stats))
+                {
+                    revenueData.Add(stats.Revenue);
+                    ticketCountData.Add(stats.Count);
+                }
+                else
+                {
+                    revenueData.Add(0);
+                    ticketCountData.Add(0);
+                }
+            }
+
+            return (labels, revenueData, ticketCountData);
+        }
+
+        private (List<string>, List<decimal>, List<int>) GetMonthlyStats(List<Ticket> tickets, DateTime startDate, DateTime endDate)
+        {
+            var monthlyStats = tickets
+                .GroupBy(t => new { t.NgayDangKy.Year, t.NgayDangKy.Month })
+                .ToDictionary(
+                    g => new DateTime(g.Key.Year, g.Key.Month, 1),
+                    g => (Revenue: g.Sum(t => t.Price), Count: g.Count())
+                );
+
+            var labels = new List<string>();
+            var revenueData = new List<decimal>();
+            var ticketCountData = new List<int>();
+
+            var currentDate = new DateTime(startDate.Year, startDate.Month, 1);
+            var lastDate = new DateTime(endDate.Year, endDate.Month, 1);
+
+            while (currentDate <= lastDate)
+            {
+                // Format as dd/MM/yyyy to match daily format and allow splitting
+                labels.Add("01/" + currentDate.ToString("MM/yyyy"));
+                if (monthlyStats.TryGetValue(currentDate, out var stats))
+                {
+                    revenueData.Add(stats.Revenue);
+                    ticketCountData.Add(stats.Count);
+                }
+                else
+                {
+                    revenueData.Add(0);
+                    ticketCountData.Add(0);
+                }
+                currentDate = currentDate.AddMonths(1);
+            }
+
+            return (labels, revenueData, ticketCountData);
         }
     }
 }

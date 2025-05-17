@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace PBL3.Models
 {
     public class Ticket
@@ -22,6 +21,8 @@ namespace PBL3.Models
         [Display(Name = "Giá vé")]
         public decimal Price { get; set; }
 
+        public DateTime? ThoiGianVao { get; set; }
+        public DateTime? ThoiGianRa { get; set; }
 
         [ForeignKey("Student")]
         public string StudentId { get; set; }

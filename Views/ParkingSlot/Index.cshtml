@@ -1,8 +1,11 @@
 ﻿@model PBL3.Models.ViewModel.ParkingSlotViewModel
-@{
-    IgnoreBody();
-}
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
 
+@{
+    ViewData["Title"] = "Quản Lý Nhà Xe";
+    var isStaff = User.IsInRole("Staff");
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,131 +16,109 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/QLNX.css" asp-append-version="true" />
-    <title>Document</title>
     <style>
-        .add-button {
-            padding: 8px 24px;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: background-color 0.2s ease;
+        .form-input[readonly], .date-input[readonly] {
+            background-color: #e9ecef;
+            opacity: 1;
+            cursor: default;
         }
 
-        .add-button:hover {
-            background-color: #1d4ed8;
+        .vehicle-form {
+            display: none;
         }
 
-        .confirm-button {
-            padding: 8px 24px;
-            background-color: #22c55e;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: background-color 0.2s ease;
+        .modal-table th, .modal-table td {
+            white-space: nowrap;
+            padding: 8px 10px;
+            vertical-align: middle;
         }
 
-        .confirm-button:hover {
-            background-color: #16a34a;
-        }
-
-        #assignParkingModal .modal-content {
-            max-width: 400px;
-            margin: 100px auto;
-        }
-
-        #assignParkingModal .form-group {
-            margin-bottom: 20px;
-        }
-
-        #assignParkingModal label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        #assignParkingModal select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #d1d5db;
-            border-radius: 4px;
-            font-size: 16px;
-        }
+            .modal-table th:nth-child(1), .modal-table td:nth-child(1) {
+                width: 5%;
+                text-align: center;
+            }
+            /* Checkbox */
+            .modal-table th:nth-child(2), .modal-table td:nth-child(2) {
+                width: 5%;
+            }
+            /* STT */
+            .modal-table th:nth-child(3), .modal-table td:nth-child(3) {
+                width: 20%;
+            }
+            /* Họ tên */
+            .modal-table th:nth-child(4), .modal-table td:nth-child(4) {
+                width: 15%;
+            }
+            /* MSSV */
+            .modal-table th:nth-child(5), .modal-table td:nth-child(5) {
+                width: 15%;
+            }
+            /* Biển số */
+            .modal-table th:nth-child(6), .modal-table td:nth-child(6) {
+                width: 15%;
+            }
+            /* Ngày ĐK Vé */
+            .modal-table th:nth-child(7), .modal-table td:nth-child(7) {
+                width: 15%;
+            }
+            /* Ngày Check-In */
+            .modal-table th:nth-child(8), .modal-table td:nth-child(8) {
+                width: 10%;
+            }
+        /* Ngày Hết Hạn Vé */
+        /* Bỏ cột thao tác nếu không còn nút "Xem" */
     </style>
 </head>
 <body>
-    <form class="vehicle-form">
+    @* Form "Thông tin xe" - Giờ chỉ để hiển thị *@
+    <div class="vehicle-form">
         <button type="button" class="form-close" style="position:absolute;top:10px;right:10px;font-size:20px;background:none;border:none;cursor:pointer;">×</button>
-        <h1 class="form-title">Thông tin xe</h1>
+        <h1 class="form-title">Thông tin chi tiết vé</h1>
         <div class="form-container">
             <div class="form-group">
-                <label class="form-label" for="OGX">Ô giữ xe</label>
-                <input type="number" id="OGX" class="form-input" max="10" min="0" />
+                <label class="form-label" for="viewParkingSlotName">Ô giữ xe</label>
+                <input type="text" id="viewParkingSlotName" class="form-input" readonly />
             </div>
             <div class="form-group">
-                <label class="form-label" for="fullName">Họ và tên</label>
-                <input type="text" id="fullName" class="form-input" />
+                <label class="form-label" for="viewFullName">Họ và tên</label>
+                <input type="text" id="viewFullName" class="form-input" readonly />
             </div>
             <div class="form-group">
-                <label class="form-label" for="studentId">Mã số sinh viên</label>
-                <input type="text" id="studentId" class="form-input" />
+                <label class="form-label" for="viewStudentId">Mã số sinh viên</label>
+                <input type="text" id="viewStudentId" class="form-input" readonly />
             </div>
             <div class="form-group">
-                <label class="form-label" for="licensePlate">Biển số xe</label>
-                <input type="text" id="licensePlate" class="form-input" />
+                <label class="form-label" for="viewLicensePlate">Biển số xe</label>
+                <input type="text" id="viewLicensePlate" class="form-input" readonly />
             </div>
             <div class="form-group">
-                <label class="form-label" for="date">Ngày giữ xe</label>
-                <div class="date-input-wrapper">
-                    <input type="text" id="date" class="date-input" placeholder="Chọn ngày" readonly />
-                    <div class="date-picker-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 2V5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M16 2V5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M3.5 9.09H20.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                </div>
+                <label class="form-label" for="viewEntryDate">Ngày Đăng Ký Vé</label>
+                <input type="text" id="viewEntryDate" class="form-input" readonly />
             </div>
             <div class="form-group">
-                <label class="form-label" for="latestLeave">Ngày ra gần nhất</label>
-                <div class="date-input-wrapper">
-                    <input type="text" id="latestLeave" class="date-input" placeholder="Chọn ngày" readonly />
-                    <div class="date-picker-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 2V5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M16 2V5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M3.5 9.09H20.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                </div>
+                <label class="form-label" for="viewCheckInDate">Ngày Check-In</label>
+                <input type="text" id="viewCheckInDate" class="form-input" readonly />
             </div>
-            <button type="submit" class="submit-button">Cập nhật xe</button>
+            <div class="form-group">
+                <label class="form-label" for="viewTicketExpiryDate">Ngày Hết Hạn</label>
+                <input type="text" id="viewTicketExpiryDate" class="form-input" readonly />
+            </div>
+            @* Bỏ nút submit *@
         </div>
-    </form>
+    </div>
 
     <div class="right-container">
-        <form class="search-container" method="get" action="@Url.Action("Index", "ParkingSlot")">
+        <form class="search-container" method="get" asp-action="Index" asp-controller="ParkingSlot">
             <div class="search-content">
                 <div class="search-input-container">
                     <div class="search-input-wrapper">
-                        <input type="text" name="searchTerm" value="@Model.SearchTerm" placeholder="Tìm kiếm" class="search-input" />
+                        <input type="text" name="searchTerm" value="@Model.SearchTerm" placeholder="Tìm kiếm..." class="search-input" />
                     </div>
                 </div>
                 <select name="searchType" class="filter-dropdown">
                     <option value="mssv" selected="@(Model.SearchType == "mssv")">MSSV</option>
                     <option value="name" selected="@(Model.SearchType == "name")">Họ và tên</option>
                     <option value="license" selected="@(Model.SearchType == "license")">Biển số xe</option>
-                    <option value="entry-date" selected="@(Model.SearchType == "entry-date")">Ngày giữ xe</option>
-                    <option value="exit-date" selected="@(Model.SearchType == "exit-date")">Ngày ra gần nhất</option>
                     <option value="not-entered" selected="@(Model.SearchType == "not-entered")">Xe chưa vào bãi</option>
                 </select>
                 <button type="submit" class="search-button">
@@ -149,13 +130,13 @@
         <section class="parking-container">
             <h2 class="parking-title">Ô giữ xe</h2>
             <div class="parking-grid">
-                @foreach (var slot in Model.ParkingSlots)
+                @foreach (var slot in Model.ParkingSlots.OrderBy(s => s.SlotName))
                 {
                     <div class="parking-row">
                         <article class="parking-space">
-                            <div class="space-content">
+                            <div class="space-content" data-slot-id="@slot.ParkingSlotId">
                                 <h3 class="space-title">Ô số @slot.SlotName</h3>
-                                <span class="occupancy-badge @(slot.CurrentCount <= 6 ? "occupancy-normal" : slot.CurrentCount <= 9 ? "occupancy-warning" : "occupancy-danger")">@slot.CurrentCount/@slot.MaxCapacity</span>
+                                <span class="occupancy-badge @(slot.CurrentCount <= (slot.MaxCapacity * 0.6) ? "occupancy-normal" : slot.CurrentCount <= (slot.MaxCapacity * 0.9) ? "occupancy-warning" : "occupancy-danger")">@slot.CurrentCount/@slot.MaxCapacity</span>
                             </div>
                         </article>
                     </div>
@@ -165,422 +146,235 @@
 
         @if (Model.Tickets != null && Model.Tickets.Any())
         {
-            <div class="modal show" id="parkingModal">
+            <div class="modal" id="parkingModal">
                 <div class="modal-content">
                     <h2 class="modal-title">Kết quả tìm kiếm</h2>
                     <div class="modal-table-container">
-                        <form method="post" action="@Url.Action("DeleteTickets", "ParkingSlot")">
+                        <form method="post" asp-action="DeleteTickets" asp-controller="ParkingSlot" id="deleteTicketsForm">
+                            @Html.AntiForgeryToken()
                             <table class="modal-table">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox" id="selectAll" /></th>
+                                        @if (isStaff)
+                                        {
+                                            <th><input type="checkbox" id="selectAllInModal" /></th>
+                                        }
                                         <th>STT</th>
                                         <th>Họ và tên</th>
-                                        <th>Mã số sinh viên</th>
+                                        <th>MSSV</th>
                                         <th>Biển số xe</th>
-                                        <th>Ngày giữ xe</th>
-                                        <th>Ngày ra gần nhất</th>
-                                        <th>Thao tác</th>
+                                        <th>Ngày ĐK Vé</th>
+                                        <th>Ngày Check-In</th>
+                                        <th>Ngày Hết Hạn</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @{
+                                        var index = 1;
+                                    }
                                     @foreach (var ticket in Model.Tickets)
                                     {
                                         <tr>
-                                            <td><input type="checkbox" name="ticketIds" value="@ticket.ID_Ticket" class="mark-checkbox" /></td>
-                                            <td>@ticket.ID_Ticket</td>
-                                            <td>@ticket.Student?.HoTen</td>
-                                            <td>@ticket.Student?.MSSV</td>
+                                            @if (isStaff)
+                                            {
+                                                <td><input type="checkbox" name="ticketIds" value="@ticket.ID_Ticket" class="mark-checkbox" /></td>
+                                            }
+                                            <td>@(index++)</td>
+                                            <td>@(ticket.Student?.HoTen ?? "N/A")</td>
+                                            <td>@((ticket.Student as Student)?.MSSV ?? "N/A")</td>
                                             <td>@ticket.BienSoXe</td>
                                             <td>@ticket.NgayDangKy.ToString("dd/MM/yyyy")</td>
+                                            <td>@(ticket.ThoiGianVao?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa vào")</td>
                                             <td>@ticket.NgayHetHan.ToString("dd/MM/yyyy")</td>
-                                            <td><button type="button" class="edit-button">Edit</button></td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
                             <div class="modal-buttons">
-                                <button type="submit" class="delete-button">Xóa</button>
-                                <button type="button" class="add-button" id="addToParkingBtn">Thêm</button>
-                                <button type="button" class="modal-close">Đóng</button>
+                                @if (isStaff)
+                                {
+                                    <button type="submit" class="delete-button">Xóa xe khỏi bãi</button>
+                                }
+                                <button type="button" class="modal-close" data-target-modal="parkingModal">Đóng</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         }
-
-        <div class="modal" id="assignParkingModal">
-            <div class="modal-content">
-                <h2 class="modal-title">Chọn ô giữ xe</h2>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="parkingSlotSelect">Ô giữ xe:</label>
-                        <select id="parkingSlotSelect" class="form-control">
-                            @foreach (var slot in Model.ParkingSlots)
-                            {
-                                <option value="@slot.ParkingSlotId" 
-                                        data-current="@slot.CurrentCount" 
-                                        data-max="@slot.MaxCapacity">
-                                    Ô số @slot.SlotName (@slot.CurrentCount/@slot.MaxCapacity)
-                                </option>
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" class="confirm-button" id="confirmAssignBtn">Xác nhận</button>
-                    <button type="button" class="modal-close">Hủy</button>
-                </div>
-            </div>
-        </div>
+        @* Xóa modal assignParkingModal *@
     </div>
 
     <script>
-        // Function to update occupancy badge
-        function updateOccupancyBadge(space, recordCount) {
-          const badge = space.querySelector('.occupancy-badge');
-          badge.textContent = `${recordCount}/10`;
-
-          // Remove existing color classes
-          badge.classList.remove('occupancy-normal', 'occupancy-warning', 'occupancy-danger');
-
-          // Add appropriate color class
-          if (recordCount <= 6) {
-            badge.classList.add('occupancy-normal');
-          } else if (recordCount <= 9) {
-            badge.classList.add('occupancy-warning');
-          } else {
-            badge.classList.add('occupancy-danger');
-          }
+        function updateOccupancyBadge(spaceElement, recordCount, maxCapacity) {
+            const badge = spaceElement.querySelector('.occupancy-badge');
+            if (!badge) return;
+            badge.textContent = `${recordCount}/${maxCapacity}`;
+            badge.classList.remove('occupancy-normal', 'occupancy-warning', 'occupancy-danger');
+            const occupancyPercentage = (maxCapacity > 0) ? (recordCount / maxCapacity) * 100 : 0;
+            if (occupancyPercentage <= 60) {
+                badge.classList.add('occupancy-normal');
+            } else if (occupancyPercentage <= 90) {
+                badge.classList.add('occupancy-warning');
+            } else {
+                badge.classList.add('occupancy-danger');
+            }
         }
 
-        // Mapping for number of records per space (updated as requested)
-        const spaceRecordCounts = {
-          '1': 3,
-          '2': 4,
-          '3': 7,
-          '4': 8,
-          '5': 10,
-          '6': 10,
-          '7': 2,
-          '8': 8,
-          '9': 1,
-          '10': 3
-        };
+        document.addEventListener('DOMContentLoaded', function () {
+            const isStaff = @Json.Serialize(isStaff);
+            const mainModal = document.getElementById('parkingModal');
+            const vehicleInfoDisplayForm = document.querySelector('.vehicle-form');
 
-        // Function to get record count for a space
-        function getRecordCount(spaceNumber) {
-          return spaceRecordCounts[spaceNumber] || 0;
-        }
-
-        // Function to generate records for a space
-        function generateRecords(spaceNumber) {
-          const count = getRecordCount(spaceNumber);
-          const records = [];
-          for (let i = 0; i < count; i++) {
-            records.push({
-              name: `Nguyễn Văn ${String.fromCharCode(65 + i)}`,
-              id: `2023${spaceNumber}${String(i + 1).padStart(3, '0')}`,
-              plate: `51G-${spaceNumber}${String(i + 1).padStart(4, '0')}`,
-              entry: `${String(i + 1).padStart(2, '0')}/03/2024`,
-              exit: `${String(i + 15).padStart(2, '0')}/03/2024`
-            });
-          }
-          return records;
-        }
-
-        // Initialize all occupancy badges
-        function initializeOccupancyBadges() {
-          document.querySelectorAll('.parking-space').forEach(space => {
-            const spaceNumber = space.querySelector('.space-title').textContent.split(' ')[2];
-            const recordCount = getRecordCount(spaceNumber);
-            updateOccupancyBadge(space, recordCount);
-          });
-        }
-
-        // Add click event listeners to all parking spaces
-        document.querySelectorAll('.parking-space').forEach(space => {
-          space.addEventListener('click', function() {
-            const spaceNumber = this.querySelector('.space-title').textContent.split(' ')[2];
-            document.getElementById('parkingNumber').textContent = spaceNumber;
-
-            // Clear existing table content
-            const tableBody = document.getElementById('parkingTableBody');
-            tableBody.innerHTML = '';
-
-            // Generate records for the space
-            const records = generateRecords(spaceNumber);
-            const recordCount = records.length;
-
-            // Add records to table
-            records.forEach((record, index) => {
-              const row = document.createElement('tr');
-              row.innerHTML = `
-                <td><input type=\"checkbox\" class=\"mark-checkbox\"></td>
-                <td>${index + 1}</td>
-                <td>${record.name}</td>
-                <td>${record.id}</td>
-                <td>${record.plate}</td>
-                <td>${record.entry}</td>
-                <td>${record.exit}</td>
-                <td><button class=\"edit-button\">Edit</button></td>
-              `;
-              tableBody.appendChild(row);
-            });
-
-            // Update occupancy badge
-            updateOccupancyBadge(this, recordCount);
-
-            document.getElementById('parkingModal').classList.add('show');
-
-            // Add event listeners to edit buttons (after table is rendered)
-            tableBody.querySelectorAll('.edit-button').forEach(btn => {
-              btn.addEventListener('click', function(e) {
-                e.stopPropagation(); // Prevent modal from closing
-                document.body.classList.add('show-form');
-              });
-            });
-          });
-        });
-
-        // Close modal when clicking the close button
-        document.querySelector('.modal-close').addEventListener('click', function() {
-          document.getElementById('parkingModal').classList.remove('show');
-        });
-
-        // Close modal when clicking outside
-        document.getElementById('parkingModal').addEventListener('click', function(e) {
-          if (e.target === this) {
-            this.classList.remove('show');
-          }
-        });
-
-        // Close Thông tin xe panel only when its close button is clicked
-        document.querySelector('.form-close').addEventListener('click', function() {
-          document.body.classList.remove('show-form');
-        });
-
-        // Initialize occupancy badges when page loads
-        document.addEventListener('DOMContentLoaded', initializeOccupancyBadges);
-
-        // Date picker functionality
-        function createDatePicker(inputId) {
-          const input = document.getElementById(inputId);
-          const wrapper = input.parentElement;
-
-          // Create date picker popup
-          const popup = document.createElement('div');
-          popup.className = 'date-picker-popup';
-
-          // Create header
-          const header = document.createElement('div');
-          header.className = 'date-picker-header';
-
-          const monthDisplay = document.createElement('div');
-          monthDisplay.className = 'date-picker-month';
-
-          const nav = document.createElement('div');
-          nav.className = 'date-picker-nav';
-
-          const prevBtn = document.createElement('button');
-          prevBtn.innerHTML = '←';
-          prevBtn.type = 'button'; // Prevent form submission
-
-          const nextBtn = document.createElement('button');
-          nextBtn.innerHTML = '→';
-          nextBtn.type = 'button'; // Prevent form submission
-
-          const closeBtn = document.createElement('button');
-          closeBtn.innerHTML = '×';
-          closeBtn.className = 'date-picker-close';
-          closeBtn.type = 'button'; // Prevent form submission
-
-          nav.appendChild(prevBtn);
-          nav.appendChild(nextBtn);
-          header.appendChild(monthDisplay);
-          header.appendChild(nav);
-          header.appendChild(closeBtn);
-
-          // Create grid
-          const grid = document.createElement('div');
-          grid.className = 'date-picker-grid';
-
-          // Add weekdays
-          const weekdays = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
-          weekdays.forEach(day => {
-            const weekday = document.createElement('div');
-            weekday.className = 'date-picker-weekday';
-            weekday.textContent = day;
-            grid.appendChild(weekday);
-          });
-
-          popup.appendChild(header);
-          popup.appendChild(grid);
-          wrapper.appendChild(popup);
-
-          let currentDate = new Date();
-          let selectedDate = null;
-
-          function updateCalendar() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-
-            monthDisplay.textContent = `${month + 1}/${year}`;
-
-            // Clear existing days
-            while (grid.children.length > 7) {
-              grid.removeChild(grid.lastChild);
-            }
-
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-
-            // Add empty cells for days before the first day of the month
-            for (let i = 0; i < firstDay.getDay(); i++) {
-              const empty = document.createElement('div');
-              empty.className = 'date-picker-day';
-              grid.appendChild(empty);
-            }
-
-            // Add days of the month
-            for (let day = 1; day <= lastDay.getDate(); day++) {
-              const dayElement = document.createElement('div');
-              dayElement.className = 'date-picker-day';
-              dayElement.textContent = day;
-
-              const date = new Date(year, month, day);
-
-              if (selectedDate && date.toDateString() === selectedDate.toDateString()) {
-                dayElement.classList.add('selected');
-              }
-
-              if (date.toDateString() === new Date().toDateString()) {
-                dayElement.classList.add('today');
-              }
-
-              dayElement.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevent form submission
-                selectedDate = date;
-                input.value = `${day.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/${year}`;
-                updateCalendar();
-              });
-
-              grid.appendChild(dayElement);
-            }
-          }
-
-          // Event listeners
-          prevBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            updateCalendar();
-          });
-
-          nextBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            updateCalendar();
-          });
-
-          closeBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            popup.classList.remove('show');
-          });
-
-          input.addEventListener('click', (e) => {
-            e.preventDefault();
-            popup.classList.toggle('show');
-            updateCalendar();
-          });
-
-          // Close popup when clicking outside
-          document.addEventListener('click', (e) => {
-            // Only handle clicks outside the date picker
-            if (!wrapper.contains(e.target) && !e.target.closest('.date-picker-popup')) {
-              popup.classList.remove('show');
-            }
-          });
-
-          updateCalendar();
-        }
-
-        // Initialize date pickers
-        createDatePicker('date');
-        createDatePicker('latestLeave');
-
-        // Add select all functionality
-        document.getElementById('selectAll')?.addEventListener('change', function() {
-          const checkboxes = document.getElementsByName('ticketIds');
-          checkboxes.forEach(checkbox => {
-            checkbox.checked = this.checked;
-          });
-        });
-
-        // Update the search form submission
-        document.querySelector('.search-container').addEventListener('submit', function(e) {
-          const searchTerm = this.querySelector('input[name="searchTerm"]').value;
-          const searchType = this.querySelector('select[name="searchType"]').value;
-
-          if (!searchTerm && searchType !== 'not-entered') {
-            e.preventDefault();
-            alert('Vui lòng nhập từ khóa tìm kiếm');
-          }
-        });
-
-        // Add button click handler
-        document.getElementById('addToParkingBtn').addEventListener('click', function() {
-            const selectedTickets = document.querySelectorAll('input[name="ticketIds"]:checked');
-            if (selectedTickets.length === 0) {
-                alert('Vui lòng chọn ít nhất một vé');
-                return;
-            }
-            document.getElementById('assignParkingModal').classList.add('show');
-        });
-
-        // Confirm assignment handler
-        document.getElementById('confirmAssignBtn').addEventListener('click', function() {
-            const selectedTickets = Array.from(document.querySelectorAll('input[name="ticketIds"]:checked'))
-                .map(checkbox => checkbox.value);
-            const selectedSlot = document.getElementById('parkingSlotSelect');
-            const option = selectedSlot.options[selectedSlot.selectedIndex];
-            const currentCount = parseInt(option.dataset.current);
-            const maxCapacity = parseInt(option.dataset.max);
-            
-            if (selectedTickets.length + currentCount > maxCapacity) {
-                alert('Số lượng xe vượt quá sức chứa của ô giữ xe');
-                return;
-            }
-
-            // Send request to assign tickets
-            fetch('/ParkingSlot/AssignTickets', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    ticketIds: selectedTickets,
-                    parkingSlotId: selectedSlot.value
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.reload();
-                } else {
-                    alert(data.message || 'Có lỗi xảy ra');
+            function toggleModal(modalElement, show) {
+                if (modalElement) {
+                    if (show) modalElement.classList.add('show');
+                    else modalElement.classList.remove('show');
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra');
+            }
+
+            document.querySelectorAll('.modal-close').forEach(button => {
+                button.addEventListener('click', function () {
+                    const targetModalId = this.dataset.targetModal || this.closest('.modal')?.id;
+                    if (targetModalId) {
+                        toggleModal(document.getElementById(targetModalId), false);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        toggleModal(this, false);
+                    }
+                });
+            });
+
+            vehicleInfoDisplayForm.querySelector('.form-close')?.addEventListener('click', function() {
+                vehicleInfoDisplayForm.style.display = 'none';
+            });
+
+            if (isStaff && mainModal) {
+                const selectAllInModal = mainModal.querySelector('#selectAllInModal');
+                if (selectAllInModal) {
+                    selectAllInModal.addEventListener('change', function () {
+                        mainModal.querySelectorAll('.mark-checkbox').forEach(checkbox => {
+                            checkbox.checked = this.checked;
+                        });
+                    });
+                }
+            }
+
+            const searchParams = new URLSearchParams(window.location.search);
+            const hasSearchTerm = searchParams.has('searchTerm') && searchParams.get('searchTerm').trim() !== '';
+            const isNotEnteredSearch = searchParams.get('searchType') === 'not-entered';
+
+             if (mainModal && (hasSearchTerm || isNotEnteredSearch)) {
+                 if (@Json.Serialize(Model.Tickets != null && Model.Tickets.Any())) {
+                    toggleModal(mainModal, true);
+                }
+            }
+
+            document.querySelectorAll('.parking-space').forEach(space => {
+                const badge = space.querySelector('.occupancy-badge');
+                 if (badge && badge.textContent) {
+                    const parts = badge.textContent.split('/');
+                    if (parts.length === 2) {
+                        const current = parseInt(parts[0]);
+                        const max = parseInt(parts[1]);
+                        if (!isNaN(current) && !isNaN(max)) {
+                            updateOccupancyBadge(space, current, max);
+                        }
+                    }
+                }
+
+                space.addEventListener('click', async function () {
+                    const slotId = this.querySelector('.space-content').dataset.slotId;
+                    const slotNameElement = this.querySelector('.space-title');
+                    const slotName = slotNameElement ? slotNameElement.textContent.replace('Ô số ', '').trim() : 'N/A';
+
+                    try {
+                        const response = await fetch(`@Url.Action("GetTicketsBySlot", "ParkingSlot")?slotId=${slotId}`);
+                        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                        const result = await response.json();
+
+                        if (result.success && mainModal) {
+                            mainModal.querySelector('.modal-title').textContent = `Danh sách xe trong Ô số ${slotName}`;
+                            const tableBody = mainModal.querySelector('tbody');
+                            tableBody.innerHTML = '';
+
+                            if (result.data && result.data.length > 0) {
+                                result.data.forEach((ticket, index) => {
+                                    const row = tableBody.insertRow();
+                                    let cellIndex = 0;
+                                    if (isStaff) {
+                                        row.insertCell(cellIndex++).innerHTML = `<input type="checkbox" name="ticketIds" value="${ticket.id}" class="mark-checkbox" />`;
+                                    }
+                                    row.insertCell(cellIndex++).textContent = index + 1;
+                                    row.insertCell(cellIndex++).textContent = ticket.studentName || 'N/A';
+                                    row.insertCell(cellIndex++).textContent = ticket.studentId || 'N/A';
+                                    row.insertCell(cellIndex++).textContent = ticket.licensePlate || 'N/A';
+                                    row.insertCell(cellIndex++).textContent = ticket.registrationDate || 'N/A';
+                                    row.insertCell(cellIndex++).textContent = ticket.checkInDate || 'Chưa vào';
+                                    row.insertCell(cellIndex++).textContent = ticket.ticketExpiryDate || 'N/A';
+
+                                    if (isStaff) { // Nút "Xem"
+                                        row.insertCell(cellIndex++).innerHTML = `<button type="button" class="view-button"
+                                            onclick="showViewForm(
+                                                                 '${escapeJsString(ticket.studentName)}',
+                                                                 '${escapeJsString(ticket.studentId)}',
+                                                                 '${escapeJsString(ticket.licensePlate)}',
+                                                                 '${ticket.registrationDate?.split(' ')[0]}',
+                                                                 '${ticket.checkInDate}',
+                                                                 '${ticket.ticketExpiryDate}'`;
+                                    }
+                                });
+                            } else {
+                                const colCount = mainModal.querySelector('thead th').length;
+                                tableBody.innerHTML = `<tr><td colspan="${colCount}" style="text-align:center; padding: 20px;">Không có xe nào trong ô này (đã check-in và chưa check-out).</td></tr>`;
+                            }
+                            if (isStaff) {
+                                const selectAllInModal = mainModal.querySelector('#selectAllInModal');
+                                if (selectAllInModal) selectAllInModal.checked = false;
+                            }
+                            toggleModal(mainModal, true);
+                        } else if (!result.success) {
+                            alert(result.message || 'Lỗi tải danh sách vé.');
+                        }
+                    } catch (error) {
+                        console.error('Lỗi fetch GetTicketsBySlot:', error);
+                        alert('Lỗi nghiêm trọng khi tải danh sách vé.');
+                    }
+                });
             });
         });
 
-        // Close assign parking modal
-        document.querySelector('#assignParkingModal .modal-close').addEventListener('click', function() {
-            document.getElementById('assignParkingModal').classList.remove('show');
-        });
+        function escapeJsString(str) {
+            if (str === null || typeof str === 'undefined') return '';
+            return String(str).replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+        }
+
+        // Đổi tên hàm và chỉ điền dữ liệu vào form hiển thị
+        function showViewForm(studentName, studentId, licensePlate, entryDate, checkInDate, ticketExpiryDate, slotName) {
+            const formDisplay = document.querySelector('.vehicle-form');
+            formDisplay.style.display = 'block';
+
+            const setValue = (elementId, value) => {
+                const el = document.getElementById(elementId);
+                // Đổi ID của các input trong form hiển thị để tránh nhầm lẫn (ví dụ: viewParkingSlotName)
+                if (el) el.value = (value === null || typeof value === 'undefined' || value.toLowerCase() === 'n/a' || value.toLowerCase() === 'chưa vào') ? '' : value;
+            };
+
+            setValue('viewParkingSlotName', slotName || "Chưa được gán ô");
+            setValue('viewFullName', studentName);
+            setValue('viewStudentId', studentId);
+            setValue('viewLicensePlate', licensePlate);
+            setValue('viewEntryDate', entryDate);
+            setValue('viewCheckInDate', checkInDate);
+            setValue('viewTicketExpiryDate', ticketExpiryDate);
+        }
+
+
     </script>
 </body>
 </html>
