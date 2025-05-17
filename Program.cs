@@ -6,7 +6,7 @@ using PBL3.Models;
 using QuestPDF.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Thanh") ?? throw new InvalidOperationException("Connection string 'PBL3Context' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string 'PBL3Context' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
