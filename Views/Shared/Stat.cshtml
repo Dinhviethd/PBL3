@@ -1,9 +1,5 @@
-﻿﻿@using Microsoft.AspNetCore.Authorization
+﻿@using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
-@{
-    Layout = null;
-}
-
 @if (!User.IsInRole("Admin") && !User.IsInRole("Staff"))
 {
     <div class="container mt-4">

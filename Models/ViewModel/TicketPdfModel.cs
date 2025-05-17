@@ -9,5 +9,6 @@
         public DateTime NgayHetHan { get; set; }
         public decimal Price { get; set; }
         public string SlotName { get; set; }
+        public string QRCode { get; set; } // Chuỗi Base64 của ảnh QR
     }
 }
