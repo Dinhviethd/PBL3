@@ -13,6 +13,11 @@
             <input type="text" id="searchLicensePlate" name="searchLicensePlate" value="@ViewBag.SearchLicensePlate" class="form-control" />
         </div>
 
+        <div class="search-group">
+            <label for="searchStudentName">Tìm theo tên sinh viên:</label>
+            <input type="text" id="searchStudentName" name="searchStudentName" value="@ViewBag.SearchStudentName" class="form-control" />
+        </div>
+
         <div class="search-buttons">
             <button type="submit" class="btn btn-primary">Tìm kiếm</button>
             <a asp-action="PrintTicket" class="btn btn-secondary">Xóa bộ lọc</a>
@@ -24,24 +29,26 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.BienSoXe)
+                Biển số xe
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NgayDangKy)
+                Ngày đăng ký
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NgayHetHan)
+                Ngày hết hạn
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Giá vé
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student)
+                Tên sinh viên
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ParkingSlot)
+                Vị trí đỗ xe
             </th>
-            <th></th>
+            <th>
+                Thao tác
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -52,19 +59,19 @@
                     @Html.DisplayFor(modelItem => item.BienSoXe)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NgayDangKy)
+                    @item.NgayDangKy.ToString("dd/MM/yyyy")
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NgayHetHan)
+                    @item.NgayHetHan.ToString("dd/MM/yyyy")
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Price)
+                    @item.Price.ToString("N0") VNĐ
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Student.HoTen)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ParkingSlot.SlotName)
+                    @(item.ParkingSlot?.SlotName ?? "Chưa chỉ định")
                 </td>
                 <td>
                     <a asp-action="PrintTicketPdf" asp-route-id="@item.ID_Ticket" class="btn btn-primary">In vé</a>
@@ -73,3 +80,103 @@
         }
     </tbody>
 </table>
+
+<div class="pagination-container">
+    <div class="pagination-info">
+        Hiển thị @(((ViewBag.CurrentPage - 1) * ViewBag.PageSize) + 1) - @(Math.Min(ViewBag.CurrentPage * ViewBag.PageSize, ViewBag.TotalItems)) 
+        trong tổng số @ViewBag.TotalItems vé
+    </div>
+    
+    <div class="pagination-controls">
+        @if (ViewBag.TotalPages > 1)
+        {
+            <ul class="pagination">
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="PrintTicket" 
+                           asp-route-page="@(ViewBag.CurrentPage - 1)"
+                           asp-route-searchLicensePlate="@ViewBag.SearchLicensePlate"
+                           asp-route-searchStudentName="@ViewBag.SearchStudentName">
+                            Trước
+                        </a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-action="PrintTicket" 
+                           asp-route-page="@i"
+                           asp-route-searchLicensePlate="@ViewBag.SearchLicensePlate"
+                           asp-route-searchStudentName="@ViewBag.SearchStudentName">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="PrintTicket" 
+                           asp-route-page="@(ViewBag.CurrentPage + 1)"
+                           asp-route-searchLicensePlate="@ViewBag.SearchLicensePlate"
+                           asp-route-searchStudentName="@ViewBag.SearchStudentName">
+                            Sau
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+<style>
+    .pagination-container {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .pagination-info {
+        color: #666;
+    }
+
+    .pagination {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 5px;
+    }
+
+    .page-item {
+        display: inline-block;
+    }
+
+    .page-link {
+        display: block;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: #007bff;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+    }
+
+    .page-item.active .page-link {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+
+    .page-link:hover {
+        background-color: #e9ecef;
+    }
+
+    .page-item.active .page-link:hover {
+        background-color: #007bff;
+    }
+</style>

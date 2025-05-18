@@ -148,7 +148,7 @@ public class TicketsController : Controller
 
     }
     //[Authorize(Roles = "Staff")]
-    public async Task<IActionResult> PrintTicket(string searchLicensePlate = "", string searchStudentName = "")
+    public async Task<IActionResult> PrintTicket(string searchLicensePlate = "", string searchStudentName = "", int page = 1, int pageSize = 10)
     {
         var query = _context.Tickets
             .Include(t => t.ParkingSlot)
@@ -165,10 +165,25 @@ public class TicketsController : Controller
             query = query.Where(t => t.Student.HoTen.Contains(searchStudentName));
         }
 
-        var tickets = await query.ToListAsync();
+        // Get total count for pagination
+        var totalItems = await query.CountAsync();
+        var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+        // Ensure page is within valid range
+        page = Math.Max(1, Math.Min(page, totalPages));
+
+        // Get paginated data
+        var tickets = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
 
         ViewBag.SearchLicensePlate = searchLicensePlate;
         ViewBag.SearchStudentName = searchStudentName;
+        ViewBag.CurrentPage = page;
+        ViewBag.TotalPages = totalPages;
+        ViewBag.PageSize = pageSize;
+        ViewBag.TotalItems = totalItems;
 
         return View(tickets);
     }
