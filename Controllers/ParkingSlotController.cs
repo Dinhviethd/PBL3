@@ -33,11 +33,9 @@ namespace PBL3.Controllers
             var query = _context.Tickets
                 .Include(t => t.Student)
                 .Include(t => t.ParkingSlot)
-                .AsQueryable();
-
-            if (searchType == "not-entered")
+                .AsQueryable();            if (searchType == "not-entered")
             {
-                query = query.Where(t => t.ParkingSlotId == null && t.ThoiGianVao == null); // Chỉ xe chưa vào bãi và chưa check-in
+                query = query.Where(t => t.ParkingSlotId == null); // Cả xe chưa vào bãi và xe đã rời bãi (ParkingSlotId = null)
             }
             else
             {

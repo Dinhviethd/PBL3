@@ -17,6 +17,7 @@ namespace PBL3.Data
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Complaint> Complaints { get; set; }
         public DbSet<ParkingSlot> ParkingSlots { get; set; }
+        public DbSet<History> Histories { get; set; }  // Add History DbSet
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

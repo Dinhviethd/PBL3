@@ -209,7 +209,7 @@ namespace PBL3.Migrations
                     NgayDangKy = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NgayHetHan = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    ThoiGianVao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ThoiGianVao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ThoiGianRa = table.Column<DateTime>(type: "datetime2", nullable: true),
                     StudentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ParkingSlotId = table.Column<int>(type: "int", nullable: true)
@@ -229,6 +229,32 @@ namespace PBL3.Migrations
                         principalTable: "ParkingSlots",
                         principalColumn: "ParkingSlotId",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Histories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TrangThai = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BienSo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MSSV = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenSinhVien = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Lop = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ThoiGian = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    KhuVuc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TicketId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Histories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Histories_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
+                        principalColumn: "ID_Ticket",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -276,6 +302,11 @@ namespace PBL3.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Histories_TicketId",
+                table: "Histories",
+                column: "TicketId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_ParkingSlotId",
                 table: "Tickets",
                 column: "ParkingSlotId");
@@ -308,10 +339,13 @@ namespace PBL3.Migrations
                 name: "Complaints");
 
             migrationBuilder.DropTable(
-                name: "Tickets");
+                name: "Histories");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Tickets");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

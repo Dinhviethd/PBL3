@@ -12,7 +12,7 @@ using PBL3.Data;
 namespace PBL3.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250517022600_UpdateDB")]
+    [Migration("20250518023906_UpdateDB")]
     partial class UpdateDB
     {
         /// <inheritdoc />
@@ -270,6 +270,51 @@ namespace PBL3.Migrations
                     b.ToTable("Complaints");
                 });
 
+            modelBuilder.Entity("PBL3.Models.History", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BienSo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KhuVuc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Lop")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MSSV")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenSinhVien")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ThoiGian")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TrangThai")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("Histories");
+                });
+
             modelBuilder.Entity("PBL3.Models.ParkingSlot", b =>
                 {
                     b.Property<int>("ParkingSlotId")
@@ -327,7 +372,7 @@ namespace PBL3.Migrations
                     b.Property<DateTime?>("ThoiGianRa")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ThoiGianVao")
+                    b.Property<DateTime?>("ThoiGianVao")
                         .HasColumnType("datetime2");
 
                     b.HasKey("ID_Ticket");
@@ -426,6 +471,17 @@ namespace PBL3.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PBL3.Models.History", b =>
+                {
+                    b.HasOne("PBL3.Models.Ticket", "Ticket")
+                        .WithMany()
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("PBL3.Models.Ticket", b =>

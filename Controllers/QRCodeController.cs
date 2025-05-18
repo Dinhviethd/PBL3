@@ -170,6 +170,22 @@ namespace PBL3.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
+                    
+                    // Create history record for check-in
+                    var historyRecord = new History
+                    {
+                        TrangThai = "check-in",
+                        BienSo = ticket.BienSoXe,
+                        MSSV = studentInfoForResponse.MSSV,
+                        TenSinhVien = studentInfoForResponse.HoTen,
+                        Lop = studentInfoForResponse.Lop,
+                        ThoiGian = ticket.ThoiGianVao.Value,
+                        KhuVuc = availableParkingZone.SlotName,
+                        TicketId = ticket.ID_Ticket
+                    };
+                    _context.Histories.Add(historyRecord);
+                    await _context.SaveChangesAsync();
+
                     _logger.LogInformation("Check-in successful: TicketID {TicketId}, Student {StudentMSSV}, Zone {ZoneName}, TimeIn {TimeIn}",
                                          ticket.ID_Ticket, studentInfoForResponse.MSSV, availableParkingZone.SlotName, ticket.ThoiGianVao);
                     return Json(new
@@ -219,6 +235,22 @@ namespace PBL3.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
+
+                    // Create history record for check-out
+                    var historyRecord = new History
+                    {
+                        TrangThai = "check-out",
+                        BienSo = ticket.BienSoXe,
+                        MSSV = studentInfoForResponse.MSSV,
+                        TenSinhVien = studentInfoForResponse.HoTen,
+                        Lop = studentInfoForResponse.Lop,
+                        ThoiGian = ticket.ThoiGianRa.Value,
+                        KhuVuc = currentZoneName,
+                        TicketId = ticket.ID_Ticket
+                    };
+                    _context.Histories.Add(historyRecord);
+                    await _context.SaveChangesAsync();
+
                     _logger.LogInformation("Check-out successful: TicketID {TicketId}, Student {StudentMSSV}, FromZone {ZoneName}, TimeOut {TimeOut}",
                                          ticket.ID_Ticket, studentInfoForResponse.MSSV, currentZoneName, ticket.ThoiGianRa);
                     return Json(new
