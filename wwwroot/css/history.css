@@ -1,0 +1,82 @@
+/* History page styles */
+.table-responsive {
+    margin-top: 20px;
+    max-height: 65vh; /* Set a fixed height of 65% of viewport height */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.badge {
+    padding: 8px 12px;
+    font-size: 0.9em;
+    border-radius: 4px;
+}
+
+.bg-success {
+    background-color: #28a745 !important;
+    color: white;
+}
+
+.bg-danger {
+    background-color: #dc3545 !important;
+    color: white;
+}
+
+.input-group {
+    width: 100%;
+    max-width: 600px;
+}
+
+.input-group select {
+    min-width: 150px;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Keep the table header fixed when scrolling */
+.table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa; /* Match Bootstrap's table-striped background */
+    z-index: 1; /* Ensure header stays above table body */
+}
+
+/* Add a subtle shadow to indicate scrolling */
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: #dee2e6;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background-color: #f8f9fa;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .input-group > * {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    .input-group-append {
+        width: 100%;
+    }
+    
+    .input-group-append button {
+        width: 100%;
+    }
+}

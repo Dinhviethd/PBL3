@@ -1,0 +1,88 @@
+@model IEnumerable<PBL3.Models.History>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+
+@{
+    ViewData["Title"] = "Lịch sử ra vào";
+}
+
+<link rel="stylesheet" href="~/css/history.css" asp-append-version="true" />
+
+<div class="container mt-4">
+    <h2>Lịch sử ra vào</h2>
+
+    @if (!User.IsInRole("Student"))
+    {
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <form method="get" class="form-inline">
+                    <div class="input-group">                    
+                        <select name="searchType" class="form-control">
+                            <option value="bienso" selected="@(ViewBag.SearchType == "bienso")">Biển số xe</option>
+                            <option value="mssv" selected="@(ViewBag.SearchType == "mssv")">MSSV</option>
+                            <option value="tensinhvien" selected="@(ViewBag.SearchType == "tensinhvien")">Tên sinh viên</option>
+                            <option value="trangthai" selected="@(ViewBag.SearchType == "trangthai")">Trạng thái</option>
+                            <option value="lop" selected="@(ViewBag.SearchType == "lop")">Lớp</option>
+                        </select>
+                        <input type="text" name="searchTerm" class="form-control" placeholder="Tìm kiếm..." value="@ViewBag.SearchTerm">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Trạng thái</th>
+                    <th>Biển số</th>
+                    <th>MSSV</th>
+                    <th>Tên sinh viên</th>
+                    <th>Lớp</th>
+                    <th>Thời gian</th>
+                    <th>Khu vực/vị trí</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (item.TrangThai == "check-in")
+                            {
+                                <span class="badge bg-success">Check-in</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Check-out</span>
+                            }
+                        </td>
+                        <td>@item.BienSo</td>
+                        <td>@item.MSSV</td>
+                        <td>@item.TenSinhVien</td>
+                        <td>@item.Lop</td>
+                        <td>@item.ThoiGian.ToString("HH:mm dd/MM/yyyy")</td>
+                        <td>@item.KhuVuc</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Auto-submit form when search type changes
+            $('select[name="searchType"]').change(function() {
+                if ($('input[name="searchTerm"]').val()) {
+                    $(this).closest('form').submit();
+                }
+            });
+        });
+    </script>
+}
