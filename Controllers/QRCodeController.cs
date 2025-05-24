@@ -42,12 +42,9 @@ namespace PBL3.Controllers
 
             _logger.LogInformation("FindAndProcessTicketByMSSV: Searching for active ticket for MSSV {MSSV}", request.MSSV);
 
-            // Với TPH, _context.Students sẽ tự động lọc AppUser có Discriminator là "Student"
-            var student = await _context.Users.OfType<Student>() // Cách tường minh hơn để chỉ rõ là query từ Users và lọc Student
+           
+            var student = await _context.Users.OfType<Student>() 
                                       .FirstOrDefaultAsync(s => s.MSSV == request.MSSV);
-
-            // Hoặc cách ngắn gọn hơn, vì bạn đã có DbSet<Student> trong AppDBContext mà EF hiểu là TPH:
-            // var student = await _context.Students.FirstOrDefaultAsync(s => s.MSSV == request.MSSV);
 
 
             if (student == null)
@@ -56,9 +53,6 @@ namespace PBL3.Controllers
                 return NotFound(new { success = false, message = $"Không tìm thấy sinh viên với MSSV: {request.MSSV}." });
             }
 
-            // Tìm vé còn hạn của sinh viên này
-            // Ưu tiên vé đang ở trong bãi (có ParkingSlotId) để check-out,
-            // hoặc vé còn hạn chưa vào bãi để check-in.
             var ticket = await _context.Tickets
                 .Include(t => t.Student) // Student ở đây sẽ là AppUser, cần ép kiểu sau
                 .Include(t => t.ParkingSlot)

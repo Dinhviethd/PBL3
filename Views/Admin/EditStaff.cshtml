@@ -1,4 +1,4 @@
-@model PBL3.Models.ViewModel.StaffRegisterViewModel
+@model PBL3.Models.ViewModel.EditStaffViewModel
 
 @{
     ViewData["Title"] = "Sửa thông tin nhân viên";
@@ -12,7 +12,7 @@
         <div class="col-md-6">
             <form asp-action="EditStaff" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" name="id" value="@ViewContext.RouteData.Values["id"]" />
+                <input type="hidden" asp-for="Id" />
 
                 <div class="form-group mb-3">
                     <label asp-for="HoTen" class="control-label">Họ và tên</label>

@@ -147,9 +147,12 @@ public class TicketsController : Controller
         }
 
     }
-    //[Authorize(Roles = "Staff")]
-    public async Task<IActionResult> PrintTicket(string searchLicensePlate = "", string searchStudentName = "", int page = 1, int pageSize = 10)
+    [Authorize(Roles = "Staff")]
+    public async Task<IActionResult> PrintTicket(string searchLicensePlate = "", string searchStudentName = "", int page = 1)
     {
+        // Default page size
+        int pageSize = 10;
+
         var query = _context.Tickets
             .Include(t => t.ParkingSlot)
             .Include(t => t.Student)
@@ -169,21 +172,22 @@ public class TicketsController : Controller
         var totalItems = await query.CountAsync();
         var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
-        // Ensure page is within valid range
-        page = Math.Max(1, Math.Min(page, totalPages));
+        // Adjust current page if needed
+        page = Math.Max(1, Math.Min(page, Math.Max(1, totalPages)));
 
-        // Get paginated data
+        // Apply pagination
         var tickets = await query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
-        ViewBag.SearchLicensePlate = searchLicensePlate;
-        ViewBag.SearchStudentName = searchStudentName;
+        // Set up ViewBag for pagination
         ViewBag.CurrentPage = page;
         ViewBag.TotalPages = totalPages;
         ViewBag.PageSize = pageSize;
         ViewBag.TotalItems = totalItems;
+        ViewBag.SearchLicensePlate = searchLicensePlate;
+        ViewBag.SearchStudentName = searchStudentName;
 
         return View(tickets);
     }
@@ -208,7 +212,7 @@ public class TicketsController : Controller
             var today = DateTime.Now;
             var hasValidTicket = existingTicket != null && existingTicket.NgayHetHan > today;
 
-            if (hasValidTicket)
+            if (hasValidTicket && existingTicket != null)
             {
                 // Calculate months to add based on package
                 int monthsToAdd = request.PackageName switch
@@ -249,7 +253,7 @@ public class TicketsController : Controller
 
     public class TicketUpdateRequest
     {
-        public string PackageName { get; set; }
+        public required string PackageName { get; set; }
         public decimal Price { get; set; }
     }
     [Authorize(Roles = "Staff")]
@@ -265,7 +269,6 @@ public class TicketsController : Controller
             return NotFound();
         }
 
-        var studentDetails = ticket.Student as Student; // Ép kiểu AppUser sang Student
         // 1. Tạo nội dung cho QR Code (ID_Ticket)
         string qrContent = ticket.ID_Ticket.ToString();
         _logger.LogInformation("PrintTicketPdf GET: QR content for ticket ID {TicketId} will be '{QRContent}'.", id, qrContent);
@@ -282,11 +285,15 @@ public class TicketsController : Controller
         string qrCodeBase64 = Convert.ToBase64String(qrCodeBytes);
         _logger.LogDebug("PrintTicketPdf GET: Generated Base64 QR code (length: {Length}) for ticket ID {TicketId}.", qrCodeBase64.Length, id);
 
+        // Check if Student is not null and can be cast to Student type
+        var studentDetails = ticket.Student as Student;
+        string? mssvValue = studentDetails?.MSSV; // This will be null if studentDetails is null
+
         // Tạo model cho PDF
         var model = new TicketPdfModel
         {
             HoTen = ticket.Student.HoTen,
-            MSSV = (ticket.Student as Student)?.MSSV,
+            MSSV = mssvValue ?? "N/A", // Use null coalescing operator to provide default value
             BienSoXe = ticket.BienSoXe,
             NgayDangKy = ticket.NgayDangKy,
             NgayHetHan = ticket.NgayHetHan,
