@@ -1,0 +1,107 @@
+﻿@model PBL3.Models.ViewModel.RegisterStudentViewModel
+
+@{
+    ViewData["Title"] = "Quản Lý Sinh Viên";
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="~/css/admin/QLSV.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-container">
+            <div class="dashboard-content">
+                <main class="main-content">
+                    <!-- Search Section -->
+                    <section class="search-section">
+                        <h2 class="section-title">Tìm kiếm sinh viên</h2>
+                        <form method="get" class="search-form">
+                            <div class="search-container">
+                                <select name="searchType" class="search-type">
+                                    <option value="MSSV" selected>Tìm theo MSSV</option>
+                                    <option value="Name">Tìm theo tên</option>
+                                    <option value="Class">Tìm theo lớp</option>
+                                    <option value="Phone">Tìm theo số điện thoại</option>
+                                </select>
+                                <input type="text" name="searchValue" placeholder="Nhập từ khóa tìm kiếm" class="search-input" />
+                                <div class="search-actions">
+                                    <button type="submit" class="btn-primary search-btn">
+                                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/19e0d15c42d628e2727522e0a4e7e32021b5dcb4?placeholderIfAbsent=true&apiKey=a94898cdbac34dc4b261ff4175f2b5c2" alt="Search Icon" class="search-icon" />
+                                        <span>Tìm kiếm</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Results Section -->
+                    <section class="results-section">
+                        <div class="results-header">
+                            <h2 class="section-title">Danh sách sinh viên</h2>
+                            <a asp-action="Register" class="btn-primary">Thêm sinh viên</a>
+                        </div>
+
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger">
+                                @TempData["Error"]
+                            </div>
+                        }
+
+                        <div class="table-container">
+                            <table class="results-table">
+                                <thead>
+                                    <tr>
+                                        <th>Họ và tên</th>
+                                        <th>MSSV</th>
+                                        <th>Lớp</th>
+                                        <th>Email</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var student in Model.Students)
+                                    {
+                                        <tr>
+                                            <td>@student.HoTen</td>
+                                            <td>@student.MSSV</td>
+                                            <td>@student.Lop</td>
+                                            <td>@student.Email</td>
+                                            <td>@student.PhoneNumber</td>
+                                            <td>
+                                                <a asp-action="EditStudent" asp-route-id="@student.Id" class="btn-edit">Sửa</a>
+                                                <a asp-action="ConfirmDeleteStudent" asp-route-id="@student.Id" class="btn-delete">Xóa</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        @if (Model.PageInfo.TotalPages > 1)
+                        {
+                            <div class="pagination">
+                                @for (int i = 1; i <= Model.PageInfo.TotalPages; i++)
+                                {
+                                    <a asp-action="QLSV" 
+                                       asp-route-page="@i" 
+                                       asp-route-searchType="@ViewBag.SearchType"
+                                       asp-route-searchValue="@ViewBag.SearchValue"
+                                       class="page-btn @(i == Model.PageInfo.CurrentPage ? "active" : "")">
+                                        @i
+                                    </a>
+                                }
+                            </div>
+                        }
+                    </section>
+                </main>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

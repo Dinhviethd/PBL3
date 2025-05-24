@@ -1,0 +1,124 @@
+﻿@{
+    ViewData["Title"] = "Hệ Thống Check-in Xe";
+}
+
+@* Sử dụng font Roboto từ Google Fonts *@
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="~/css/Scan.css" asp-append-version="true" />
+
+<div class="vehicle-checkin">
+    <div class="checkin-container">
+        <div class="checkin-card">
+            <header class="checkin-header">
+                <h1 class="header-title">Hệ Thống Check-in/Check-out Xe</h1>
+                <p class="header-subtitle">Quét mã QR hoặc nhập MSSV để xử lý</p>
+            </header>
+
+            <main class="checkin-content">
+                <div class="content-grid">
+                    @* Khu vực quét mã QR (thay thế figure.vehicle-image) *@
+                    <div class="vehicle-image-container">
+                        <div id="qr-reader-wrapper">
+                            <div id="qr-reader"></div>
+                        </div>
+                        <button id="scanAgainButton" class="action-button scan-again-button" style="display:none;">
+                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4397ae63c531a84ccaea427499a7d80fb02acaa7?apiKey=c23f5c46427a485aa8122a8548d508d7" alt="Scan" class="retry-icon" />
+                            <span>Quét Lại QR</span>
+                        </button>
+                        <div id="qr-scan-status" class="small text-muted text-center mt-2"></div>
+                    </div>
+
+                    @* Thông tin xe (giữ nguyên cấu trúc của bạn, thêm ID cho các span value) *@
+                    <article class="vehicle-info">
+                        <div class="info-container">
+                            <h2 class="info-title">Thông Tin Giao Dịch</h2>
+                            <div class="info-details">
+                                <div class="info-row">
+                                    <span class="info-label">Trạng thái:</span>
+                                    <span class="info-value placeholder" id="infoStatus">-</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Biển số:</span>
+                                    <span class="info-value placeholder" id="infoBienSo">-</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">MSSV:</span>
+                                    <span class="info-value placeholder" id="infoMSSV">-</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Tên Sinh Viên:</span>
+                                    <span class="info-value placeholder" id="infoHoTen">-</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Lớp:</span>
+                                    <span class="info-value placeholder" id="infoLop">-</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Thời gian:</span>
+                                    <span class="info-value placeholder" id="infoThoiGian">-</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Khu vực/Vị trí:</span>
+                                    <span class="info-value placeholder" id="infoSlot">-</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Vé hết hạn:</span>
+                                    <span class="info-value placeholder" id="infoNgayHetHan">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="text-center processing-indicator mt-3">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Đang xử lý...</span>
+                    </div>
+                    <p>Đang xử lý, vui lòng chờ...</p>
+                </div>
+
+                @* Input section (giữ nguyên cấu trúc của bạn, đổi input và button) *@
+                <div class="input-section">
+                    <div class="input-wrapper">
+                        <input type="text" id="mssvManualInput" class="mssv-input" placeholder="Nhập MSSV nếu quét lỗi..." />
+                    </div>
+                    <button id="manualFindButton" class="acti/on-button manual-find-button">
+                        <span>Tìm & Xử Lý</span>
+                    </button>
+                </div>
+            </main>
+
+            <footer class="checkin-footer">
+                <div class="footer-content">PBL3 - Hệ thống quản lý bãi giữ xe thông minh</div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Thông Báo Kết Quả -->
+<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" id="resultModalHeader">
+                @* Thêm ID cho header modal *@
+                <h5 class="modal-title" id="resultModalLabel">Thông Báo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="resultModalBody">
+                <!-- Nội dung thông báo -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script>
+        var processQrUrl = '@Url.Action("ProcessQRCode", "QRCode")';
+        var findByMssvUrl = '@Url.Action("FindAndProcessTicketByMSSV", "QRCode")';
+    </script>
+    <script src="~/js/scan-qr.js" asp-append-version="true"></script>
+}

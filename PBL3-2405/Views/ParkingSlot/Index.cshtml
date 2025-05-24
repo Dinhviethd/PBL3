@@ -1,0 +1,380 @@
+﻿@model PBL3.Models.ViewModel.ParkingSlotViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+
+@{
+    ViewData["Title"] = "Quản Lý Nhà Xe";
+    var isStaff = User.IsInRole("Staff");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - PBL3</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/QLNX.css" asp-append-version="true" />
+    <style>
+        .form-input[readonly], .date-input[readonly] {
+            background-color: #e9ecef;
+            opacity: 1;
+            cursor: default;
+        }
+
+        .vehicle-form {
+            display: none;
+        }
+
+        .modal-table th, .modal-table td {
+            white-space: nowrap;
+            padding: 8px 10px;
+            vertical-align: middle;
+        }
+
+            .modal-table th:nth-child(1), .modal-table td:nth-child(1) {
+                width: 5%;
+                text-align: center;
+            }
+            /* Checkbox */
+            .modal-table th:nth-child(2), .modal-table td:nth-child(2) {
+                width: 5%;
+            }
+            /* STT */
+            .modal-table th:nth-child(3), .modal-table td:nth-child(3) {
+                width: 20%;
+            }
+            /* Họ tên */
+            .modal-table th:nth-child(4), .modal-table td:nth-child(4) {
+                width: 15%;
+            }
+            /* MSSV */
+            .modal-table th:nth-child(5), .modal-table td:nth-child(5) {
+                width: 15%;
+            }
+            /* Biển số */
+            .modal-table th:nth-child(6), .modal-table td:nth-child(6) {
+                width: 15%;
+            }
+            /* Ngày ĐK Vé */
+            .modal-table th:nth-child(7), .modal-table td:nth-child(7) {
+                width: 15%;
+            }
+            /* Ngày Check-In */
+            .modal-table th:nth-child(8), .modal-table td:nth-child(8) {
+                width: 10%;
+            }
+        /* Ngày Hết Hạn Vé */
+        /* Bỏ cột thao tác nếu không còn nút "Xem" */
+    </style>
+</head>
+<body>
+    @* Form "Thông tin xe" - Giờ chỉ để hiển thị *@
+    <div class="vehicle-form">
+        <button type="button" class="form-close" style="position:absolute;top:10px;right:10px;font-size:20px;background:none;border:none;cursor:pointer;">×</button>
+        <h1 class="form-title">Thông tin chi tiết vé</h1>
+        <div class="form-container">
+            <div class="form-group">
+                <label class="form-label" for="viewParkingSlotName">Ô giữ xe</label>
+                <input type="text" id="viewParkingSlotName" class="form-input" readonly />
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="viewFullName">Họ và tên</label>
+                <input type="text" id="viewFullName" class="form-input" readonly />
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="viewStudentId">Mã số sinh viên</label>
+                <input type="text" id="viewStudentId" class="form-input" readonly />
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="viewLicensePlate">Biển số xe</label>
+                <input type="text" id="viewLicensePlate" class="form-input" readonly />
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="viewEntryDate">Ngày Đăng Ký Vé</label>
+                <input type="text" id="viewEntryDate" class="form-input" readonly />
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="viewCheckInDate">Ngày Check-In</label>
+                <input type="text" id="viewCheckInDate" class="form-input" readonly />
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="viewTicketExpiryDate">Ngày Hết Hạn</label>
+                <input type="text" id="viewTicketExpiryDate" class="form-input" readonly />
+            </div>
+            @* Bỏ nút submit *@
+        </div>
+    </div>
+
+    <div class="right-container">
+        <form class="search-container" method="get" asp-action="Index" asp-controller="ParkingSlot">
+            <div class="search-content">
+                <div class="search-input-container">
+                    <div class="search-input-wrapper">
+                        <input type="text" name="searchTerm" value="@Model.SearchTerm" placeholder="Tìm kiếm..." class="search-input" />
+                    </div>
+                </div>
+                <select name="searchType" class="filter-dropdown">
+                    <option value="mssv" selected="@(Model.SearchType == "mssv")">MSSV</option>
+                    <option value="name" selected="@(Model.SearchType == "name")">Họ và tên</option>
+                    <option value="license" selected="@(Model.SearchType == "license")">Biển số xe</option>
+                    <option value="not-entered" selected="@(Model.SearchType == "not-entered")">Xe chưa vào bãi</option>
+                </select>
+                <button type="submit" class="search-button">
+                    <span class="search-button-text">Tìm kiếm</span>
+                </button>
+            </div>
+        </form>
+
+        <section class="parking-container">
+            <h2 class="parking-title">Ô giữ xe</h2>
+            <div class="parking-grid">
+                @foreach (var slot in Model.ParkingSlots.OrderBy(s => s.SlotName))
+                {
+                    <div class="parking-row">
+                        <article class="parking-space">
+                            <div class="space-content" data-slot-id="@slot.ParkingSlotId">
+                                <h3 class="space-title">Ô số @slot.SlotName</h3>
+                                <span class="occupancy-badge @(slot.CurrentCount <= (slot.MaxCapacity * 0.6) ? "occupancy-normal" : slot.CurrentCount <= (slot.MaxCapacity * 0.9) ? "occupancy-warning" : "occupancy-danger")">@slot.CurrentCount/@slot.MaxCapacity</span>
+                            </div>
+                        </article>
+                    </div>
+                }
+            </div>
+        </section>
+
+        @if (Model.Tickets != null && Model.Tickets.Any())
+        {
+            <div class="modal" id="parkingModal">
+                <div class="modal-content">
+                    <h2 class="modal-title">Kết quả tìm kiếm</h2>
+                    <div class="modal-table-container">
+                        <form method="post" asp-action="DeleteTickets" asp-controller="ParkingSlot" id="deleteTicketsForm">
+                            @Html.AntiForgeryToken()
+                            <table class="modal-table">
+                                <thead>
+                                    <tr>
+                                        @if (isStaff)
+                                        {
+                                            <th><input type="checkbox" id="selectAllInModal" /></th>
+                                        }
+                                        <th>STT</th>
+                                        <th>Họ và tên</th>
+                                        <th>MSSV</th>
+                                        <th>Biển số xe</th>
+                                        <th>Ngày ĐK Vé</th>
+                                        <th>Ngày Check-In</th>
+                                        <th>Ngày Hết Hạn</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        var index = 1;
+                                    }
+                                    @foreach (var ticket in Model.Tickets)
+                                    {
+                                        <tr>
+                                            @if (isStaff)
+                                            {
+                                                <td><input type="checkbox" name="ticketIds" value="@ticket.ID_Ticket" class="mark-checkbox" /></td>
+                                            }
+                                            <td>@(index++)</td>
+                                            <td>@(ticket.Student?.HoTen ?? "N/A")</td>
+                                            <td>@((ticket.Student as Student)?.MSSV ?? "N/A")</td>
+                                            <td>@ticket.BienSoXe</td>
+                                            <td>@ticket.NgayDangKy.ToString("dd/MM/yyyy")</td>
+                                            <td>@(ticket.ThoiGianVao?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa vào")</td>
+                                            <td>@ticket.NgayHetHan.ToString("dd/MM/yyyy")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="modal-buttons">
+                                @if (isStaff)
+                                {
+                                    <button type="submit" class="delete-button">Xóa xe khỏi bãi</button>
+                                }
+                                <button type="button" class="modal-close" data-target-modal="parkingModal">Đóng</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+        @* Xóa modal assignParkingModal *@
+    </div>
+
+    <script>
+        function updateOccupancyBadge(spaceElement, recordCount, maxCapacity) {
+            const badge = spaceElement.querySelector('.occupancy-badge');
+            if (!badge) return;
+            badge.textContent = `${recordCount}/${maxCapacity}`;
+            badge.classList.remove('occupancy-normal', 'occupancy-warning', 'occupancy-danger');
+            const occupancyPercentage = (maxCapacity > 0) ? (recordCount / maxCapacity) * 100 : 0;
+            if (occupancyPercentage <= 60) {
+                badge.classList.add('occupancy-normal');
+            } else if (occupancyPercentage <= 90) {
+                badge.classList.add('occupancy-warning');
+            } else {
+                badge.classList.add('occupancy-danger');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const isStaff = @Json.Serialize(isStaff);
+            const mainModal = document.getElementById('parkingModal');
+            const vehicleInfoDisplayForm = document.querySelector('.vehicle-form');
+
+            function toggleModal(modalElement, show) {
+                if (modalElement) {
+                    if (show) modalElement.classList.add('show');
+                    else modalElement.classList.remove('show');
+                }
+            }
+
+            document.querySelectorAll('.modal-close').forEach(button => {
+                button.addEventListener('click', function () {
+                    const targetModalId = this.dataset.targetModal || this.closest('.modal')?.id;
+                    if (targetModalId) {
+                        toggleModal(document.getElementById(targetModalId), false);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        toggleModal(this, false);
+                    }
+                });
+            });
+
+            vehicleInfoDisplayForm.querySelector('.form-close')?.addEventListener('click', function() {
+                vehicleInfoDisplayForm.style.display = 'none';
+            });
+
+            if (isStaff && mainModal) {
+                const selectAllInModal = mainModal.querySelector('#selectAllInModal');
+                if (selectAllInModal) {
+                    selectAllInModal.addEventListener('change', function () {
+                        mainModal.querySelectorAll('.mark-checkbox').forEach(checkbox => {
+                            checkbox.checked = this.checked;
+                        });
+                    });
+                }
+            }
+
+            const searchParams = new URLSearchParams(window.location.search);
+            const hasSearchTerm = searchParams.has('searchTerm') && searchParams.get('searchTerm').trim() !== '';
+            const isNotEnteredSearch = searchParams.get('searchType') === 'not-entered';
+
+             if (mainModal && (hasSearchTerm || isNotEnteredSearch)) {
+                 if (@Json.Serialize(Model.Tickets != null && Model.Tickets.Any())) {
+                    toggleModal(mainModal, true);
+                }
+            }
+
+            document.querySelectorAll('.parking-space').forEach(space => {
+                const badge = space.querySelector('.occupancy-badge');
+                 if (badge && badge.textContent) {
+                    const parts = badge.textContent.split('/');
+                    if (parts.length === 2) {
+                        const current = parseInt(parts[0]);
+                        const max = parseInt(parts[1]);
+                        if (!isNaN(current) && !isNaN(max)) {
+                            updateOccupancyBadge(space, current, max);
+                        }
+                    }
+                }
+
+                space.addEventListener('click', async function () {
+                    const slotId = this.querySelector('.space-content').dataset.slotId;
+                    const slotNameElement = this.querySelector('.space-title');
+                    const slotName = slotNameElement ? slotNameElement.textContent.replace('Ô số ', '').trim() : 'N/A';
+
+                    try {
+                        const response = await fetch(`@Url.Action("GetTicketsBySlot", "ParkingSlot")?slotId=${slotId}`);
+                        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                        const result = await response.json();
+
+                        if (result.success && mainModal) {
+                            mainModal.querySelector('.modal-title').textContent = `Danh sách xe trong Ô số ${slotName}`;
+                            const tableBody = mainModal.querySelector('tbody');
+                            tableBody.innerHTML = '';
+
+                            if (result.data && result.data.length > 0) {
+                                result.data.forEach((ticket, index) => {
+                                    const row = tableBody.insertRow();
+                                    let cellIndex = 0;
+                                    if (isStaff) {
+                                        row.insertCell(cellIndex++).innerHTML = `<input type="checkbox" name="ticketIds" value="${ticket.id}" class="mark-checkbox" />`;
+                                    }
+                                    row.insertCell(cellIndex++).textContent = index + 1;
+                                    row.insertCell(cellIndex++).textContent = ticket.studentName || 'N/A';
+                                    row.insertCell(cellIndex++).textContent = ticket.studentId || 'N/A';
+                                    row.insertCell(cellIndex++).textContent = ticket.licensePlate || 'N/A';
+                                    row.insertCell(cellIndex++).textContent = ticket.registrationDate || 'N/A';
+                                    row.insertCell(cellIndex++).textContent = ticket.checkInDate || 'Chưa vào';
+                                    row.insertCell(cellIndex++).textContent = ticket.ticketExpiryDate || 'N/A';
+
+                                    if (isStaff) { // Nút "Xem"
+                                        row.insertCell(cellIndex++).innerHTML = `<button type="button" class="view-button"
+                                            onclick="showViewForm(
+                                                                 '${escapeJsString(ticket.studentName)}',
+                                                                 '${escapeJsString(ticket.studentId)}',
+                                                                 '${escapeJsString(ticket.licensePlate)}',
+                                                                 '${ticket.registrationDate?.split(' ')[0]}',
+                                                                 '${ticket.checkInDate}',
+                                                                 '${ticket.ticketExpiryDate}'`;
+                                    }
+                                });
+                            } else {
+                                const colCount = mainModal.querySelector('thead th').length;
+                                tableBody.innerHTML = `<tr><td colspan="${colCount}" style="text-align:center; padding: 20px;">Không có xe nào trong ô này (đã check-in và chưa check-out).</td></tr>`;
+                            }
+                            if (isStaff) {
+                                const selectAllInModal = mainModal.querySelector('#selectAllInModal');
+                                if (selectAllInModal) selectAllInModal.checked = false;
+                            }
+                            toggleModal(mainModal, true);
+                        } else if (!result.success) {
+                            alert(result.message || 'Lỗi tải danh sách vé.');
+                        }
+                    } catch (error) {
+                        console.error('Lỗi fetch GetTicketsBySlot:', error);
+                        alert('Lỗi nghiêm trọng khi tải danh sách vé.');
+                    }
+                });
+            });
+        });
+
+        function escapeJsString(str) {
+            if (str === null || typeof str === 'undefined') return '';
+            return String(str).replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+        }
+
+        // Đổi tên hàm và chỉ điền dữ liệu vào form hiển thị
+        function showViewForm(studentName, studentId, licensePlate, entryDate, checkInDate, ticketExpiryDate, slotName) {
+            const formDisplay = document.querySelector('.vehicle-form');
+            formDisplay.style.display = 'block';
+
+            const setValue = (elementId, value) => {
+                const el = document.getElementById(elementId);
+                // Đổi ID của các input trong form hiển thị để tránh nhầm lẫn (ví dụ: viewParkingSlotName)
+                if (el) el.value = (value === null || typeof value === 'undefined' || value.toLowerCase() === 'n/a' || value.toLowerCase() === 'chưa vào') ? '' : value;
+            };
+
+            setValue('viewParkingSlotName', slotName || "Chưa được gán ô");
+            setValue('viewFullName', studentName);
+            setValue('viewStudentId', studentId);
+            setValue('viewLicensePlate', licensePlate);
+            setValue('viewEntryDate', entryDate);
+            setValue('viewCheckInDate', checkInDate);
+            setValue('viewTicketExpiryDate', ticketExpiryDate);
+        }
+
+
+    </script>
+</body>
+</html>
