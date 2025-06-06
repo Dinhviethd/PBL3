@@ -203,14 +203,14 @@ namespace PBL3.Controllers
                 return NotFound();
             }
 
-            var model = new RegisterStudentViewModel
+            var model = new EditStudentViewModel
             {
-                HoTen = student.HoTen,
-                Email = student.Email,
-                SDT = student.PhoneNumber,
-                MSSV = student.MSSV,
-                Lop = student.Lop,
-                Role = "Student"
+                Id = student.Id,
+                HoTen = student.HoTen ?? string.Empty,
+                Email = student.Email ?? string.Empty,
+                SDT = student.PhoneNumber ?? string.Empty,
+                MSSV = student.MSSV ?? string.Empty,
+                Lop = student.Lop ?? string.Empty
             };
 
             return View(model);
@@ -219,48 +219,53 @@ namespace PBL3.Controllers
         // POST: Sửa thông tin sinh viên
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditStudent(string id, RegisterStudentViewModel model)
+        public async Task<IActionResult> EditStudent(string id, EditStudentViewModel model)
         {
-            if (string.IsNullOrEmpty(id))
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (string.IsNullOrEmpty(id) || id != model.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var student = await _context.Users.OfType<Student>().FirstOrDefaultAsync(s => s.Id == id);
+            if (student == null)
             {
-                var student = await _context.Users.OfType<Student>().FirstOrDefaultAsync(s => s.Id == id);
-                if (student == null)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
 
-                // Kiểm tra email mới có bị trùng không (nếu có thay đổi)
-                if (student.Email != model.Email)
+            // Kiểm tra email mới có bị trùng không (nếu có thay đổi)
+            if (!string.Equals(student.Email, model.Email, StringComparison.OrdinalIgnoreCase))
+            {
+                var existingUser = await _userManager.FindByEmailAsync(model.Email);
+                if (existingUser != null && !string.Equals(existingUser.Id, id, StringComparison.OrdinalIgnoreCase))
                 {
-                    var existingUser = await _userManager.FindByEmailAsync(model.Email);
-                    if (existingUser != null)
-                    {
-                        ModelState.AddModelError(string.Empty, "Email này đã được sử dụng bởi người dùng khác.");
-                        return View(model);
-                    }
+                    ModelState.AddModelError(string.Empty, "Email này đã được sử dụng bởi người dùng khác.");
+                    return View(model);
                 }
+            }
 
-                // Kiểm tra MSSV mới có bị trùng không (nếu có thay đổi)
-                if (student.MSSV != model.MSSV)
+            // Kiểm tra MSSV mới có bị trùng không (nếu có thay đổi)
+            if (!string.Equals(student.MSSV, model.MSSV, StringComparison.OrdinalIgnoreCase))
+            {
+                var existingStudent = await _context.Users.OfType<Student>()
+                    .FirstOrDefaultAsync(s => s.MSSV == model.MSSV && !string.Equals(s.Id, id, StringComparison.OrdinalIgnoreCase));
+                if (existingStudent != null)
                 {
-                    var existingStudent = await _context.Users.OfType<Student>()
-                        .FirstOrDefaultAsync(s => s.MSSV == model.MSSV);
-                    if (existingStudent != null)
-                    {
-                        ModelState.AddModelError(string.Empty, "MSSV này đã được sử dụng bởi sinh viên khác.");
-                        return View(model);
-                    }
+                    ModelState.AddModelError(string.Empty, "MSSV này đã được sử dụng bởi sinh viên khác.");
+                    return View(model);
                 }
+            }
 
+            try
+            {
                 // Cập nhật thông tin student
                 student.HoTen = model.HoTen;
                 student.Email = model.Email;
-                student.UserName = model.Email; // Cập nhật cả UserName vì nó được sử dụng để đăng nhập
+                student.UserName = model.Email;
                 student.PhoneNumber = model.SDT;
                 student.MSSV = model.MSSV;
                 student.Lop = model.Lop;
@@ -268,6 +273,7 @@ namespace PBL3.Controllers
                 var result = await _userManager.UpdateAsync(student);
                 if (result.Succeeded)
                 {
+                    await _context.SaveChangesAsync();
                     TempData["Success"] = "Cập nhật thông tin sinh viên thành công.";
                     return RedirectToAction("QLSV");
                 }
@@ -277,6 +283,11 @@ namespace PBL3.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Có lỗi xảy ra khi cập nhật thông tin: " + ex.Message);
+            }
+
             return View(model);
         }
 
@@ -381,19 +392,24 @@ namespace PBL3.Controllers
         // GET: Sửa thông tin nhân viên
         public async Task<IActionResult> EditStaff(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
             var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
             if (staff == null)
             {
                 return NotFound();
             }
 
-            var model = new StaffRegisterViewModel
+            var model = new EditStaffViewModel
             {
-                HoTen = staff.HoTen,
-                Email = staff.Email,
-                SDT = staff.PhoneNumber,
-                DiaChi = staff.DiaChi,
-                Role = "Staff"
+                Id = staff.Id,
+                HoTen = staff.HoTen ?? string.Empty,
+                Email = staff.Email ?? string.Empty,
+                SDT = staff.PhoneNumber ?? string.Empty,
+                DiaChi = staff.DiaChi ?? string.Empty
             };
 
             return View(model);
@@ -401,25 +417,50 @@ namespace PBL3.Controllers
 
         // POST: Sửa thông tin nhân viên
         [HttpPost]
-        public async Task<IActionResult> EditStaff(string id, StaffRegisterViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditStaff(string id, EditStaffViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
-                if (staff == null)
-                {
-                    return NotFound();
-                }
+                return View(model);
+            }
 
+            if (string.IsNullOrEmpty(id) || id != model.Id)
+            {
+                return NotFound();
+            }
+
+            var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == id);
+            if (staff == null)
+            {
+                return NotFound();
+            }
+
+            // Kiểm tra email mới có bị trùng không (nếu có thay đổi)
+            if (!string.Equals(staff.Email, model.Email, StringComparison.OrdinalIgnoreCase))
+            {
+                var existingUser = await _userManager.FindByEmailAsync(model.Email);
+                if (existingUser != null && !string.Equals(existingUser.Id, id, StringComparison.OrdinalIgnoreCase))
+                {
+                    ModelState.AddModelError(string.Empty, "Email này đã được sử dụng bởi người dùng khác.");
+                    return View(model);
+                }
+            }
+
+            try
+            {
                 // Cập nhật thông tin staff
                 staff.HoTen = model.HoTen;
                 staff.Email = model.Email;
+                staff.UserName = model.Email;
                 staff.PhoneNumber = model.SDT;
                 staff.DiaChi = model.DiaChi;
 
                 var result = await _userManager.UpdateAsync(staff);
                 if (result.Succeeded)
                 {
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = "Cập nhật thông tin nhân viên thành công.";
                     return RedirectToAction("QLNV");
                 }
 
@@ -428,8 +469,14 @@ namespace PBL3.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Có lỗi xảy ra khi cập nhật thông tin: " + ex.Message);
+            }
+
             return View(model);
         }
+
 
         // GET: Xác nhận xóa nhân viên
         public async Task<IActionResult> ConfirmDeleteStaff(string id)

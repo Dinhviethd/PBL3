@@ -147,7 +147,6 @@ public class TicketsController : Controller
         }
 
     }
-    //[Authorize(Roles = "Staff")]
     public async Task<IActionResult> PrintTicket(string searchLicensePlate = "", string searchStudentName = "")
     {
         var query = _context.Tickets

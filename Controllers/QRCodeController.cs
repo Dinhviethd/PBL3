@@ -30,7 +30,6 @@ namespace PBL3.Controllers
         }
 
         // Action để tìm vé theo MSSV (dùng cho nhập tay)
-        // POST: /QRCode/FindAndProcessTicketByMSSV
         [HttpPost]
         public async Task<IActionResult> FindAndProcessTicketByMSSV([FromBody] ManualCheckinRequest request)
         {
@@ -46,9 +45,6 @@ namespace PBL3.Controllers
             var student = await _context.Users.OfType<Student>() // Cách tường minh hơn để chỉ rõ là query từ Users và lọc Student
                                       .FirstOrDefaultAsync(s => s.MSSV == request.MSSV);
 
-            // Hoặc cách ngắn gọn hơn, vì bạn đã có DbSet<Student> trong AppDBContext mà EF hiểu là TPH:
-            // var student = await _context.Students.FirstOrDefaultAsync(s => s.MSSV == request.MSSV);
-
 
             if (student == null)
             {
@@ -60,7 +56,7 @@ namespace PBL3.Controllers
             // Ưu tiên vé đang ở trong bãi (có ParkingSlotId) để check-out,
             // hoặc vé còn hạn chưa vào bãi để check-in.
             var ticket = await _context.Tickets
-                .Include(t => t.Student) // Student ở đây sẽ là AppUser, cần ép kiểu sau
+                .Include(t => t.Student) 
                 .Include(t => t.ParkingSlot)
                 .Where(t => t.StudentId == student.Id && t.NgayHetHan.Date >= DateTime.Now.Date) // Vé còn hạn
                 .OrderByDescending(t => t.ParkingSlotId != null) // Vé đang trong bãi ưu tiên (cho check-out)

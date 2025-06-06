@@ -12,7 +12,7 @@ using PBL3.Data;
 namespace PBL3.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250518023906_UpdateDB")]
+    [Migration("20250524072400_UpdateDB")]
     partial class UpdateDB
     {
         /// <inheritdoc />

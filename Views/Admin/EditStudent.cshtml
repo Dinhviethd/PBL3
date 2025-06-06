@@ -1,4 +1,4 @@
-@model PBL3.Models.ViewModel.RegisterStudentViewModel
+@model PBL3.Models.ViewModel.EditStudentViewModel
 
 @{
     ViewData["Title"] = "Sửa thông tin sinh viên";
@@ -12,7 +12,7 @@
         <div class="col-md-8">
             <form asp-action="EditStudent" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Role" value="Student" />
+                <input type="hidden" asp-for="Id" />
 
                 <div class="form-group mb-3">
                     <label asp-for="HoTen" class="control-label">Họ và tên</label>
@@ -54,5 +54,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-} 
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
