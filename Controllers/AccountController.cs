@@ -205,14 +205,12 @@ namespace PBL3.Controllers
 
             return NotFound();
         }
-
         [Authorize(Roles = "Student,Staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Profile(ProfileViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
-
             if (user == null)
             {
                 return NotFound();
@@ -220,97 +218,139 @@ namespace PBL3.Controllers
 
             var roles = await _userManager.GetRolesAsync(user);
             var role = roles.FirstOrDefault();
-            model.Role = role;
+            model.Role = role ?? "";
 
             if (!ModelState.IsValid)
             {
+                if (role == "Student")
+                {
+                    var studentWithTickets = await _context.Users.OfType<Student>()
+                        .Include(s => s.Tickets)
+                        .ThenInclude(t => t.ParkingSlot)
+                        .FirstOrDefaultAsync(s => s.Id == user.Id);
+
+                    var latestTicket = studentWithTickets?.Tickets?.OrderByDescending(t => t.NgayDangKy).FirstOrDefault();
+                    model.BienSoXe = latestTicket?.BienSoXe ?? "Không hợp lệ";
+                    model.ViTriGui = latestTicket?.ParkingSlot?.SlotName ?? "Không hợp lệ";
+                    model.NgayDangKy = latestTicket?.NgayDangKy ?? DateTime.MinValue;
+                    model.NgayHetHan = latestTicket?.NgayHetHan ?? DateTime.MinValue;
+                    model.Price = latestTicket?.Price ?? 0;
+                }
                 return View(model);
             }
 
             if (role == "Student")
             {
-                var student = await _context.Users.OfType<Student>()
-                    .Include(s => s.Tickets)
-                        .ThenInclude(t => t.ParkingSlot) // Include cả ParkingSlot để lấy thông tin vị trí
-                    .FirstOrDefaultAsync(s => s.Id == user.Id);
-                if (student == null)
+                try
                 {
-                    return NotFound();
-                }
+                    var student = await _context.Users.OfType<Student>()
+                        .Include(s => s.Tickets)
+                        .ThenInclude(t => t.ParkingSlot)
+                        .FirstOrDefaultAsync(s => s.Id == user.Id);
 
-                // Chỉ cập nhật các thông tin cơ bản, không cập nhật thông tin Ticket
-                student.HoTen = model.HoTen;
-                student.PhoneNumber = model.SDT;
-                student.MSSV = model.MSSV;
-                student.Lop = model.Lop;
-
-                var result = await _userManager.UpdateAsync(student);
-                if (result.Succeeded)
-                {
-                    // Lấy Ticket mới nhất của Student (nếu có)
-                    var latestTicket = student.Tickets?.OrderByDescending(t => t.NgayDangKy).FirstOrDefault();
-
-                    // Kiểm tra xem có Ticket hợp lệ không
-                    bool hasValidTicket = latestTicket != null && latestTicket.NgayDangKy != DateTime.MinValue;
-
-                    // Cập nhật lại toàn bộ model với thông tin mới
-                    var updatedModel = new ProfileViewModel
+                    if (student == null)
                     {
-                        HoTen = student.HoTen,
-                        Email = student.Email,
-                        SDT = student.PhoneNumber,
-                        Role = role, //Đảm bảo luôn là Student
-                        MSSV = student.MSSV,
-                        Lop = student.Lop,
-                        // Thông tin Ticket - sử dụng giá trị mặc định nếu không hợp lệ
-                        BienSoXe = hasValidTicket ? latestTicket.BienSoXe : "Không hợp lệ",
-                        ViTriGui = hasValidTicket ? latestTicket.ParkingSlot?.SlotName ?? "Không hợp lệ" : "Không hợp lệ",
-                        NgayDangKy = hasValidTicket ? latestTicket.NgayDangKy : DateTime.MinValue,
-                        NgayHetHan = hasValidTicket ? latestTicket.NgayHetHan : DateTime.MinValue,
-                        Price = hasValidTicket ? latestTicket.Price : 0
-                    };
+                        return NotFound();
+                    }
 
-                    TempData["Success"] = "Cập nhật thông tin thành công.";
-                    return View(updatedModel);
+                    // Cập nhật thông tin sinh viên
+                    student.HoTen = model.HoTen;
+                    student.PhoneNumber = model.SDT ?? "";
+                    student.MSSV = model.MSSV;
+                    student.Lop = model.Lop;
+
+                    // Đánh dấu entity là đã được sửa đổi
+                    _context.Entry(student).State = EntityState.Modified;
+
+                    // Lưu thay đổi vào database
+                    var saveResult = await _context.SaveChangesAsync();
+
+                    if (saveResult > 0)
+                    {
+                        // Reload student from database to ensure we have latest data
+                        await _context.Entry(student).ReloadAsync();
+
+                        var latestTicket = student.Tickets?.OrderByDescending(t => t.NgayDangKy).FirstOrDefault();
+
+                        var updatedModel = new ProfileViewModel
+                        {
+                            HoTen = student.HoTen,
+                            Email = student.Email ?? "",
+                            SDT = student.PhoneNumber ?? "",
+                            Role = role,
+                            MSSV = student.MSSV,
+                            Lop = student.Lop,
+                            BienSoXe = latestTicket?.BienSoXe ?? "Không hợp lệ",
+                            ViTriGui = latestTicket?.ParkingSlot?.SlotName ?? "Không hợp lệ",
+                            NgayDangKy = latestTicket?.NgayDangKy ?? DateTime.MinValue,
+                            NgayHetHan = latestTicket?.NgayHetHan ?? DateTime.MinValue,
+                            Price = latestTicket?.Price ?? 0
+                        };
+
+                        TempData["Success"] = "Cập nhật thông tin thành công.";
+                        return View(updatedModel);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Không thể cập nhật thông tin. Vui lòng thử lại.");
+                        return View(model);
+                    }
                 }
-
-                foreach (var error in result.Errors)
+                catch (DbUpdateException ex)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError("", "Lỗi khi cập nhật cơ sở dữ liệu: " + ex.Message);
+                    return View(model);
                 }
             }
             else if (role == "Staff")
             {
-                var staff = await _context.Users.OfType<Staff>().FirstOrDefaultAsync(s => s.Id == user.Id);
-                if (staff == null)
+                try
                 {
-                    return NotFound();
-                }
+                    var staff = await _context.Users.OfType<Staff>()
+                        .FirstOrDefaultAsync(s => s.Id == user.Id);
 
-                staff.HoTen = model.HoTen;
-                staff.PhoneNumber = model.SDT;
-                staff.DiaChi = model.DiaChi;
-
-                var result = await _userManager.UpdateAsync(staff);
-                if (result.Succeeded)
-                {
-                    // Cập nhật lại toàn bộ model với thông tin mới
-                    var updatedModel = new ProfileViewModel
+                    if (staff == null)
                     {
-                        HoTen = staff.HoTen,
-                        Email = staff.Email,
-                        SDT = staff.PhoneNumber,
-                        Role = role, // Đảm bảo role luôn là Staff
-                        DiaChi = staff.DiaChi
-                    };
+                        return NotFound();
+                    }
 
-                    TempData["Success"] = "Cập nhật thông tin thành công.";
-                    return View(updatedModel);
+                    staff.HoTen = model.HoTen;
+                    staff.PhoneNumber = model.SDT ?? "";
+                    staff.DiaChi = model.DiaChi ?? "";
+
+                    // Đánh dấu entity là đã được sửa đổi
+                    _context.Entry(staff).State = EntityState.Modified;
+
+                    // Lưu thay đổi vào database
+                    var saveResult = await _context.SaveChangesAsync();
+
+                    if (saveResult > 0)
+                    {
+                        // Reload staff from database
+                        await _context.Entry(staff).ReloadAsync();
+
+                        var updatedModel = new ProfileViewModel
+                        {
+                            HoTen = staff.HoTen,
+                            Email = staff.Email ?? "",
+                            SDT = staff.PhoneNumber ?? "",
+                            Role = role,
+                            DiaChi = staff.DiaChi
+                        };
+
+                        TempData["Success"] = "Cập nhật thông tin thành công.";
+                        return View(updatedModel);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Không thể cập nhật thông tin. Vui lòng thử lại.");
+                        return View(model);
+                    }
                 }
-
-                foreach (var error in result.Errors)
+                catch (DbUpdateException ex)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError("", "Lỗi khi cập nhật cơ sở dữ liệu: " + ex.Message);
+                    return View(model);
                 }
             }
 
